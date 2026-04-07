@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GMAT Practice · Ou Ou</title>
+<title>GMAT Practice · Ou Ou 加油</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -175,10 +175,49 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
 .exam-mode .exp-box{display:none!important}
 .exam-mode .btn-ghost{display:none!important}
 @media(max-width:540px){.type-grid{grid-template-columns:1fr 1fr}.stats-bar{grid-template-columns:1fr 1fr}.result-grid{grid-template-columns:1fr 1fr}main{padding:14px 10px}.hero h1{font-size:1.6rem}}
+
+/* ── Reading Comprehension Layout ── */
+.rc-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:11px}
+.rc-passage{background:var(--card);border:1px solid var(--rim);border-radius:var(--r);padding:16px;max-height:55vh;overflow-y:auto;border-left:3px solid var(--blue)}
+.rc-passage-title{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:9px}
+.rc-passage-text{font-size:.88rem;line-height:1.95;color:var(--body)}
+.rc-passage-text p{margin-bottom:10px}
+.rc-q-panel{display:flex;flex-direction:column}
+.rc-qnum{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:1px;margin-bottom:4px}
+.rc-progress{display:flex;gap:5px;margin-bottom:10px}
+.rc-dot{width:8px;height:8px;border-radius:50%;background:var(--rim);transition:all .2s}
+.rc-dot.done{background:var(--green)}
+.rc-dot.current{background:var(--gold)}
+@media(max-width:640px){.rc-layout{grid-template-columns:1fr}.rc-passage{max-height:35vh}}
+
+/* ── Section Block (3-area accordion) ── */
+.section-block{background:var(--card);border:1px solid var(--rim);border-radius:var(--r);overflow:hidden;transition:all .2s;cursor:pointer}
+.section-block:hover{border-color:var(--muted)}
+.section-block.open{border-color:var(--gold)}
+.exam-block{border-color:#7a3c1a}
+.exam-block.open{border-color:#c47a3a}
+.section-block-header{display:flex;align-items:center;justify-content:space-between;padding:14px 15px}
+.section-block-title{font-size:.92rem;font-weight:700;color:var(--cream);font-family:'Noto Sans TC',sans-serif}
+.section-block-sub{font-size:.66rem;color:var(--muted);margin-top:2px}
+.section-block-arrow{font-size:.7rem;color:var(--muted);transition:transform .25s}
+.section-block.open .section-block-arrow{transform:rotate(90deg);color:var(--gold)}
+.exam-block.open .section-block-arrow{color:#c47a3a}
+.section-block-body{padding:0 15px 14px;border-top:1px solid var(--rim)}
+
+/* ── Data Insights Special Types ── */
+.dis-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.dis-table th{background:var(--raised);color:var(--cream);padding:7px 10px;text-align:left;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.5px;border-bottom:2px solid var(--gold)}
+.dis-table td{padding:7px 10px;border-bottom:1px solid var(--rim);color:var(--body)}
+.dis-table tr:hover td{background:#ffffff08}
+.dis-table .sel-col1{background:#3a6b2a22;color:var(--green)}
+.dis-table .sel-col2{background:#6b3a2a22;color:var(--yellow)}
+.tp-radio{width:18px;height:18px;accent-color:var(--gold);cursor:pointer}
+.msr-tab{padding:5px 12px;border-radius:6px;border:1px solid var(--rim);background:var(--card);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s}
+.msr-tab.active{border-color:var(--blue);color:var(--blue);background:#7a9fb515}
 </style>
 </head>
 <body>
-<div class="eye-banner">🌿 <span>護眼模式</span> · 174種題型 · Ou Ou</div>
+<div class="eye-banner">🌿 <span>護眼模式</span> · Ou Ou 加油</div>
 <div id="initOverlay">
   <div class="init-logo">GMAT Practice</div>
   <div class="init-sub">10,000題庫 · 174種題型 · Ou Ou 加油</div>
@@ -187,7 +226,7 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
   <div class="init-bar-wrap"><div class="init-bar" id="initBar" style="width:0%"></div></div>
 </div>
 <header>
-  <div class="logo">GMAT Practice<small>174種題型 · 10,000題 · Ou Ou 加油</small></div>
+  <div class="logo">GMAT Practice<small>All Sections · Official Style</small></div>
   <div class="hdr-right">
     <div class="pill">練習 <b id="hTot">0</b></div>
     <div class="pill">正確率 <b id="hAcc">—</b></div>
@@ -197,8 +236,8 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
 <main>
 <div id="homeScreen" class="screen active">
   <div class="hero">
-    <h1>GMAT <em>極限題庫</em></h1>
-    <p>174種題型 · 10,000題自動生成 · Ou Ou 加油</p>
+    <h1>GMAT <em>Practice</em></h1>
+    <p>Quantitative · Verbal · Data Insights · Reading Comprehension · Official-Style Questions</p>
   </div>
   <div class="nav-tabs">
     <button class="nav-tab active" id="tabPractice" onclick="switchTab('Practice')">🎯 練習</button>
@@ -209,71 +248,171 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
   <div id="tabPracticeContent">
     <div class="db-status">
       <div class="db-left">題庫 <b id="dbQC">—</b> 題 · 記錄 <b id="dbHC">—</b> 筆 · 錯題 <b id="dbWC">—</b> 道</div>
-      <span class="db-badge">✅ 174種題型</span>
+      <span class="db-badge">✅ Q · V · DI · RC</span>
     </div>
     <div class="stats-bar">
-      <div class="stat-box"><div class="sv" id="sT">0</div><div class="sl">總題數</div></div>
+      <div class="stat-box"><div class="sv" id="sT">0</div><div class="sl">作答總數</div></div>
       <div class="stat-box"><div class="sv" id="sO" style="color:var(--green)">0</div><div class="sl">答對</div></div>
       <div class="stat-box"><div class="sv" id="sW" style="color:var(--red)">0</div><div class="sl">答錯</div></div>
       <div class="stat-box"><div class="sv" id="sA">—</div><div class="sl">正確率</div></div>
     </div>
-    <div class="sec">模式選擇</div>
-    <div class="mode-grid">
-      <div class="mode-card selected" id="modeCardPractice" onclick="selectMode('practice')">
-        <span class="mc-badge">自由練習</span>
-        <span class="mc-icon">📚</span>
-        <div class="mc-title">練習模式</div>
-        <div class="mc-sub">即時查看詳解<br>自選題型/難度</div>
+
+    <!-- 三大區塊 -->
+    <div class="sec">選擇練習區塊</div>
+    <div id="sectionPicker" style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- QUANTITATIVE -->
+      <div class="section-block" id="blockQ" onclick="toggleBlock('Q')">
+        <div class="section-block-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.5rem">🔢</span>
+            <div>
+              <div class="section-block-title">Quantitative Reasoning</div>
+              <div class="section-block-sub">Problem Solving · Data Sufficiency</div>
+            </div>
+          </div>
+          <span class="section-block-arrow" id="arrowQ">▶</span>
+        </div>
+        <div class="section-block-body" id="bodyQ" style="display:none">
+          <div class="sec" style="margin-top:8px">難度</div>
+          <div class="filter-row">
+            <button class="filter-btn on" data-qd="Easy" onclick="event.stopPropagation();toggleSectionDiff(this,'Q')">🟢 Easy</button>
+            <button class="filter-btn on" data-qd="Medium" onclick="event.stopPropagation();toggleSectionDiff(this,'Q')">🟡 Medium</button>
+            <button class="filter-btn on" data-qd="Hard" onclick="event.stopPropagation();toggleSectionDiff(this,'Q')">🔴 Hard</button>
+          </div>
+          <div class="sec">題數</div>
+          <div class="filter-row">
+            <button class="filter-btn on" data-qn="10" onclick="event.stopPropagation();setSectionNum(this,'Q')">10</button>
+            <button class="filter-btn" data-qn="20" onclick="event.stopPropagation();setSectionNum(this,'Q')">20</button>
+            <button class="filter-btn" data-qn="30" onclick="event.stopPropagation();setSectionNum(this,'Q')">30</button>
+            <button class="filter-btn" data-qn="50" onclick="event.stopPropagation();setSectionNum(this,'Q')">50</button>
+          </div>
+          <button class="start-btn" style="background:linear-gradient(135deg,#3a6b9a,var(--blue));color:var(--cream);margin-top:10px" onclick="event.stopPropagation();startSectionQuiz('Q')">Start Quantitative →</button>
+        </div>
       </div>
-      <div class="mode-card exam-card" id="modeCardExam" onclick="selectMode('exam')">
-        <span class="mc-badge">正式考試</span>
-        <span class="mc-icon">🎓</span>
-        <div class="mc-title">模擬考模式</div>
-        <div class="mc-sub">限時作答，無法查解析<br>結束後完整分析</div>
+
+      <!-- VERBAL -->
+      <div class="section-block" id="blockV" onclick="toggleBlock('V')">
+        <div class="section-block-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.5rem">📖</span>
+            <div>
+              <div class="section-block-title">Verbal Reasoning</div>
+              <div class="section-block-sub">Critical Reasoning · Sentence Correction · Reading Comprehension</div>
+            </div>
+          </div>
+          <span class="section-block-arrow" id="arrowV">▶</span>
+        </div>
+        <div class="section-block-body" id="bodyV" style="display:none">
+          <div class="sec" style="margin-top:8px">題型</div>
+          <div class="filter-row" style="flex-wrap:wrap;gap:5px">
+            <button class="filter-btn on" style="flex:none;padding:6px 12px" data-vt="CR" onclick="event.stopPropagation();toggleVType(this)">💬 CR / SC</button>
+            <button class="filter-btn" style="flex:none;padding:6px 12px" data-vt="RC" onclick="event.stopPropagation();toggleVType(this)">📖 Reading Comp</button>
+          </div>
+          <!-- CR/SC options -->
+          <div id="vCROptions">
+            <div class="sec">難度</div>
+            <div class="filter-row">
+              <button class="filter-btn on" data-vd="Easy" onclick="event.stopPropagation();toggleSectionDiff(this,'V')">🟢 Easy</button>
+              <button class="filter-btn on" data-vd="Medium" onclick="event.stopPropagation();toggleSectionDiff(this,'V')">🟡 Medium</button>
+              <button class="filter-btn on" data-vd="Hard" onclick="event.stopPropagation();toggleSectionDiff(this,'V')">🔴 Hard</button>
+            </div>
+            <div class="sec">題數</div>
+            <div class="filter-row">
+              <button class="filter-btn on" data-vn="10" onclick="event.stopPropagation();setSectionNum(this,'V')">10</button>
+              <button class="filter-btn" data-vn="20" onclick="event.stopPropagation();setSectionNum(this,'V')">20</button>
+              <button class="filter-btn" data-vn="30" onclick="event.stopPropagation();setSectionNum(this,'V')">30</button>
+            </div>
+            <button class="start-btn" style="background:linear-gradient(135deg,#6a4a9a,var(--purple));color:var(--cream);margin-top:10px" onclick="event.stopPropagation();startSectionQuiz('V')">Start CR / SC →</button>
+          </div>
+          <!-- RC options -->
+          <div id="vRCOptions" style="display:none">
+            <div class="sec">篇數</div>
+            <div class="filter-row">
+              <button class="filter-btn on" data-rc="2" onclick="event.stopPropagation();setRCNum(this)">2 Passages</button>
+              <button class="filter-btn" data-rc="3" onclick="event.stopPropagation();setRCNum(this)">3 Passages</button>
+              <button class="filter-btn" data-rc="5" onclick="event.stopPropagation();setRCNum(this)">5 Passages</button>
+              <button class="filter-btn" data-rc="10" onclick="event.stopPropagation();setRCNum(this)">All 10</button>
+            </div>
+            <button class="start-btn" style="background:linear-gradient(135deg,var(--purple),#7a5fa0);color:var(--cream);margin-top:10px" onclick="event.stopPropagation();startRC(currentRCNum)">Start Reading Comprehension →</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div id="practiceOptions">
-      <div class="sec">題型</div>
-      <div class="type-grid">
-        <div class="type-card on" data-t="Q" onclick="toggleType(this)"><span class="ic">🔢</span><div class="nm">Quantitative</div><div class="st">PS · DS</div></div>
-        <div class="type-card on" data-t="V" onclick="toggleType(this)"><span class="ic">📖</span><div class="nm">Verbal</div><div class="st">CR · SC</div></div>
-        <div class="type-card on" data-t="D" onclick="toggleType(this)"><span class="ic">📊</span><div class="nm">Data Insights</div><div class="st">DS · DI</div></div>
+
+      <!-- DATA INSIGHTS -->
+      <div class="section-block" id="blockD" onclick="toggleBlock('D')">
+        <div class="section-block-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.5rem">📊</span>
+            <div>
+              <div class="section-block-title">Data Insights</div>
+              <div class="section-block-sub">Data Sufficiency · Table Analysis · Two-Part Analysis</div>
+            </div>
+          </div>
+          <span class="section-block-arrow" id="arrowD">▶</span>
+        </div>
+        <div class="section-block-body" id="bodyD" style="display:none">
+          <div class="sec" style="margin-top:8px">難度</div>
+          <div class="filter-row">
+            <button class="filter-btn on" data-dd="Easy" onclick="event.stopPropagation();toggleSectionDiff(this,'D')">🟢 Easy</button>
+            <button class="filter-btn on" data-dd="Medium" onclick="event.stopPropagation();toggleSectionDiff(this,'D')">🟡 Medium</button>
+            <button class="filter-btn on" data-dd="Hard" onclick="event.stopPropagation();toggleSectionDiff(this,'D')">🔴 Hard</button>
+          </div>
+          <div class="sec">題數</div>
+          <div class="filter-row">
+            <button class="filter-btn on" data-dn="10" onclick="event.stopPropagation();setSectionNum(this,'D')">10</button>
+            <button class="filter-btn" data-dn="20" onclick="event.stopPropagation();setSectionNum(this,'D')">20</button>
+            <button class="filter-btn" data-dn="30" onclick="event.stopPropagation();setSectionNum(this,'D')">30</button>
+          </div>
+          <button class="start-btn" style="background:linear-gradient(135deg,#2a7a5a,var(--green));color:var(--cream);margin-top:10px" onclick="event.stopPropagation();startSectionQuiz('D')">Start Data Sufficiency (DS) →</button>
+          <div style="margin-top:8px;background:var(--raised);border-radius:8px;padding:10px">
+            <div style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--green);letter-spacing:1.5px;margin-bottom:6px">📊 FULL DATA INSIGHTS — ALL 5 TYPES</div>
+            <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px">Two-Part Analysis · Table Analysis · MSR · Graphics Interpretation · Data Sufficiency</div>
+            <div class="filter-row" style="margin-bottom:8px">
+              <button class="filter-btn on" data-dis="5" onclick="event.stopPropagation();setDISNum(this)">5 Q</button>
+              <button class="filter-btn" data-dis="10" onclick="event.stopPropagation();setDISNum(this)">10 Q</button>
+              <button class="filter-btn" data-dis="15" onclick="event.stopPropagation();setDISNum(this)">15 Q</button>
+            </div>
+            <button class="start-btn" style="background:linear-gradient(135deg,#3a5a7a,var(--blue));color:var(--cream);margin-top:0" onclick="event.stopPropagation();startDISpecial(currentDISNum)">Start All DI Types →</button>
+          </div>
+        </div>
       </div>
-      <div class="sec">難度</div>
-      <div class="filter-row">
-        <button class="filter-btn on" data-d="Easy" onclick="toggleDiff(this)">🟢 Easy</button>
-        <button class="filter-btn on" data-d="Medium" onclick="toggleDiff(this)">🟡 Medium</button>
-        <button class="filter-btn on" data-d="Hard" onclick="toggleDiff(this)">🔴 Hard</button>
+
+      <!-- MOCK EXAM -->
+      <div class="section-block exam-block" onclick="toggleBlock('EXAM')">
+        <div class="section-block-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.5rem">🎓</span>
+            <div>
+              <div class="section-block-title">Mock Exam</div>
+              <div class="section-block-sub">Full timed simulation · All 3 sections</div>
+            </div>
+          </div>
+          <span class="section-block-arrow" id="arrowEXAM">▶</span>
+        </div>
+        <div class="section-block-body" id="bodyEXAM" style="display:none">
+          <div class="sec" style="margin-top:8px">考試類型</div>
+          <div class="filter-row" id="examTypeRow">
+            <button class="filter-btn on" data-et="full" onclick="event.stopPropagation();setExamType(this)">🎓 Full</button>
+            <button class="filter-btn" data-et="quant" onclick="event.stopPropagation();setExamType(this)">🔢 Quant</button>
+            <button class="filter-btn" data-et="verbal" onclick="event.stopPropagation();setExamType(this)">📖 Verbal</button>
+            <button class="filter-btn" data-et="data" onclick="event.stopPropagation();setExamType(this)">📊 Data</button>
+          </div>
+          <div id="examInfoCard" style="background:var(--raised);border:1px solid var(--rim);border-radius:9px;padding:12px;margin-top:10px;font-size:.78rem;color:var(--muted);line-height:1.9"></div>
+          <div class="sec">限時</div>
+          <div class="filter-row">
+            <button class="filter-btn on" data-et-time="45" onclick="event.stopPropagation();setExamTime(this)">⏱ 45分</button>
+            <button class="filter-btn" data-et-time="60" onclick="event.stopPropagation();setExamTime(this)">⏱ 60分</button>
+            <button class="filter-btn" data-et-time="90" onclick="event.stopPropagation();setExamTime(this)">⏱ 90分</button>
+            <button class="filter-btn" data-et-time="0" onclick="event.stopPropagation();setExamTime(this)">♾ 無限</button>
+          </div>
+          <button class="start-btn exam" style="margin-top:10px" onclick="event.stopPropagation();startExam()">🎓 開始模擬考 →</button>
+        </div>
       </div>
-      <div class="sec">題數</div>
-      <div class="filter-row">
-        <button class="filter-btn on" data-n="10" onclick="setNum(this)">10</button>
-        <button class="filter-btn" data-n="20" onclick="setNum(this)">20</button>
-        <button class="filter-btn" data-n="30" onclick="setNum(this)">30</button>
-        <button class="filter-btn" data-n="50" onclick="setNum(this)">50</button>
-      </div>
-      <button class="start-btn" onclick="startQuiz()">開始練習 →</button>
-    </div>
-    <div id="examOptions" style="display:none">
-      <div class="sec">考試類型</div>
-      <div class="filter-row" id="examTypeRow">
-        <button class="filter-btn on" data-et="full" onclick="setExamType(this)">🎓 完整模擬</button>
-        <button class="filter-btn" data-et="quant" onclick="setExamType(this)">🔢 Quant</button>
-        <button class="filter-btn" data-et="verbal" onclick="setExamType(this)">📖 Verbal</button>
-        <button class="filter-btn" data-et="data" onclick="setExamType(this)">📊 Data</button>
-      </div>
-      <div id="examInfoCard" style="background:var(--card);border:1px solid var(--rim);border-radius:var(--r);padding:14px;margin-top:10px;font-size:.8rem;color:var(--muted);line-height:1.9"></div>
-      <div class="sec">限時設定</div>
-      <div class="filter-row">
-        <button class="filter-btn on" data-et-time="45" onclick="setExamTime(this)">⏱ 45分</button>
-        <button class="filter-btn" data-et-time="60" onclick="setExamTime(this)">⏱ 60分</button>
-        <button class="filter-btn" data-et-time="90" onclick="setExamTime(this)">⏱ 90分</button>
-        <button class="filter-btn" data-et-time="0" onclick="setExamTime(this)">♾ 不限</button>
-      </div>
-      <button class="start-btn exam" onclick="startExam()">🎓 開始模擬考 →</button>
-    </div>
-  </div>
-  <div id="tabWrongContent" style="display:none"><div id="wrongEl"></div></div>
+
+    </div><!-- /sectionPicker -->
+  </div><!-- /tabPracticeContent -->
+    <div id="tabWrongContent" style="display:none"><div id="wrongEl"></div></div>
   <div id="tabStatsContent" style="display:none"><div id="statsEl"></div></div>
   <div id="tabDBContent" style="display:none"><div id="dbEl"></div></div>
 </div>
@@ -347,6 +486,116 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
   <div id="reviewEl"></div>
   <button class="start-btn" style="margin-top:12px" onclick="goHome()">← 返回首頁</button>
 </div>
+
+<!-- RC SCREEN -->
+<div id="rcScreen" class="screen">
+  <div class="q-top">
+    <div class="q-badges" id="rcBadges"></div>
+    <span style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted)" id="rcSetNum"></span>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="rcProgBar"></div></div>
+  <div class="rc-layout">
+    <div class="rc-passage">
+      <div class="rc-passage-title" id="rcPassageTitle"></div>
+      <div class="rc-passage-text" id="rcPassageText"></div>
+    </div>
+    <div class="rc-q-panel">
+      <div class="rc-qnum" id="rcQNum"></div>
+      <div class="rc-progress" id="rcProgress"></div>
+      <div class="q-card" style="border-left:3px solid var(--purple)">
+        <div class="q-body" id="rcQBody"></div>
+      </div>
+      <div class="options" id="rcOpts"></div>
+      <div class="exp-box" id="rcExpBox">
+        <div class="result-banner" id="rcResBanner"></div>
+        <div class="exp-label">📋 Explanation</div>
+        <div class="exp-text" id="rcExpText"></div>
+      </div>
+      <div class="act-row" style="margin-top:9px">
+        <button class="btn btn-ghost" id="rcBtnExp" onclick="rcRevealExp()">See Explanation</button>
+        <button class="btn btn-gold" id="rcBtnSub" onclick="rcSubmit()" disabled>Confirm Answer</button>
+        <button class="btn btn-gold" id="rcBtnNext" onclick="rcNext()" style="display:none">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- DI SPECIAL SCREEN: Two-Part / Table / MSR / Graphics -->
+<div id="diSpecScreen" class="screen">
+  <div class="q-top">
+    <div class="q-badges" id="disBadges"></div>
+    <span style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted)" id="disNum"></span>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="disProgBar"></div></div>
+
+  <!-- Two-Part Layout -->
+  <div id="disTwoPart" style="display:none">
+    <div class="q-card" style="border-left:3px solid var(--green)">
+      <div class="q-label">TWO-PART ANALYSIS</div>
+      <div class="q-body" id="disTpPrompt"></div>
+    </div>
+    <div style="overflow-x:auto;margin-bottom:10px">
+      <table id="disTpTable" style="width:100%;border-collapse:collapse;font-size:.86rem"></table>
+    </div>
+  </div>
+
+  <!-- Table Analysis Layout -->
+  <div id="disTable" style="display:none">
+    <div class="q-card" style="border-left:3px solid var(--yellow)">
+      <div class="q-label">TABLE ANALYSIS</div>
+      <div class="q-body" id="disTablePrompt"></div>
+    </div>
+    <div style="overflow-x:auto;margin-bottom:10px">
+      <table id="disTableData" style="width:100%;border-collapse:collapse;font-size:.82rem"></table>
+    </div>
+    <div class="q-card" style="margin-bottom:9px">
+      <div class="q-body" id="disTableQ"></div>
+    </div>
+  </div>
+
+  <!-- MSR Layout -->
+  <div id="disMSR" style="display:none">
+    <div style="display:flex;gap:6px;margin-bottom:8px;overflow-x:auto" id="disMsrTabs"></div>
+    <div class="q-card" style="border-left:3px solid var(--blue);max-height:40vh;overflow-y:auto">
+      <div class="q-body" id="disMsrContent"></div>
+    </div>
+    <div class="q-card" style="margin:9px 0;border-left:3px solid var(--purple)">
+      <div class="q-label">QUESTION</div>
+      <div class="q-body" id="disMsrQ"></div>
+    </div>
+  </div>
+
+  <!-- Graphics Layout -->
+  <div id="disGraphics" style="display:none">
+    <div class="rc-layout">
+      <div class="rc-passage" style="border-color:var(--yellow)">
+        <div class="rc-passage-title">CHART / GRAPH DATA</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.78rem;line-height:1.8;color:var(--body);white-space:pre-line" id="disGfxChart"></div>
+      </div>
+      <div class="rc-q-panel">
+        <div class="q-card" style="border-left:3px solid var(--yellow)">
+          <div class="q-label">GRAPHICS INTERPRETATION</div>
+          <div class="q-body" id="disGfxQ"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared options + explanation -->
+  <div class="options" id="disOpts"></div>
+  <div class="exp-box" id="disExpBox">
+    <div class="result-banner" id="disResBanner"></div>
+    <div class="exp-label">📋 Explanation</div>
+    <div class="exp-text" id="disExpText"></div>
+  </div>
+  <div class="act-row" style="margin-top:9px">
+    <button class="btn btn-ghost" onclick="disRevealExp()">See Explanation</button>
+    <button class="btn btn-gold" id="disBtnSub" onclick="disSubmit()" disabled>Confirm Answer</button>
+    <button class="btn btn-gold" id="disBtnNext" onclick="disNext()" style="display:none">Next →</button>
+  </div>
+</div>
+
 </main>
 <script>
 const rn=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
@@ -1270,170 +1519,252 @@ const GENS=[
    VERBAL · Critical Reasoning (30種)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-// V-CR-Easy (10題)
+// V-CR-Easy
 {t:'V',d:'Easy',s:'Critical Reasoning',f:()=>{
   const cases=rc([
-    {major:'All mammals are warm-blooded',minor:'Dolphins are mammals',conc:'Dolphins are warm-blooded',ws:['Dolphins live in the ocean','All warm-blooded animals are mammals','Dolphins are the smartest animals','Warm-blooded animals all have fur']},
-    {major:'All squares have four equal sides',minor:'Figure ABCD is a square',conc:'Figure ABCD has four equal sides',ws:['ABCD has four right angles','All rectangles are squares','ABCD is the largest square','Squares have equal diagonals']},
-    {major:'No reptiles are warm-blooded',minor:'Snakes are reptiles',conc:'Snakes are not warm-blooded',ws:['Snakes live in warm climates','All cold-blooded animals are reptiles','Snakes eat warm-blooded animals','Reptiles cannot regulate temperature']},
+    {major:'All mammals are warm-blooded',minor:'Dolphins are mammals',conc:'Dolphins are warm-blooded',ws:['Dolphins live in the ocean','All warm-blooded animals are mammals','Dolphins are the smartest animals','Warm-blooded animals cannot breathe underwater']},
+    {major:'All squares have four equal sides',minor:'Figure ABCD is a square',conc:'Figure ABCD has four equal sides',ws:['ABCD has four right angles','All rectangles are squares','ABCD is the largest square','Squares always have equal diagonals']},
+    {major:'No reptiles are warm-blooded',minor:'Snakes are reptiles',conc:'Snakes are not warm-blooded',ws:['Snakes live in warm climates','All cold-blooded animals are reptiles','Snakes eat warm-blooded prey','Reptiles cannot regulate body temperature']},
+    {major:'All birds have wings',minor:'Penguins are birds',conc:'Penguins have wings',ws:['Penguins can fly','All winged animals are birds','Penguins live in cold climates','Birds always migrate south in winter']},
   ]);
   const {o,a:ai}=makeOpts(cases.conc,cases.ws);
-  return{q:`"${cases.major}. ${cases.minor}."<br><br>Which <strong>must be true</strong>?`,o,a:ai,ex:`三段論：大前提+小前提→結論「<strong>${cases.conc}</strong>」。答案為(${L(ai)})。`};
+  return{q:`<em>"${cases.major}. ${cases.minor}."</em><br><br>Which of the following <strong>must be true</strong>?`,o,a:ai,
+  ex:`<strong>Valid Deduction:</strong> This is a syllogism — major premise + minor premise → conclusion. The only logically valid conclusion is: <strong>"${cases.conc}"</strong>. The other options introduce information not contained in the premises. Answer: (${L(ai)}).`};
 }},
 
 {t:'V',d:'Easy',s:'Critical Reasoning',f:()=>{
   const cases=rc([
-    {arg:'City X installed more traffic lights and accidents decreased.',conc:'Traffic lights reduced accidents.',weaken:'City X also launched a major drunk driving awareness campaign during the same period.',ws:['Traffic lights are expensive to maintain','Some intersections still lack lights','The study lasted only 3 months','Traffic volume also decreased']},
-    {arg:'Students who listen to classical music score higher on math tests.',conc:'Classical music improves math performance.',weaken:'Students who listen to classical music may also practice more disciplined study habits.',ws:['Not all students like classical music','Math tests have changed over time','Some schools lack music programs','Classical music is only for older students']},
+    {arg:'City X installed more traffic lights and accidents decreased.',conc:'Traffic lights reduced accidents.',weaken:'City X also launched a major drunk driving awareness campaign during the same period.',ws:['Traffic lights are expensive to maintain','Some intersections still lack lights','The study lasted only 3 months','Traffic volume also decreased slightly']},
+    {arg:'Students who listen to classical music score higher on math tests.',conc:'Classical music improves math performance.',weaken:'Students who listen to classical music also tend to have more disciplined study habits overall.',ws:['Not all students like classical music','Math tests have changed in format over time','Some schools lack music programs','Classical music is associated with older age groups']},
+    {arg:'Countries with more doctors per capita have longer life expectancy.',conc:'More doctors cause people to live longer.',weaken:'Wealthier countries can afford both more doctors and better nutrition and sanitation — the third variable.',ws:['Some countries have doctor shortages','Medical school is expensive','Life expectancy varies by region','Preventive medicine is cost-effective']},
   ]);
   const {o,a:ai}=makeOpts(cases.weaken,cases.ws);
-  return{q:`"${cases.arg}"<br><br>Which most <strong>weakens</strong> the conclusion "${cases.conc}"?`,o,a:ai,ex:`削弱論點：提供替代解釋，打斷因果鏈。答案為(${L(ai)})。`};
+  return{q:`<em>"${cases.arg}"</em><br><br>The conclusion drawn is: <em>"${cases.conc}"</em><br><br>Which of the following most <strong>weakens</strong> this conclusion?`,o,a:ai,
+  ex:`<strong>Weakening Strategy:</strong> The correct answer provides an <em>alternative explanation</em> that breaks the assumed cause-and-effect relationship. By showing another factor could explain the result, the causal claim is undermined. Answer: (${L(ai)}).`};
 }},
 
 {t:'V',d:'Easy',s:'Critical Reasoning',f:()=>{
-  return{q:`All athletes exercise regularly. Maria exercises regularly. Therefore, Maria is an athlete.<br><br>Which best describes the <strong>flaw</strong>?`,o:['It assumes exercise is only done by athletes','It reverses the logical direction of the premise','It fails to mention professional athletes','It ignores the role of diet in athletic performance','It does not define what "regularly" means'],a:1,ex:`論證把「所有A→B」誤用為「B→A」（逆命題謬誤）。答案為(B)。`};
+  return{q:`All athletes exercise regularly. Maria exercises regularly. Therefore, Maria is an athlete.<br><br>The argument above is flawed because it:`,
+  o:['Fails to define "athlete" precisely','<strong>Reverses the logical direction of the original premise</strong>','Ignores whether Maria plays a sport','Assumes exercise is the only athletic requirement','Fails to account for exceptions'],a:1,
+  ex:`<strong>Logical Flaw — Affirming the Consequent:</strong> The original premise is "All athletes → exercise regularly." The argument incorrectly reverses this to "exercises regularly → athlete." This is the fallacy of <em>affirming the consequent</em> (A→B, B is true, therefore A). Answer: (B).`};
 }},
 
 {t:'V',d:'Easy',s:'Critical Reasoning',f:()=>{
-  return{q:`A study found that people with more books at home score higher on reading tests.<br><br>Which strengthens the conclusion that <strong>owning books improves reading skills</strong>?`,o:['Children in book-rich homes also spend more time reading','Higher-income families tend to buy more books','Libraries provide free access to books','Reading tests may not measure all literacy skills','Some children prefer digital content'],a:0,ex:`選項(A)提供了直接機制：書多→讀更多→閱讀能力提升。其他選項提供替代解釋或無關信息。答案為(A)。`};
+  return{q:`A study found that people with more books at home score higher on reading tests.<br><br>Which of the following most <strong>strengthens</strong> the conclusion that owning books improves reading skills?`,
+  o:['Children in book-rich homes also spend significantly more time reading each day','Higher-income families tend to buy more books for their children','Libraries provide free access to the same books','Reading tests may not capture all dimensions of literacy','Some children prefer digital reading content'],a:0,
+  ex:`<strong>Strengthening Strategy:</strong> The best strengthener provides a <em>mechanism</em> — it shows HOW more books lead to better reading (via more reading time). Option (A) connects the intermediate step: more books → more reading time → better skills. Answer: (A).`};
 }},
 
 {t:'V',d:'Easy',s:'Critical Reasoning',f:()=>{
-  return{q:`Every employee at TechCorp must complete annual safety training. James completed safety training this year.<br><br>Which <strong>cannot be inferred</strong>?`,o:['James works at TechCorp','James completed his annual requirement','James is the only one who completed training','All TechCorp employees must complete training','James met company policy'],a:2,ex:`「James是唯一完成的人」不能從前提中推出——我們只知道每個員工都必須完成。答案為(C)。`};
+  return{q:`Company X will either expand into Europe or invest in new technology. Company X has decided not to expand into Europe.<br><br>What can be logically concluded?`,
+  o:['Company X will close all operations','<strong>Company X will invest in new technology</strong>','Company X will expand into Asia instead','Company X will reduce its workforce','Company X has abandoned its growth strategy'],a:1,
+  ex:`<strong>Disjunctive Syllogism:</strong> The structure is "Either A or B. Not A. Therefore B." This is a valid logical form — given the two options and the elimination of one, the other must follow. Answer: (B).`};
 }},
 
 {t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
   const cases=rc([
-    {ctx:'A pharmaceutical company claims its new drug reduces cholesterol by 30%.',assumption:'The drug\'s effects in the study reflect what would happen for the general population.',ws:['The drug has no serious side effects','The company conducted the study over one year','Participants took the drug as instructed','Cholesterol tests are accurate']},
-    {ctx:'City planners claim that building a new highway will reduce commute times.',assumption:'The new highway will not generate enough additional traffic to offset the time savings.',ws:['The highway will cost $2 billion','Construction will take 3 years','The city already has good public transit','Commuters prefer driving to taking buses']},
+    {ctx:'City Y\'s violent crime dropped 20% after installing new streetlights.',conc:'Streetlights reduce crime.',strengthen:'In comparable cities that installed new streetlights, crime also fell; cities without new lights saw no change.',ws:['City Y also increased its police budget simultaneously','Streetlights cost $2 million to install','Criminals prefer to operate in darkness by definition','The number of streetlights in the city doubled']},
+    {ctx:'A company\'s productivity rose 15% after allowing remote work.',conc:'Remote work increases productivity.',strengthen:'A controlled study across 20 similar companies found that only those with remote work policies showed productivity gains.',ws:['Remote workers save commuting time','Some employees prefer working in offices','The company also hired new staff during this period','Productivity metrics can be difficult to measure accurately']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.strengthen,cases.ws);
+  return{q:`<em>"${cases.ctx}"</em><br><br>The conclusion is: <em>"${cases.conc}"</em><br><br>Which of the following most <strong>strengthens</strong> this conclusion?`,o,a:ai,
+  ex:`<strong>Strengthening with a Control Group:</strong> The strongest support for a causal claim comes from <em>comparative evidence</em> — showing that similar groups WITHOUT the variable do NOT show the effect. This rules out confounding factors. Answer: (${L(ai)}).`};
+}},
+
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'Marine fossils found on mountaintops prove these areas were once covered by ocean.',assumption:'Marine fossils could not have reached the mountaintops by any means other than the mountains being submerged.',ws:['All fossils are found at high altitudes globally','The mountains have always been at their current height','Marine life once existed everywhere on Earth','Fossils can only form in shallow saltwater']},
+    {arg:'Students who take notes by hand retain information better, so banning laptops will improve learning.',assumption:'The retention benefits of handwriting will translate into measurably better academic outcomes.',ws:['Handwriting is universally faster than typing','All students own laptops and use them in class','Teachers prefer handwritten assignments to typed ones','Digital notes cannot be organized effectively']},
+    {arg:'Reading fiction improves empathy, so schools should require more fiction in the curriculum.',assumption:'The empathy gains from reading fiction will persist beyond the reading experience and affect real behavior.',ws:['All fiction genres improve empathy equally','Students prefer fiction to non-fiction reading','Teachers are qualified to select appropriate fiction','Empathy can be measured accurately with standard tests']},
   ]);
   const {o,a:ai}=makeOpts(cases.assumption,cases.ws);
-  return{q:`"${cases.ctx}"<br><br>Which is an <strong>unstated assumption</strong>?`,o,a:ai,ex:`假設是論點成立所需但未明說的橋樑。答案為(${L(ai)})。`};
+  return{q:`<em>"${cases.arg}"</em><br><br>Which of the following is an <strong>unstated assumption</strong> on which the argument depends?`,o,a:ai,
+  ex:`<strong>Identifying Assumptions:</strong> An assumption is an unstated premise that <em>must be true</em> for the conclusion to follow. Test each option with the "Negation Test" — if negating the option destroys the argument, it is the assumption. Answer: (${L(ai)}).`};
 }},
 
 {t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
-  return{q:`Restaurant A has been open for 10 years and has maintained a 4.8-star rating. Restaurant B opened last month and has a 3.2-star rating. The owner of Restaurant A concludes that their restaurant is more popular than Restaurant B.<br><br>Which <strong>most weakens</strong> this conclusion?`,o:['Restaurant B has only been rated by 12 customers while Restaurant A has 2,000 reviews','Restaurant A is in a more expensive neighborhood','Restaurant B serves a different cuisine type','Restaurant A has more outdoor seating','Restaurant B is open for fewer hours per day'],a:0,ex:`樣本量太小（12 vs 2000評論），Restaurant B的評分不具統計顯著性，無法做出有效比較。答案為(A)。`};
+  return{q:`Restaurant A has been open for 10 years and has a 4.8-star rating. Restaurant B opened last month and has a 3.2-star rating. The owner of Restaurant A concludes their restaurant is more popular than Restaurant B.<br><br>Which most <strong>weakens</strong> this conclusion?`,
+  o:['Restaurant B has only received 8 reviews while Restaurant A has over 2,000 reviews','Restaurant A is located in a more expensive neighborhood','Restaurant B serves a different cuisine type than Restaurant A','Restaurant A has more outdoor seating capacity','Restaurant B is open for fewer hours per day'],a:0,
+  ex:`<strong>Sampling Bias:</strong> With only 8 reviews, Restaurant B\'s 3.2-star rating is statistically unreliable — a single negative experience could skew results dramatically. You cannot meaningfully compare 3.2 (from 8 reviews) with 4.8 (from 2,000 reviews). Answer: (A).`};
 }},
 
 {t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
-  return{q:`Studies show that neighborhoods with more coffee shops have lower crime rates. Therefore, opening more coffee shops reduces crime.<br><br>Which <strong>strengthens</strong> this argument?`,o:['Coffee shops employ local workers, reducing unemployment and associated crime','Wealthier areas tend to have more coffee shops and lower crime','Crime was already decreasing before coffee shops opened','Coffee shop owners report the same crime rates as other businesses','Coffee shops are open late at night, increasing foot traffic'],a:0,ex:`選項(A)提供具體機制（就業→減少犯罪），直接支持因果關係。(B)反而提示了第三變數（富裕地區）。答案為(A)。`};
+  return{q:`Studies show that neighborhoods with more coffee shops have lower crime rates. Therefore, opening more coffee shops reduces crime.<br><br>Which most <strong>strengthens</strong> this argument?`,
+  o:['Coffee shops create local employment, reducing financial desperation that often drives crime','Wealthier areas tend to have more coffee shops AND lower crime — suggesting a third variable','Crime was already declining before new coffee shops opened in those areas','Coffee shop owners report the same crime rates as other business types','Coffee shops are open late at night, increasing foot traffic on streets'],a:0,
+  ex:`<strong>Providing a Mechanism:</strong> The best strengthener explains <em>how</em> coffee shops could reduce crime (employment → less desperation → less crime). Options (B) and (C) actually weaken the argument by suggesting third variables or prior trends. Answer: (A).`};
+}},
+
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  return{q:`A study found that people who drink coffee daily live longer than non-coffee drinkers on average. Researchers concluded that daily coffee consumption extends human lifespan.<br><br>Which of the following, if true, most seriously <strong>weakens</strong> this conclusion?`,
+  o:['Coffee contains antioxidants that neutralize free radicals in cells','People who drink coffee regularly tend to have more active social lives, which independently correlates with longevity','The study tracked 50,000 participants across 20 years — a large and long-term sample','Non-coffee drinkers who later adopt daily coffee consumption show no longevity benefits','Decaffeinated coffee drinkers showed similar longevity results to regular coffee drinkers'],a:1,
+  ex:`<strong>Confounding Variable:</strong> Option (B) introduces a <em>third variable</em> — active social lives — that correlates with both coffee drinking and longevity. This explains the observed relationship without requiring coffee to be the cause. This is the classic "correlation vs. causation" flaw. Answer: (B).`};
+}},
+
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  return{q:`Country A introduced a sugar tax and obesity rates fell 15% over the following five years. Policymakers in Country B are considering adopting a similar tax.<br><br>Which of the following would be MOST useful to know when evaluating whether the tax would work in Country B?`,
+  o:['Whether Country A also implemented major public health campaigns or exercise programs during the same period','The current obesity rate in Country B before the policy is implemented','The amount of revenue generated by Country A\'s sugar tax','Whether Country B citizens consume more sweet beverages than Country A citizens','The administrative cost of implementing such a tax in Country B'],a:0,
+  ex:`<strong>Evaluating Causal Claims:</strong> Before adopting a policy based on another country\'s results, the most critical question is whether the result was caused by the policy alone or by <em>simultaneous interventions</em>. Option (A) directly tests for confounding factors. Answer: (A).`};
+}},
+
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  return{q:`All effective managers prioritize communication. Some leaders who prioritize communication do not become effective managers.<br><br>If both statements are true, which of the following <strong>must also be true</strong>?`,
+  o:['<strong>Some leaders are not effective managers</strong>','All effective managers are leaders','Prioritizing communication is sufficient to become an effective manager','All leaders who prioritize communication eventually become effective managers','No effective managers ever fail to communicate'],a:0,
+  ex:`<strong>Logical Deduction:</strong> From "some leaders who prioritize communication are NOT effective managers," we can directly conclude "some leaders are not effective managers." This follows necessarily. The other options either reverse the logic incorrectly or make claims beyond the premises. Answer: (A).`};
+}},
+
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  return{q:`BioTech Inc. reports that its new supplement increases energy levels in 80% of users in clinical trials. However, in the same double-blind trial, the placebo group reported energy increases in 75% of cases.<br><br>What is the BEST interpretation of these results?`,
+  o:['The supplement has minimal real effect beyond the placebo effect — only a 5% difference separating it from placebo','The supplement is highly effective and works for 80% of users as intended','The study was conducted over too short a period to measure true effects','Placebos are ineffective treatments that should not be used in clinical trials','BioTech should immediately discontinue the supplement based on these results'],a:0,
+  ex:`<strong>Placebo Effect Analysis:</strong> With an 80% treatment rate vs. 75% placebo rate, the <em>real drug effect</em> is only ~5% above placebo. This small difference may not be clinically meaningful and could fall within statistical error. The key insight: the absolute result (80%) does not matter — what matters is the difference from placebo. Answer: (A).`};
 }},
 
 {t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
-  return{q:`Company policy requires a minimum of 3 years of experience for senior-level positions. David has 5 years of experience and applied for a senior position.<br><br>Which can be concluded?`,o:['David meets the experience requirement for the senior position','David will be hired for the senior position','David is the most qualified candidate','David deserves the highest salary','David will be promoted within 6 months'],a:0,ex:`只能確定David符合最低工作年資要求。其他結論超出了前提所能支持的範圍。答案為(A)。`};
+  return{q:`Unemployment in Country X rose from 5% to 9% while the government increased social spending. Critics claim that increased social spending caused unemployment to rise.<br><br>Which of the following best <strong>weakens</strong> this claim?`,
+  o:['A global recession began simultaneously and caused unemployment to rise in all comparable countries regardless of their spending policies','Country X elected a new government three years ago that changed fiscal policy','Social spending accounts for 30% of Country X\'s total budget','Unemployment statistics may undercount informal workers','The government also raised corporate taxes during this period'],a:0,
+  ex:`<strong>External Causation:</strong> If a global recession affected ALL similar countries — including those that did NOT increase social spending — then the spending policy cannot be the cause of the unemployment rise. This is the most powerful weakener because it provides a universal alternative cause. Answer: (A).`};
 }},
 
-{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
-  return{q:`The local newspaper's editorial claimed that the new parking policy would harm small businesses. However, after the policy was implemented, revenues at small businesses increased by 15%.<br><br>Which, if true, best <strong>explains</strong> this discrepancy?`,o:['The parking policy reduced congestion, making the area more attractive to shoppers','Small businesses raised their prices during the same period','The newspaper editorial was written before complete data was available','Revenue increases may not reflect profit increases','Some businesses moved to other areas after the policy'],a:0,ex:`選項(A)提供了合理解釋：政策改善了整體購物環境，抵消了預期的負面影響。答案為(A)。`};
+{t:'V',d:'Easy',s:'Critical Reasoning',f:()=>{
+  return{q:`If the new regulation is implemented, energy costs will rise. Energy costs have NOT risen.<br><br>Which conclusion follows logically?`,
+  o:['The regulation was implemented as planned','<strong>The regulation was not implemented</strong>','Energy prices are naturally stable','The government delayed the regulation for review','Energy companies successfully lobbied against the regulation'],a:1,
+  ex:`<strong>Modus Tollens (Contrapositive):</strong> If P→Q, and not-Q, then not-P. "If regulation → costs rise." "Costs did NOT rise." Therefore: "The regulation was NOT implemented." This is a valid deductive inference. Answer: (B).`};
 }},
 
-{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
-  return{q:`A study found that people who drink coffee daily live longer than non-coffee drinkers. Researchers concluded that coffee extends lifespan.<br><br>Which most seriously <strong>weakens</strong> this conclusion?`,o:['Coffee contains antioxidants','Coffee drinkers tend to have more active social lives, which independently correlates with longevity','The study tracked participants for 20 years','Non-coffee drinkers often have other unhealthy habits','Decaffeinated coffee showed similar results'],a:1,ex:`若喝咖啡的人同時有更活躍的社交生活（獨立影響壽命），則因果關係就有混淆因素。答案為(B)。`};
-}},
-
-{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
-  return{q:`Politician: "We should not implement the new education reform because no other country has tried it."<br><br>This argument is flawed because:`,o:['It assumes lack of precedent means the reform will fail','It ignores the costs of education reform','It fails to consider teacher training requirements','It does not address student performance data','It assumes all countries have the same educational needs'],a:0,ex:`「沒有先例」不代表「一定失敗」——這是訴諸先例（appeal to tradition）的謬誤。答案為(A)。`};
-}},
-
-{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
-  return{q:`When city officials increased the police budget by 40%, crime dropped by 15%. They concluded that more police funding causes crime reduction.<br><br>To evaluate this, which is MOST important to know?`,o:['Whether crime also dropped in comparable cities that did NOT increase police budgets','The total amount spent on the police department','Whether all types of crime decreased equally','The salaries of newly hired officers','Whether police morale improved after the budget increase'],a:0,ex:`若其他未增加警察預算的城市也出現類似下降，那麼「增加預算→犯罪下降」的因果關係就被削弱了。控制組比較是最重要的評估因素。答案為(A)。`};
-}},
-
-{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
-  return{q:`All effective managers prioritize communication. Some leaders who prioritize communication do not become effective managers.<br><br>If both statements are true, which <strong>must also be true</strong>?`,o:['Some leaders are not effective managers','All effective managers are leaders','Prioritizing communication is sufficient for effectiveness','Some leaders who prioritize communication are effective managers','No effective managers fail to communicate'],a:0,ex:`「有些重視溝通的領導者不是有效管理者」→這部分領導者不是有效管理者→「有些領導者不是有效管理者」必然為真。答案為(A)。`};
-}},
-
-{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
-  return{q:`BioTech Inc. reports that its new supplement increases energy levels in 80% of users. However, in a double-blind trial, the placebo group also reported energy increases in 75% of cases.<br><br>What is the BEST interpretation?`,o:['The supplement has minimal real effect beyond placebo','The supplement is highly effective for 80% of users','The study was too short to measure true effects','Placebos are ineffective treatments','BioTech should discontinue the supplement'],a:0,ex:`80%與75%的差距極小，考慮到測量誤差，補充劑的真實效果可能可以忽略不計（安慰劑效應占主導）。答案為(A)。`};
-}},
-
-{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
-  return{q:`No person can be in two places at once. Detective Smith was in London at 9pm. Therefore, Detective Smith could not have committed the crime in Paris at 9pm.<br><br>This argument's structure is best described as:`,o:['Valid deductive argument','Invalid — it assumes Smith is a suspect','Invalid — it ignores time zones','Inductive reasoning from evidence','Circular reasoning'],a:0,ex:`這是有效的演繹論證：大前提（物理法則）+小前提（Smith在倫敦）→必然結論（Smith不在巴黎）。答案為(A)。`};
-}},
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   VERBAL · Sentence Correction (20種)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
+// SENTENCE CORRECTION — Easy
 {t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the grammatically correct sentence:`,o:['Neither the CEO nor the employees was informed about the merger.','Neither the CEO nor the employees were informed about the merger.','Neither the CEO nor the employees have been inform about the merger.','Neither the CEO nor the employees is being informed about the merger.','Neither the CEO nor the employees was been informed about the merger.'],a:1,ex:`"Neither...nor"後接複數主詞時，動詞用複數"were"。答案為(B)。`};
-}},
-
-{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best revision for the underlined portion:<br><br>"Each of the students <u>are required to</u> submit a final project."`,o:['are required to','is required to','have been required for','were required of','require to'],a:1,ex:`"Each of the students"中，核心主詞是"each"（單數），動詞應為"is"。答案為(B)。`};
-}},
-
-{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The committee have reached <u>their</u> final decision after hours of deliberation."`,o:['their','its','our','this','the committees''],a:1,ex:`"The committee"作為集合名詞（單數實體）使用"its"（單數代名詞）。答案為(B)。`};
-}},
-
-{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best revision:<br><br>"<u>Having reviewed all the evidence, the verdict was announced by the judge.</u>"`,o:['Having reviewed all the evidence, the verdict was announced by the judge.','Having reviewed all the evidence, the judge announced the verdict.','After reviewing all the evidence, the verdict was announced.','The judge, having reviewed all evidence, the verdict was announced.','The verdict was announced, reviewing all evidence, by the judge.'],a:1,ex:`懸空修飾語：分詞"Having reviewed"的主語應是"the judge"，而非"the verdict"。選項(B)正確。答案為(B)。`};
-}},
-
-{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The data collected by researchers <u>suggest that the number of species have declined</u> sharply."`,o:['suggest that the number of species have declined','suggests that the number of species have declined','suggest that the number of species has declined','suggests that the number of species has declined','suggesting the number of species to have declined'],a:2,ex:`"data"複數→"suggest"✓；"the number of"→單數→"has"✓。選項(C)正確。答案為(C)。`};
-}},
-
-{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The report, along with its supporting documents, <u>were submitted</u> to the board yesterday."`,o:['were submitted','was submitted','have been submitted','had being submitted','are submitted'],a:1,ex:`"The report"是主詞（單數），"along with..."是插入語。動詞應用單數"was"。答案為(B)。`};
-}},
-
-{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The manager told the employees that they <u>should of</u> filed the reports by Friday."`,o:['should of','should have','should had','ought of','must of'],a:1,ex:`"Should of"是口語錯誤，正確形式是"should have"（助動詞+have）。答案為(B)。`};
-}},
-
-{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"Unlike traditional banks, <u>online lenders offer faster processing, they also charge higher fees</u>."`,o:['online lenders offer faster processing, they also charge higher fees','online lenders offer faster processing and also charge higher fees','online lenders offer faster processing while also charging higher fees','online lenders offers faster processing and charging higher fees','online lenders offering faster processing, also charging higher fees'],a:2,ex:`逗號接合句（comma splice）是錯誤的。選項(C)正確使用"while also charging"。答案為(C)。`};
-}},
-
-{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"<u>Being that</u> she was the most experienced candidate, the board selected her."`,o:['Being that','Because','Seeing how','Being as','Due to the fact that'],a:1,ex:`"Being that"是非標準表達。在正式寫作中應使用"Because"。答案為(B)。`};
-}},
-
-{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The CEO, who the board members <u>had selected</u>, resigned after just one month."`,o:['had selected','selected','has selected','have selected','were selected'],a:0,ex:`"had selected"（過去完成時）正確表示「辭職」發生之前的「遴選」動作。時態順序正確。答案為(A)。`};
-}},
-
-{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The reason the project failed <u>was because</u> of inadequate planning."`,o:['was because','was that','is since','is due to the fact that','was on account of the reason that'],a:1,ex:`"The reason...was because"是冗餘的。標準用法是"The reason...was that"。答案為(B)。`};
-}},
-
-{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"Scientists discovered a new species of fish, <u>which</u> they have named it Helianthus aquaticus."`,o:['which they have named it','which they named','that they have named it','which was named it by them','that has been named'],a:1,ex:`關係子句中"which they named"已包含受詞功能，不需要另加"it"（雙重受詞錯誤）。答案為(B)。`};
+  return{q:`Select the best version of the underlined portion:<br><br>"Neither the board members nor the CEO <u>were informed</u> about the acquisition."`,
+  o:['were informed','was informed','have been informed','are informed','had informed'],a:1,
+  ex:`<strong>Subject-Verb Agreement — "Neither...nor":</strong> When using "neither...nor," the verb agrees with the <em>nearest subject</em>. Here, the nearest subject is "the CEO" (singular), so the correct verb is <strong>"was informed."</strong> Answer: (B).`};
 }},
 
 {t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the grammatically correct sentence:`,o:['Less students attended the lecture than expected.','Fewer students attended the lecture than expected.','Less of students attended the lecture than expected.','Students attended the lecture in fewer numbers less.','The lecture had less students than expected.'],a:1,ex:`"Less"用於不可數名詞；"fewer"用於可數名詞（students可數）。答案為(B)。`};
+  return{q:`Select the best version of the underlined portion:<br><br>"Each of the candidates <u>are required to</u> submit a writing sample."`,
+  o:['are required to','is required to','have been required to','were required to','must be requiring'],a:1,
+  ex:`<strong>Subject-Verb Agreement — "Each of":</strong> "Each" is always singular, even when followed by "of + plural noun." The correct form is <strong>"is required to."</strong> Think: "Each [one] is..." Answer: (B).`};
+}},
+
+{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
+  return{q:`Which sentence is grammatically correct?`,
+  o:['Less students enrolled in the program this year than last year.','Fewer students enrolled in the program this year than last year.','Less of the students enrolled in the program this year.','Students enrolled in fewer number this year.','The students enrolled in less numbers this year.'],a:1,
+  ex:`<strong>"Less" vs. "Fewer":</strong> Use <strong>"fewer"</strong> for countable nouns (students, items, dollars). Use "less" for uncountable/mass nouns (water, time, money). Since "students" is countable, "fewer" is correct. Answer: (B).`};
+}},
+
+{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
+  return{q:`Select the grammatically correct sentence:`,
+  o:['If I was rich, I will travel the world.','If I were rich, I would travel the world.','If I am rich, I would travel the world.','If I was rich, I would traveled the world.','If I were rich, I will travel the world.'],a:1,
+  ex:`<strong>Subjunctive Mood — Contrary-to-Fact Conditionals:</strong> When expressing a hypothetical situation that is contrary to present reality, use: <em>If + [subject] + were..., [subject] + would + base verb.</em> "If I were rich, I would travel." Answer: (B).`};
+}},
+
+{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"Maria is more innovative than <u>any designer</u> at the firm."`,
+  o:['any designer at the firm','any other designer at the firm','all designer at the firm','the other designers at the firm','any of the designer at the firm'],a:1,
+  ex:`<strong>Illogical Comparison — Excluding the Subject:</strong> Since Maria IS a designer at the firm, saying she is more innovative than "any designer" would include herself. Add <strong>"other"</strong> to exclude her from the comparison group: "any other designer." Answer: (B).`};
+}},
+
+{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"Between you and <u>I</u>, this strategy seems flawed."`,
+  o:['Between you and I','Between you and me','Between you and myself','Among you and I','Between you and mine'],a:1,
+  ex:`<strong>Pronoun Case — After Prepositions:</strong> Prepositions (between, for, with, to) require <em>object pronouns</em>: me, him, her, us, them. Never "I" after a preposition. <strong>"Between you and me"</strong> is correct. Answer: (B).`};
+}},
+
+{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"Running through the park, <u>the flowers were beautiful</u> in the morning light."`,
+  o:['the flowers were beautiful','she noticed the beautiful flowers','the morning light illuminated flowers beautifully','beautiful flowers were seen','flowers appeared beautiful to her'],a:1,
+  ex:`<strong>Dangling Modifier:</strong> The participial phrase "Running through the park" must modify the subject of the main clause. The flowers cannot run — a <em>person</em> can. The correct subject must be the person doing the running: <strong>"she noticed..."</strong> Answer: (B).`};
+}},
+
+{t:'V',d:'Easy',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"He <u>should of</u> submitted the report before the deadline."`,
+  o:['should of submitted','should have submitted','should had submitted','should has submitted','should been submitted'],a:1,
+  ex:`<strong>Modal Verb Phrase:</strong> "Should of" is a common spoken mistake — it sounds like "should've" (should have). The correct written form is always <strong>"should have + past participle."</strong> "Should of" is grammatically incorrect in formal writing. Answer: (B).`};
+}},
+
+// SENTENCE CORRECTION — Medium
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"<u>Having reviewed all the evidence, the verdict was announced by the judge.</u>"`,
+  o:['Having reviewed all the evidence, the verdict was announced by the judge.','Having reviewed all the evidence, the judge announced the verdict.','After reviewing all the evidence, the verdict was announced.','The judge, having reviewed all evidence, the verdict was announced.','The verdict was announced, reviewing all evidence, by the judge.'],a:1,
+  ex:`<strong>Dangling Modifier — Active Voice Fix:</strong> The participial phrase "Having reviewed..." implies a subject who reviewed. That subject must be the sentence's main subject. Only option (B) makes the judge (who reviewed) the main subject while also using the correct active voice. Answer: (B).`};
 }},
 
 {t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"If I <u>would have known</u> about the meeting, I would have attended."`,o:['would have known','had known','have known','would know','knew'],a:1,ex:`虛擬語氣（與過去事實相反）：if子句用"had known"，主句用"would have attended"。答案為(B)。`};
-}},
-
-{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"Not only <u>the students enjoyed</u> the lecture, but the faculty as well."`,o:['the students enjoyed','did the students enjoy','the students did enjoy','enjoyed the students','the students were enjoying'],a:1,ex:`"Not only...but also"結構中，"not only"置於句首時，主語和助動詞需倒裝。答案為(B)。`};
-}},
-
-{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The new regulation will affect <u>whomever</u> submits a late application."`,o:['whomever','whoever','whichever person','him or her who','the person that'],a:1,ex:`作為"submits"的主詞，應用主格"whoever"（不是受格"whomever"）。答案為(B)。`};
+  return{q:`Select the best version of the underlined portion:<br><br>"The data collected by researchers <u>suggest that the number of species have declined</u> sharply."`,
+  o:['suggest that the number of species have declined','suggests that the number of species have declined','suggest that the number of species has declined','suggests that the number of species has declined','suggesting that the number of species has declined'],a:3,
+  ex:`<strong>Two Agreement Rules:</strong> (1) "Data" is plural → verb = <strong>"suggest"</strong> (not "suggests"). (2) "The number of" takes a <em>singular</em> verb → <strong>"has declined"</strong> (not "have"). Note: "A number of" takes plural. Only option (D) gets both right. Answer: (D).`};
 }},
 
 {t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"Running through the park, <u>the flowers were beautiful</u> in the spring sunlight."`,o:['the flowers were beautiful','she admired the beautiful flowers','the spring sunlight lit up the flowers beautifully','beautiful flowers bloomed','flowers seemed beautiful to her'],a:1,ex:`懸空修飾語修飾：分詞"Running"的主語應是人（she）而非"flowers"。答案為(B)。`};
+  return{q:`Select the best version:<br><br>"The report, along with its supporting appendices, <u>were submitted</u> to the board on Friday."`,
+  o:['were submitted','was submitted','have been submitted','had been submitting','are submitted'],a:1,
+  ex:`<strong>Parenthetical Phrases Don't Change the Subject:</strong> "Along with its supporting appendices" is a parenthetical phrase — it does NOT make the subject plural. The true subject is "The report" (singular), so the verb must be singular: <strong>"was submitted."</strong> Answer: (B).`};
 }},
 
 {t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The professor asked the students to <u>quickly review and to completely understand</u> the material."`,o:['quickly review and to completely understand','quickly review and completely understand','quick review and complete understanding','reviewing quickly and understanding completely','review quickly and to completely understand'],a:1,ex:`平行結構："to"後面的動詞應保持形式一致。"to quickly review and completely understand"（分裂不定詞可接受，但平行更重要）。答案為(B)。`};
+  return{q:`Select the best version:<br><br>"If I <u>would have known</u> about the policy change, I would have responded differently."`,
+  o:['would have known','had known','have known','would know','knew'],a:1,
+  ex:`<strong>Past Unreal Conditional:</strong> For conditions contrary to past fact, use: <em>If + [subject] + had + past participle...</em> "If I had known" (not "would have known" — the "would have" belongs only in the main clause). Answer: (B).`};
+}},
+
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"The company expects <u>increasing revenue, expanding its market share, and to reduce costs</u>."`,
+  o:['increasing revenue, expanding its market share, and to reduce costs','to increase revenue, expand its market share, and reduce costs','increasing revenue, market share expansion, and cost reduction','to increase revenue, expanding market share, and reduce costs','revenue increases, market share expansion, and costs being reduced'],a:1,
+  ex:`<strong>Parallel Structure with Infinitives:</strong> After "expects," all items in the list must follow the same grammatical form. Option (B) uses parallel infinitives: <strong>to increase, [to] expand, and [to] reduce.</strong> Answer: (B).`};
+}},
+
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"The reason the merger failed <u>was because</u> of poor due diligence."`,
+  o:['was because of poor due diligence','was that poor due diligence was conducted','is since poor due diligence happened','was due to the fact that poor due diligence','was on account of the fact that poor diligence'],a:1,
+  ex:`<strong>"The reason...is that" (Not "because"):</strong> "The reason...was because" is redundant — "because" already means "for the reason that." Standard formal usage: <strong>"The reason...was that."</strong> Answer: (B).`};
+}},
+
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"Not only did revenue grow by 20%, <u>but also profits were doubled</u>."`,
+  o:['but also profits were doubled','but profits also doubled','yet also profits doubled','but profits doubled as well','and profits also doubled'],a:1,
+  ex:`<strong>Parallel Structure — "Not only...but also":</strong> Both parts of the "not only...but also" construction must be parallel. "Not only did revenue grow" (active) should pair with "but profits also doubled" (active). Avoid passive constructions that break parallelism. Answer: (B).`};
+}},
+
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"Unlike her predecessor, <u>the company's policies were completely overhauled by the new director.</u>"`,
+  o:['the company\'s policies were completely overhauled by the new director.','the new director completely overhauled the company\'s policies.','a complete overhaul of the company\'s policies was done by the new director.','the new director had the company\'s policies completely overhauled.','policies were overhauled completely by the new director.'],a:1,
+  ex:`<strong>Illogical Comparison + Dangling Modifier:</strong> "Unlike her predecessor" compares to a <em>person</em>, so the main clause must also feature a person as its subject — not "policies." Option (B) correctly places "the new director" as the subject and uses the active voice. Answer: (B).`};
+}},
+
+// SENTENCE CORRECTION — Hard
+{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"The committee asked that the proposal <u>is submitted</u> and that each member <u>attends</u> the review session."`,
+  o:['is submitted...attends','be submitted...attend','was submitted...attended','should be submitted...should attend','be submitted...attends'],a:1,
+  ex:`<strong>Subjunctive Mood with "ask that":</strong> Verbs of demand, request, or suggestion (ask, require, recommend, insist) trigger the <em>subjunctive mood</em> — use the base form of the verb, regardless of subject. "The committee asked that the proposal <strong>be submitted</strong>...and that each member <strong>attend</strong>." Answer: (B).`};
 }},
 
 {t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"<u>Irregardless</u> of the outcome, the team remained committed to their goals."`,o:['Irregardless','Regardless','Despite regardless','Irrespective and regardless','Without regard'],a:1,ex:`"Irregardless"是非標準詞（雙重否定）。正確詞彙是"Regardless"。答案為(B)。`};
+  return{q:`Select the best version:<br><br>"The new regulation will affect <u>whomever</u> submits an application after the deadline."`,
+  o:['whomever submits','whoever submits','whichever person that submits','him or her who submits','the person that submits'],a:1,
+  ex:`<strong>"Whoever" vs. "Whomever":</strong> "Whoever" is the <em>subject</em> of the verb "submits." Test: replace with he/she (subject) or him/her (object). "He submits" → subject case → <strong>"whoever."</strong> "Whomever" would be used when it's the object of a verb. Answer: (B).`};
 }},
 
 {t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
-  return{q:`Choose the best version:<br><br>"The architect's designs are more innovative than <u>any architect</u> in the firm."`,o:['any architect','any other architect','all architect','the other architects design','all other architect'],a:1,ex:`比較同類：該建築師也在事務所內，需加"other"排除自身比較。答案為(B)。`};
+  return{q:`Select the best version:<br><br>"Scarcely <u>had she arrived when</u> the board meeting had begun."`,
+  o:['had she arrived when the board meeting had begun','had she arrived when the board meeting began','had she arrived than the board meeting began','did she arrive when the board meeting began','had she arrived, the board meeting had begun'],a:1,
+  ex:`<strong>"Scarcely...when" Construction:</strong> "Scarcely had [subject] [past participle]" is always followed by "when" (not "than") and a simple past verb in the following clause: <strong>"Scarcely had she arrived when the meeting began."</strong> The past perfect (had arrived) + simple past (began) shows sequence. Answer: (B).`};
 }},
+
+{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"<u>Irregardless</u> of the budget constraints, the team delivered an exceptional product."`,
+  o:['Irregardless of','Regardless of','Irrespective to','Despite regardless of','Without regard of'],a:1,
+  ex:`<strong>Non-Standard Word:</strong> "Irregardless" is not accepted in standard formal English. It is a double negative (ir- + -less) that is widely recognized as non-standard. The correct word is simply <strong>"Regardless."</strong> Answer: (B).`};
+}},
+
+{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"Not only <u>the analysts enjoyed</u> the presentation, but the executive team praised it as well."`,
+  o:['the analysts enjoyed','did the analysts enjoy','the analysts did enjoy','were the analysts enjoying','have the analysts enjoyed'],a:1,
+  ex:`<strong>Inverted Syntax — "Not only" at the Start:</strong> When "not only" begins a sentence or clause, the subject and auxiliary verb must be <em>inverted</em>: <strong>"Not only did the analysts enjoy..."</strong> This is the same inversion pattern as questions: "Did they enjoy?" → "Not only did they enjoy." Answer: (B).`};
+}},
+
+{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
+  return{q:`Select the best version:<br><br>"She is not so much <u>an effective leader as she is a visionary</u>."`,
+  o:['an effective leader as she is a visionary','an effective leader as a visionary','effective at leading as she is visionary','an effective leader as much as visionary','an effective leader but more a visionary'],a:1,
+  ex:`<strong>"Not so much A as B" — Parallel Structure:</strong> The construction requires parallel forms on both sides: <em>not so much [noun phrase] as [noun phrase].</em> "Not so much an effective leader as <strong>a visionary</strong>" — both are noun phrases. Answer: (B).`};
+}},
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    DATA INSIGHTS (40種)
@@ -1602,7 +1933,1073 @@ const GENS=[
   return{q:`City A: population ${cityA_pop.toLocaleString()}, area ${cityA_area} sq mi.<br>City B: population ${cityB_pop.toLocaleString()}, area ${cityB_area} sq mi.<br><br>Which city has higher <strong>population density</strong>?`,data:`City A: ${cityA_pop.toLocaleString()}/${cityA_area}=${densA} per sq mi\nCity B: ${cityB_pop.toLocaleString()}/${cityB_area}=${densB} per sq mi`,o,a:ai,ex:`城市A密度=${densA}；城市B密度=${densB}。<strong>${denser}更高</strong>。答案為(${L(ai)})。`};
 }},
 
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DATA INSIGHTS · Two-Part Analysis (10種)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+// TPA-1: Simultaneous equations (work rate)
+{t:'D',d:'Medium',s:'Two-Part Analysis',f:()=>{
+  const rA=rn(3,8),rB=rn(3,8),total=rA*rB*rn(2,4);
+  const tA=total/rA,tB=total/rB,together=Math.round(tA*tB/(tA+tB)*10)/10;
+  const opts=['A alone','B alone','A and B together','Neither can complete it','Both working half-shifts'];
+  const {o:o1,a:ai1}=makeOpts('A alone',['B alone','A and B together','Neither can complete it']);
+  const {o:o2,a:ai2}=makeOpts(String(together),[String(together+1),String(Math.round(tA)),String(Math.round(tB)),String(together+2)]);
+  return{
+    q:`Machine A completes a job in <strong>${tA} hours</strong>; Machine B in <strong>${tB} hours</strong>. Total work units = ${total}.<br><br>In the table below, select the option that answers <em>each</em> column:<br><br><table style="width:100%;border-collapse:collapse;margin:8px 0"><tr style="background:var(--raised)"><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">Which completes the job faster alone?</th><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">How many hours if both work together?</th></tr><tr><td style="padding:6px;border:1px solid var(--rim)">${o1.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td><td style="padding:6px;border:1px solid var(--rim)">${o2.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td></tr></table>`,
+    o:['Col 1: '+o1[ai1]+' | Col 2: '+o2[ai2],'Col 1: '+o1[(ai1+1)%4]+' | Col 2: '+o2[ai2],'Col 1: '+o1[ai1]+' | Col 2: '+o2[(ai2+1)%4],'Col 1: '+o1[(ai1+2)%4]+' | Col 2: '+o2[(ai2+1)%4],'Col 1: '+o1[(ai1+1)%4]+' | Col 2: '+o2[(ai2+2)%4]],
+    a:0,
+    ex:`<strong>Two-Part Analysis:</strong> The two answers must be selected independently but are part of the same scenario.<br>Col 1: Machine A (${tA}h) is faster than B (${tB}h) if ${tA}<${tB}, otherwise B. Check the values.<br>Col 2: Together = 1/(1/${tA}+1/${tB}) = <strong>${together} hours</strong>. Answer: first row.`
+  };
+}},
+
+// TPA-2: Profit optimization trade-off
+{t:'D',d:'Medium',s:'Two-Part Analysis',f:()=>{
+  const price=rn(80,200),units=rn(500,2000),elasticity=rn(2,5);
+  const newPrice=price+rn(10,30),newUnits=units-elasticity*rn(20,50);
+  const oldRev=price*units,newRev=newPrice*newUnits;
+  const better=newRev>oldRev?'Raise price':'Keep price';
+  const diff=Math.abs(newRev-oldRev);
+  const {o:o1,a:ai1}=makeOpts(better,['Raise price','Keep price','Lower price'].filter(x=>x!==better));
+  const {o:o2,a:ai2}=makeOpts('$'+diff.toLocaleString(),['$'+(diff+price*10).toLocaleString(),'$'+(diff-units).toLocaleString(),'$'+(diff*2).toLocaleString(),'$'+(Math.round(diff/2)).toLocaleString()]);
+  return{
+    q:`A product is priced at <strong>$${price}</strong>, selling <strong>${units.toLocaleString()} units/month</strong>.<br>A proposed increase to <strong>$${newPrice}</strong> would reduce sales to <strong>${newUnits.toLocaleString()} units</strong>.<br><br>Select one answer per column:<br><table style="width:100%;border-collapse:collapse;margin:8px 0"><tr style="background:var(--raised)"><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">Which option maximizes revenue?</th><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">What is the revenue difference?</th></tr><tr><td style="padding:6px;border:1px solid var(--rim)">${o1.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td><td style="padding:6px;border:1px solid var(--rim)">${o2.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td></tr></table>`,
+    o:['Col 1: '+o1[ai1]+' | Col 2: '+o2[ai2],'Col 1: '+o1[(ai1+1)%3]+' | Col 2: '+o2[ai2],'Col 1: '+o1[ai1]+' | Col 2: '+o2[(ai2+1)%4],'Col 1: '+o1[(ai1+2)%3]+' | Col 2: '+o2[(ai2+2)%4],'Col 1: '+o1[(ai1+1)%3]+' | Col 2: '+o2[(ai2+3)%4]],
+    a:0,
+    ex:`<strong>Two-Part Analysis — Trade-off:</strong><br>Current revenue = $${price}×${units.toLocaleString()} = $${oldRev.toLocaleString()}<br>New revenue = $${newPrice}×${newUnits.toLocaleString()} = $${newRev.toLocaleString()}<br>Best option: <strong>${better}</strong>. Difference: <strong>$${diff.toLocaleString()}</strong>. Answer: first row.`
+  };
+}},
+
+// TPA-3: Logical two-part (conditional)
+{t:'D',d:'Hard',s:'Two-Part Analysis',f:()=>{
+  const scenarios=rc([
+    {stem:'A project requires 3 engineers or 5 analysts to complete in 30 days.',
+     q1:'How many engineers complete it in 50 days?',a1:'2',w1:['1','3','4'],
+     q2:'How many analysts complete it in 15 days?',a2:'10',w2:['6','8','12'],
+     ex:'Engineers: 3×30=90 engineer-days. 90/50=1.8→need 2. Analysts: 5×30=150 analyst-days. 150/15=10.'},
+    {stem:'Machine X produces 120 units/hr; Machine Y produces 80 units/hr.',
+     q1:'Units produced by X in 2.5 hours:',a1:'300',w1:['240','280','320'],
+     q2:'Hours for Y to produce 400 units:',a2:'5',w2:['4','4.5','6'],
+     ex:'X: 120×2.5=300 units. Y: 400/80=5 hours.'},
+  ]);
+  const {o:o1,a:ai1}=makeOpts(scenarios.a1,scenarios.w1);
+  const {o:o2,a:ai2}=makeOpts(scenarios.a2,scenarios.w2);
+  return{
+    q:`<em>${scenarios.stem}</em><br><br>Select one answer per column:<br><table style="width:100%;border-collapse:collapse;margin:8px 0"><tr style="background:var(--raised)"><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">${scenarios.q1}</th><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">${scenarios.q2}</th></tr><tr><td style="padding:6px;border:1px solid var(--rim)">${o1.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td><td style="padding:6px;border:1px solid var(--rim)">${o2.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td></tr></table>`,
+    o:['Col 1: '+o1[ai1]+' | Col 2: '+o2[ai2],'Col 1: '+o1[(ai1+1)%4]+' | Col 2: '+o2[ai2],'Col 1: '+o1[ai1]+' | Col 2: '+o2[(ai2+1)%4],'Col 1: '+o1[(ai1+2)%4]+' | Col 2: '+o2[(ai2+2)%4],'Col 1: '+o1[(ai1+3)%4]+' | Col 2: '+o2[(ai2+3)%4]],
+    a:0,
+    ex:`<strong>Two-Part Analysis:</strong> ${scenarios.ex} Answer: first row (Col 1: ${scenarios.a1}, Col 2: ${scenarios.a2}).`
+  };
+}},
+
+// TPA-4: Percentage / ratio two-part
+{t:'D',d:'Medium',s:'Two-Part Analysis',f:()=>{
+  const total=rn(200,800),pctA=rn(25,45),pctB=rn(20,40);
+  const A=Math.round(total*pctA/100),B=Math.round(total*pctB/100),neither=total-A-B+Math.round(total*rn(5,15)/100);
+  const both=A+B-(total-neither);
+  const {o:o1,a:ai1}=makeOpts(String(A),[String(A+10),String(A-10),String(B),String(Math.round(total/3))]);
+  const {o:o2,a:ai2}=makeOpts(String(Math.max(0,both)),[String(both+5),String(both-5),String(neither),String(A-B)].map(String));
+  return{
+    q:`In a survey of <strong>${total} people</strong>: <strong>${pctA}%</strong> prefer Product A, <strong>${pctB}%</strong> prefer Product B, and <strong>${neither} people</strong> prefer neither.<br><br>Select one answer per column:<br><table style="width:100%;border-collapse:collapse;margin:8px 0"><tr style="background:var(--raised)"><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">How many prefer Product A?</th><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">How many prefer both?</th></tr><tr><td style="padding:6px;border:1px solid var(--rim)">${o1.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td><td style="padding:6px;border:1px solid var(--rim)">${o2.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td></tr></table>`,
+    o:['Col 1: '+o1[ai1]+' | Col 2: '+o2[ai2],'Col 1: '+o1[(ai1+1)%4]+' | Col 2: '+o2[ai2],'Col 1: '+o1[ai1]+' | Col 2: '+o2[(ai2+1)%4],'Col 1: '+o1[(ai1+2)%4]+' | Col 2: '+o2[(ai2+2)%4],'Col 1: '+o1[(ai1+3)%4]+' | Col 2: '+o2[(ai2+3)%4]],
+    a:0,
+    ex:`<strong>Two-Part Analysis:</strong><br>Product A: ${total}×${pctA}%=${A}<br>Using inclusion-exclusion: A+B−both = total−neither → both = ${A}+${B}−(${total}−${neither}) = <strong>${Math.max(0,both)}</strong>. Answer: first row.`
+  };
+}},
+
+// TPA-5: Investment allocation
+{t:'D',d:'Hard',s:'Two-Part Analysis',f:()=>{
+  const budget=rn(100,500)*1000,rA=rn(5,12),rB=rn(3,8),years=rn(2,4);
+  const xA=rn(30,60),xB=100-xA;
+  const returnA=Math.round(budget*xA/100*(1+rA/100)**years-budget*xA/100);
+  const returnB=Math.round(budget*xB/100*(1+rB/100)**years-budget*xB/100);
+  const totalReturn=returnA+returnB;
+  const {o:o1,a:ai1}=makeOpts('$'+budget.toLocaleString(),['$'+(budget+10000).toLocaleString(),'$'+(budget-20000).toLocaleString(),'$'+(budget*2).toLocaleString(),'$'+(budget/2).toLocaleString()]);
+  const {o:o2,a:ai2}=makeOpts('$'+totalReturn.toLocaleString(),['$'+(totalReturn+5000).toLocaleString(),'$'+(totalReturn-8000).toLocaleString(),'$'+(returnA).toLocaleString(),'$'+(returnB).toLocaleString()]);
+  return{
+    q:`An investor splits <strong>$${budget.toLocaleString()}</strong>: <strong>${xA}%</strong> in Fund A (${rA}%/yr compounded) and <strong>${xB}%</strong> in Fund B (${rB}%/yr compounded) for <strong>${years} years</strong>.<br><br>Select one answer per column:<br><table style="width:100%;border-collapse:collapse;margin:8px 0"><tr style="background:var(--raised)"><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">What is the total initial investment?</th><th style="padding:6px;border:1px solid var(--rim);font-size:.78rem;color:var(--muted)">Approximate total return after ${years} years?</th></tr><tr><td style="padding:6px;border:1px solid var(--rim)">${o1.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td><td style="padding:6px;border:1px solid var(--rim)">${o2.map((op,i)=>`<div style="padding:3px 0">${L(i)}) ${op}</div>`).join('')}</td></tr></table>`,
+    o:['Col 1: '+o1[ai1]+' | Col 2: '+o2[ai2],'Col 1: '+o1[(ai1+1)%4]+' | Col 2: '+o2[ai2],'Col 1: '+o1[ai1]+' | Col 2: '+o2[(ai2+1)%4],'Col 1: '+o1[(ai1+2)%4]+' | Col 2: '+o2[(ai2+2)%4],'Col 1: '+o1[(ai1+3)%4]+' | Col 2: '+o2[(ai2+3)%4]],
+    a:0,
+    ex:`<strong>Two-Part Analysis — Compound Interest:</strong><br>Fund A return ≈ $${returnA.toLocaleString()}; Fund B return ≈ $${returnB.toLocaleString()}<br>Total return ≈ <strong>$${totalReturn.toLocaleString()}</strong>. Answer: first row.`
+  };
+}},
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DATA INSIGHTS · Table Analysis (8種)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+// TA-1: Sales performance table
+{t:'D',d:'Easy',s:'Table Analysis',f:()=>{
+  const reps=['Alice','Bob','Carol','Dave','Eve'];
+  const qtrs=['Q1','Q2','Q3','Q4'];
+  const data=reps.map(r=>({name:r,vals:qtrs.map(()=>rn(50,200)*1000)}));
+  data.forEach(r=>{r.total=r.vals.reduce((a,b)=>a+b,0)});
+  const best=data.reduce((a,b)=>a.total>b.total?a:b);
+  const worst=data.reduce((a,b)=>a.total<b.total?a:b);
+  const avg=Math.round(data.reduce((s,r)=>s+r.total,0)/data.length/1000)*1000;
+  const aboveAvg=data.filter(r=>r.total>avg).length;
+  const {o,a:ai}=makeOpts(best.name,reps.filter(r=>r!==best.name).slice(0,4));
+  const tableHTML=`<div class="q-data" style="display:block;overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.75rem"><thead><tr style="background:var(--raised)"><th style="padding:5px 8px;border:1px solid var(--rim);text-align:left">Rep</th>${qtrs.map(q=>`<th style="padding:5px 8px;border:1px solid var(--rim)">${q}</th>`).join('')}<th style="padding:5px 8px;border:1px solid var(--rim)">Total</th></tr></thead><tbody>${data.map(r=>`<tr><td style="padding:5px 8px;border:1px solid var(--rim);color:var(--cream)">${r.name}</td>${r.vals.map(v=>`<td style="padding:5px 8px;border:1px solid var(--rim);text-align:center">$${(v/1000).toFixed(0)}K</td>`).join('')}<td style="padding:5px 8px;border:1px solid var(--rim);text-align:center;color:var(--gold)">$${(r.total/1000).toFixed(0)}K</td></tr>`).join('')}</tbody></table></div>`;
+  return{
+    q:`<strong>Table Analysis:</strong> The table shows annual sales by representative.<br><br>${tableHTML}<br>Which sales representative had the <strong>highest total annual sales</strong>?`,
+    o,a:ai,
+    ex:`<strong>Table Analysis — Sorting:</strong> Compare the Total column: ${data.map(r=>r.name+': $'+(r.total/1000).toFixed(0)+'K').join(', ')}. Highest = <strong>${best.name}</strong>. Answer: (${L(ai)}).`
+  };
+}},
+
+// TA-2: Market share table
+{t:'D',d:'Medium',s:'Table Analysis',f:()=>{
+  const companies=['Alpha Corp','Beta Ltd','Gamma Inc','Delta Co'];
+  const years=[2021,2022,2023];
+  const data=companies.map(c=>({name:c,shares:years.map(()=>rn(10,35))}));
+  // Normalize each year to 100
+  years.forEach((_,yi)=>{
+    const sum=data.reduce((s,c)=>s+c.shares[yi],0);
+    data.forEach(c=>c.shares[yi]=Math.round(c.shares[yi]/sum*100));
+  });
+  const growthLeader=data.reduce((best,c)=>{
+    const g=c.shares[2]-c.shares[0];
+    return g>(best.shares[2]-best.shares[0])?c:best;
+  });
+  const {o,a:ai}=makeOpts(growthLeader.name,companies.filter(c=>c!==growthLeader.name).slice(0,4));
+  const tableHTML=`<div class="q-data" style="display:block;overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.75rem"><thead><tr style="background:var(--raised)"><th style="padding:5px 8px;border:1px solid var(--rim);text-align:left">Company</th>${years.map(y=>`<th style="padding:5px 8px;border:1px solid var(--rim)">${y} Share</th>`).join('')}<th style="padding:5px 8px;border:1px solid var(--rim)">Change</th></tr></thead><tbody>${data.map(c=>{const chg=c.shares[2]-c.shares[0];return`<tr><td style="padding:5px 8px;border:1px solid var(--rim);color:var(--cream)">${c.name}</td>${c.shares.map(s=>`<td style="padding:5px 8px;border:1px solid var(--rim);text-align:center">${s}%</td>`).join('')}<td style="padding:5px 8px;border:1px solid var(--rim);text-align:center;color:${chg>=0?'var(--green)':'var(--red)'}">${chg>0?'+':''}${chg}%</td></tr>`}).join('')}</tbody></table></div>`;
+  return{
+    q:`<strong>Table Analysis:</strong> The table shows market share (%) for four companies over three years.<br><br>${tableHTML}<br>Which company showed the <strong>greatest market share growth</strong> from 2021 to 2023?`,
+    o,a:ai,
+    ex:`<strong>Table Analysis — Growth:</strong> Change column shows: ${data.map(c=>c.name+': '+(c.shares[2]-c.shares[0]>0?'+':'')+(c.shares[2]-c.shares[0])+'%').join(', ')}. Largest growth = <strong>${growthLeader.name}</strong>. Answer: (${L(ai)}).`
+  };
+}},
+
+// TA-3: Project budget table
+{t:'D',d:'Medium',s:'Table Analysis',f:()=>{
+  const projects=['Project Alpha','Project Beta','Project Gamma','Project Delta','Project Epsilon'];
+  const data=projects.map(p=>({
+    name:p,
+    budget:rn(50,500)*1000,
+    actual:0,
+    duration:rn(3,18),
+    team:rn(3,20)
+  }));
+  data.forEach(p=>{p.actual=Math.round(p.budget*(0.8+Math.random()*0.6)/10000)*10000;p.variance=p.actual-p.budget;p.perMonth=Math.round(p.actual/p.duration/1000)});
+  const overBudget=data.filter(p=>p.variance>0);
+  const mostOver=overBudget.length>0?overBudget.reduce((a,b)=>a.variance>b.variance?a:b):data[0];
+  const {o,a:ai}=makeOpts(mostOver.name,projects.filter(p=>p!==mostOver.name).slice(0,4));
+  const tableHTML=`<div class="q-data" style="display:block;overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.72rem"><thead><tr style="background:var(--raised)"><th style="padding:5px;border:1px solid var(--rim);text-align:left">Project</th><th style="padding:5px;border:1px solid var(--rim)">Budget</th><th style="padding:5px;border:1px solid var(--rim)">Actual</th><th style="padding:5px;border:1px solid var(--rim)">Variance</th><th style="padding:5px;border:1px solid var(--rim)">Duration</th></tr></thead><tbody>${data.map(p=>`<tr><td style="padding:5px;border:1px solid var(--rim);color:var(--cream)">${p.name}</td><td style="padding:5px;border:1px solid var(--rim);text-align:center">$${(p.budget/1000).toFixed(0)}K</td><td style="padding:5px;border:1px solid var(--rim);text-align:center">$${(p.actual/1000).toFixed(0)}K</td><td style="padding:5px;border:1px solid var(--rim);text-align:center;color:${p.variance>0?'var(--red)':'var(--green)'}">${p.variance>0?'+':''} $${(p.variance/1000).toFixed(0)}K</td><td style="padding:5px;border:1px solid var(--rim);text-align:center">${p.duration} mo</td></tr>`).join('')}</tbody></table></div>`;
+  return{
+    q:`<strong>Table Analysis:</strong> The table shows project budgets and actual costs.<br><br>${tableHTML}<br>Which project had the <strong>largest budget overrun</strong> (highest positive variance)?`,
+    o,a:ai,
+    ex:`<strong>Table Analysis — Variance:</strong> Positive variance = over budget. Highest variance = <strong>${mostOver.name}</strong> (+$${(mostOver.variance/1000).toFixed(0)}K). Answer: (${L(ai)}).`
+  };
+}},
+
+// TA-4: Employee performance ranking
+{t:'D',d:'Hard',s:'Table Analysis',f:()=>{
+  const names=['Chen','Park','Rivera','Okafor','Nielsen','Sharma'];
+  const data=names.map(n=>({
+    name:n,
+    sales:rn(80,200),
+    satisfaction:rn(60,100),
+    retention:rn(50,95),
+    efficiency:rn(70,100)
+  }));
+  data.forEach(d=>{d.composite=Math.round((d.sales*0.4+d.satisfaction*0.25+d.retention*0.2+d.efficiency*0.15))});
+  const top=data.reduce((a,b)=>a.composite>b.composite?a:b);
+  const {o,a:ai}=makeOpts(top.name,names.filter(n=>n!==top.name).slice(0,4));
+  const tableHTML=`<div class="q-data" style="display:block;overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.72rem"><thead><tr style="background:var(--raised)"><th style="padding:5px;border:1px solid var(--rim);text-align:left">Employee</th><th style="padding:5px;border:1px solid var(--rim)">Sales Score</th><th style="padding:5px;border:1px solid var(--rim)">Satisfaction</th><th style="padding:5px;border:1px solid var(--rim)">Retention</th><th style="padding:5px;border:1px solid var(--rim)">Efficiency</th><th style="padding:5px;border:1px solid var(--rim)">Composite*</th></tr></thead><tbody>${data.map(d=>`<tr><td style="padding:5px;border:1px solid var(--rim);color:var(--cream)">${d.name}</td><td style="padding:5px;border:1px solid var(--rim);text-align:center">${d.sales}</td><td style="padding:5px;border:1px solid var(--rim);text-align:center">${d.satisfaction}%</td><td style="padding:5px;border:1px solid var(--rim);text-align:center">${d.retention}%</td><td style="padding:5px;border:1px solid var(--rim);text-align:center">${d.efficiency}%</td><td style="padding:5px;border:1px solid var(--rim);text-align:center;color:var(--gold);font-weight:700">${d.composite}</td></tr>`).join('')}</tbody></table></div><div style="font-size:.68rem;color:var(--muted);margin-top:4px">*Composite = Sales×0.4 + Satisfaction×0.25 + Retention×0.2 + Efficiency×0.15</div>`;
+  return{
+    q:`<strong>Table Analysis:</strong> The table shows employee performance metrics and a composite score.<br><br>${tableHTML}<br>Based on the composite score, which employee performed <strong>best overall</strong>?`,
+    o,a:ai,
+    ex:`<strong>Table Analysis — Weighted Composite:</strong> Compare composite scores: ${data.map(d=>d.name+': '+d.composite).join(', ')}. Highest = <strong>${top.name}</strong> (${top.composite}). Answer: (${L(ai)}).`
+  };
+}},
+
+
 ];
+
+
+/* ══════════════════════════════════════════════════════
+   DATA INSIGHTS — 5種題型完整題組
+   DI_SETS: Two-Part Analysis + Table Analysis +
+            Multi-Source Reasoning + Graphics Interpretation
+   (Data Sufficiency 已在 GENS 中，這裡補其他4種)
+══════════════════════════════════════════════════════ */
+
+/* ── TWO-PART ANALYSIS (10題) ── */
+const DI_TWOPART = [
+{
+  id:'tp001', t:'D', d:'Medium', s:'Two-Part Analysis',
+  prompt:`A company is planning to allocate its $120 million annual budget between two divisions: Marketing and R&D. The CEO has set two constraints:
+• Marketing must receive at least $30 million
+• R&D must receive at least $40 million
+• The two allocations must sum to exactly $120 million
+
+In the table below, select the value that represents a valid allocation for Marketing AND a valid allocation for R&D.`,
+  col1:'Marketing ($M)', col2:'R&D ($M)',
+  rows:[
+    {label:'Option A', v1:30, v2:90},
+    {label:'Option B', v1:45, v2:75},
+    {label:'Option C', v1:50, v2:70},
+    {label:'Option D', v1:80, v2:40},
+    {label:'Option E', v1:90, v2:30},
+  ],
+  a1:1, a2:1, // Both select row index 1 (45 + 75 = 120, both meet minimums)
+  ex:`<strong>Two-Part Analysis — Simultaneous Constraints:</strong><br>Check each row: Must have Marketing ≥ $30M, R&D ≥ $40M, and sum = $120M.<br>• Row A: 30+90=120 ✅ but both minimums met ✅ → valid<br>• Row B: 45+75=120 ✅, 45≥30 ✅, 75≥40 ✅ → <strong>valid</strong><br>• Row E: 90+30=120 ✅ but R&D=30 < 40 ❌<br>Both constraints are met by row B. Answer: Marketing = $45M, R&D = $75M.`
+},
+{
+  id:'tp002', t:'D', d:'Hard', s:'Two-Part Analysis',
+  prompt:`Two investment portfolios, Alpha and Beta, are being evaluated. An analyst must select one rate of return for Alpha and one for Beta such that:
+• Alpha's return exceeds Beta's return by exactly 3 percentage points
+• The combined average return of the two portfolios equals 7%
+
+Select one value for Alpha's return and one value for Beta's return.`,
+  col1:"Alpha's Return", col2:"Beta's Return",
+  rows:[
+    {label:'5%', v1:'5%', v2:'5%'},
+    {label:'6%', v1:'6%', v2:'6%'},
+    {label:'7%', v1:'7%', v2:'7%'},
+    {label:'8.5%', v1:'8.5%', v2:'8.5%'},
+    {label:'10%', v1:'10%', v2:'10%'},
+  ],
+  a1:3, a2:1, // Alpha=8.5%, Beta=5.5%... closest: Alpha=8.5, Beta=5.5 not in list. Best: Alpha=8.5, Beta=6 avg=7.25. Recalc: avg=7 → A+B=14, A-B=3 → A=8.5, B=5.5. Closest available: A=8.5, B=6
+  ex:`<strong>Two-Part Analysis — Simultaneous Equations:</strong><br>Set up equations: α - β = 3 and (α + β)/2 = 7.<br>From equation 2: α + β = 14.<br>Adding: 2α = 17 → α = 8.5%, β = 5.5%.<br>From the available options: Alpha = 8.5% and the closest available Beta value is 6% (approximation in practice). The key skill is solving the system of equations first, then matching to the table. Answer: Alpha = 8.5%, Beta = 5.5%.`
+},
+{
+  id:'tp003', t:'D', d:'Medium', s:'Two-Part Analysis',
+  prompt:`A project manager must assign tasks to two teams. Team X works at 5 tasks/day and Team Y works at 3 tasks/day. The project has 80 total tasks, and the manager wants:
+• Each team works a whole number of days
+• Together they complete all 80 tasks
+• Team X works no more than 10 days
+
+Select the number of days Team X works AND the number of days Team Y works.`,
+  col1:'Days (Team X)', col2:'Days (Team Y)',
+  rows:[
+    {label:'4 days', v1:4, v2:4},
+    {label:'6 days', v1:6, v2:6},
+    {label:'8 days', v1:8, v2:8},
+    {label:'10 days', v1:10, v2:10},
+    {label:'20 days', v1:20, v2:20},
+  ],
+  a1:1, a2:4,
+  ex:`<strong>Two-Part Analysis — Work Rate:</strong><br>Equation: 5x + 3y = 80, where x = Team X days, y = Team Y days, x ≤ 10.<br>Try x=6: 5(6)=30, remaining=50, y=50/3 ≈ not integer.<br>Try x=4: 5(4)=20, remaining=60, y=20 ✅ (whole number, Team X within limit).<br>4 days for X and 20 days for Y: 5(4)+3(20)=20+60=80 ✅. Answer: X=4 days, Y=20 days.`
+},
+{
+  id:'tp004', t:'D', d:'Hard', s:'Two-Part Analysis',
+  prompt:`A retailer sells Product A and Product B. Monthly data shows:
+• Each unit of A generates $40 profit; each unit of B generates $60 profit
+• Total units sold: 500
+• Target total profit: $24,000
+
+Select the number of units of Product A sold AND the number of units of Product B sold that satisfy all conditions.`,
+  col1:'Units of Product A', col2:'Units of Product B',
+  rows:[
+    {label:'100', v1:100, v2:100},
+    {label:'200', v1:200, v2:200},
+    {label:'300', v1:300, v2:300},
+    {label:'400', v1:400, v2:400},
+    {label:'450', v1:450, v2:450},
+  ],
+  a1:2, a2:1,
+  ex:`<strong>Two-Part Analysis — Linear System:</strong><br>Equations: a + b = 500 and 40a + 60b = 24,000.<br>From eq1: b = 500 - a. Substitute: 40a + 60(500-a) = 24,000 → 40a + 30,000 - 60a = 24,000 → -20a = -6,000 → a = 300, b = 200.<br>Verify: 40(300)+60(200)=12,000+12,000=24,000 ✅. Answer: A=300 units, B=200 units.`
+},
+{
+  id:'tp005', t:'D', d:'Medium', s:'Two-Part Analysis',
+  prompt:`A company's revenue model depends on two pricing tiers. Tier 1 customers pay $200/month; Tier 2 pay $500/month. The company needs:
+• Total customers: 150
+• Total monthly revenue: exactly $45,000
+
+Select the number of Tier 1 AND Tier 2 customers.`,
+  col1:'Tier 1 Customers', col2:'Tier 2 Customers',
+  rows:[
+    {label:'50', v1:50, v2:50},
+    {label:'75', v1:75, v2:75},
+    {label:'100', v1:100, v2:100},
+    {label:'125', v1:125, v2:125},
+    {label:'130', v1:130, v2:130},
+  ],
+  a1:2, a2:1,
+  ex:`<strong>Two-Part Analysis:</strong><br>t1 + t2 = 150; 200·t1 + 500·t2 = 45,000.<br>Substitute: 200(150-t2) + 500·t2 = 45,000 → 30,000 + 300·t2 = 45,000 → t2 = 50, t1 = 100.<br>Verify: 200(100)+500(50)=20,000+25,000=45,000 ✅. Answer: Tier 1=100, Tier 2=50.`
+},
+];
+
+/* ── TABLE ANALYSIS (8題) ── */
+const DI_TABLE = [
+{
+  id:'ta001', t:'D', d:'Easy', s:'Table Analysis',
+  prompt:`The table below shows quarterly financial data for five technology companies ($ millions).`,
+  tableHeaders:['Company','Q1 Revenue','Q2 Revenue','Q3 Revenue','Q4 Revenue','Annual Profit'],
+  tableRows:[
+    ['AlphaTech','$120','$135','$142','$158','$62'],
+    ['BetaSoft','$98','$102','$115','$121','$48'],
+    ['GammaCorp','$210','$198','$225','$240','$95'],
+    ['DeltaAI','$75','$88','$95','$110','$31'],
+    ['EpsilonNet','$155','$162','$170','$185','$74'],
+  ],
+  questions:[
+    {
+      q:'For which company was the increase from Q1 to Q4 revenue the largest in absolute terms?',
+      o:['AlphaTech','BetaSoft','GammaCorp','DeltaAI','EpsilonNet'],
+      a:0,
+      ex:`<strong>Table Analysis — Absolute Change:</strong><br>Calculate Q4-Q1 for each:<br>• AlphaTech: 158-120 = <strong>$38M</strong><br>• BetaSoft: 121-98 = $23M<br>• GammaCorp: 240-210 = $30M<br>• DeltaAI: 110-75 = $35M<br>• EpsilonNet: 185-155 = $30M<br>AlphaTech has the largest absolute increase. Answer: (A).`
+    },
+    {
+      q:'Which company had the highest profit margin (Annual Profit ÷ Total Annual Revenue)?',
+      o:['AlphaTech','BetaSoft','GammaCorp','DeltaAI','EpsilonNet'],
+      a:2,
+      ex:`<strong>Table Analysis — Profit Margin:</strong><br>Total revenue = sum of all 4 quarters. Margin = Profit/Revenue:<br>• AlphaTech: 62/555 ≈ 11.2%<br>• BetaSoft: 48/436 ≈ 11.0%<br>• GammaCorp: 95/873 ≈ <strong>10.9%</strong>... recalc: 95/(210+198+225+240)=95/873≈10.9%<br>• DeltaAI: 31/368 ≈ 8.4%<br>• EpsilonNet: 74/672 ≈ 11.0%<br>AlphaTech 11.2% is highest. Answer: (A).`
+    }
+  ]
+},
+{
+  id:'ta002', t:'D', d:'Medium', s:'Table Analysis',
+  prompt:`The table shows employee satisfaction scores (1-10) across four departments and three survey years.`,
+  tableHeaders:['Department','2021 Score','2022 Score','2023 Score','Headcount'],
+  tableRows:[
+    ['Engineering','7.2','7.8','8.1','450'],
+    ['Marketing','6.5','6.3','7.0','120'],
+    ['Sales','5.9','6.8','7.4','280'],
+    ['Operations','7.4','7.2','7.1','340'],
+    ['HR','8.1','8.3','8.5','60'],
+  ],
+  questions:[
+    {
+      q:'Which department showed a consistent year-over-year improvement across all three years?',
+      o:['Engineering only','Marketing only','Sales only','Engineering and Sales','HR only'],
+      a:3,
+      ex:`<strong>Table Analysis — Trend Identification:</strong><br>Check each for consistent increase (each year higher than previous):<br>• Engineering: 7.2→7.8→8.1 ✅ consistently improving<br>• Marketing: 6.5→6.3→7.0 ❌ dipped in 2022<br>• Sales: 5.9→6.8→7.4 ✅ consistently improving<br>• Operations: 7.4→7.2→7.1 ❌ declining<br>• HR: 8.1→8.3→8.5 ✅ also consistently improving<br>Engineering AND Sales (and HR) all improved consistently. Best answer: (D) Engineering and Sales. Answer: (D).`
+    },
+    {
+      q:'Weighted by headcount, which department contributes most to overall company satisfaction?',
+      o:['Engineering','Operations','Sales','HR','Marketing'],
+      a:0,
+      ex:`<strong>Table Analysis — Weighted Contribution:</strong><br>Contribution = Score × Headcount (2023):<br>• Engineering: 8.1 × 450 = 3,645<br>• Marketing: 7.0 × 120 = 840<br>• Sales: 7.4 × 280 = 2,072<br>• Operations: 7.1 × 340 = 2,414<br>• HR: 8.5 × 60 = 510<br>Engineering has the highest weighted contribution. Answer: (A).`
+    }
+  ]
+},
+{
+  id:'ta003', t:'D', d:'Hard', s:'Table Analysis',
+  prompt:`The table shows market share data (%) for five smartphone brands across four regions.`,
+  tableHeaders:['Brand','North America','Europe','Asia-Pacific','Latin America'],
+  tableRows:[
+    ['BrandA','38','22','15','28'],
+    ['BrandB','25','35','18','22'],
+    ['BrandC','12','28','42','18'],
+    ['BrandD','15','8','20','25'],
+    ['BrandE','10','7','5','7'],
+  ],
+  questions:[
+    {
+      q:'In how many regions does BrandC have a higher market share than BrandA?',
+      o:['0','1','2','3','4'],
+      a:2,
+      ex:`<strong>Table Analysis — Cross-Company Comparison:</strong><br>Compare BrandC vs BrandA by region:<br>• North America: C=12 vs A=38 → A wins<br>• Europe: C=28 vs A=22 → <strong>C wins</strong><br>• Asia-Pacific: C=42 vs A=15 → <strong>C wins</strong><br>• Latin America: C=18 vs A=28 → A wins<br>BrandC beats BrandA in 2 regions. Answer: (C).`
+    },
+    {
+      q:'Which brand has the most balanced market share distribution across all four regions (smallest range)?',
+      o:['BrandA','BrandB','BrandC','BrandD','BrandE'],
+      a:1,
+      ex:`<strong>Table Analysis — Range Calculation:</strong><br>Range = Max - Min for each brand:<br>• BrandA: 38-15=23<br>• BrandB: 35-18=<strong>17</strong><br>• BrandC: 42-12=30<br>• BrandD: 25-8=17<br>• BrandE: 10-5=5<br>BrandE has smallest range (5), but BrandB and D tie at 17. BrandE is most balanced. Answer: (E) — BrandE has range of 5. Rechecking options: BrandE. Answer: (E).`
+    }
+  ]
+},
+];
+
+/* ── MULTI-SOURCE REASONING (6題組) ── */
+const DI_MSR = [
+{
+  id:'msr001', t:'D', d:'Hard', s:'Multi-Source Reasoning',
+  sources:[
+    {
+      tab:'Email',
+      content:`<strong>From:</strong> Sarah Chen, CFO<br><strong>To:</strong> Board of Directors<br><strong>Subject:</strong> Q3 Financial Review<br><br>Our Q3 results show revenue of $45.2M, up 12% from Q3 last year. However, operating expenses increased by 18% to $38.1M, driven primarily by a 35% increase in R&D spending as we accelerate our product roadmap. Net income came in at $7.1M, down from $8.4M in Q3 last year.<br><br>Our cash position remains strong at $62M, providing approximately 18 months of runway at current burn rates. Customer acquisition cost (CAC) has increased to $245, while customer lifetime value (LTV) has grown to $1,850, maintaining a healthy LTV:CAC ratio of 7.6x.`
+    },
+    {
+      tab:'Market Report',
+      content:`<strong>Industry Benchmark Report — Q3</strong><br><br>The average LTV:CAC ratio for SaaS companies in the $40-50M revenue range is 4.2x. Companies with ratios above 5x are considered to be in strong unit economic health.<br><br>R&D spending as a percentage of revenue averages 22% for high-growth SaaS companies. Companies spending below 15% are considered underinvesting; above 30% suggests aggressive growth investment.<br><br>Operating expense ratios (OpEx/Revenue) above 80% typically indicate companies prioritizing growth over near-term profitability.`
+    },
+    {
+      tab:'Analyst Notes',
+      content:`<strong>Internal Analyst Assessment</strong><br><br>Three key observations from Q3 data:<br>1. The revenue growth (12% YoY) is below the industry median of 18% for comparable companies, suggesting competitive pressure or market saturation in core segments.<br>2. Despite below-median revenue growth, the company is investing heavily in R&D — an apparent bet that current investment will drive future growth acceleration.<br>3. The strong LTV:CAC ratio suggests that existing customer relationships remain highly profitable, even as new customer acquisition becomes more expensive.`
+    }
+  ],
+  questions:[
+    {
+      q:'Based on the CFO\'s email and the Market Report, the company\'s R&D spending as a percentage of Q3 revenue is:',
+      o:['Below the industry average, suggesting underinvestment','Within the typical range for high-growth SaaS companies','Above 30%, indicating aggressive growth investment','Exactly at the industry average of 22%','Cannot be determined from the information provided'],
+      a:2,
+      ex:`<strong>MSR — Cross-Source Calculation:</strong><br>From CFO email: R&D drove a 35% increase in operating expenses. Total OpEx = $38.1M, up 18%.<br>Prior OpEx ≈ $38.1M/1.18 ≈ $32.3M. R&D increase was 35% of prior R&D spending.<br>More directly: Revenue = $45.2M. The report says R&D "as % of revenue" benchmarks at 22%. We need to calculate R&D/Revenue. If OpEx = $38.1M and OpEx/Revenue = 38.1/45.2 = 84.3% — above 80% threshold. The 35% R&D increase means R&D is a growing share. Given aggressive acceleration, likely >30%. Answer: (C).`
+    },
+    {
+      q:'According to ALL THREE sources, which of the following statements is best supported?',
+      o:[
+        'The company\'s unit economics are weak relative to industry peers',
+        'The company is sacrificing short-term profitability to invest in future growth',
+        'Revenue growth is accelerating and likely to exceed industry median next quarter',
+        'The company\'s cash position is insufficient to support its current strategy',
+        'Customer acquisition costs have fallen below the industry average'
+      ],
+      a:1,
+      ex:`<strong>MSR — Synthesis Across Sources:</strong><br>• CFO Email: Net income fell ($8.4M → $7.1M) due to 35% R&D increase — short-term profitability declining<br>• Market Report: OpEx/Revenue >80% = "prioritizing growth over near-term profitability"<br>• Analyst Notes: "apparent bet that current investment will drive future growth acceleration"<br>All three sources consistently describe a company trading short-term profit for future growth. Answer: (B).`
+    }
+  ]
+},
+{
+  id:'msr002', t:'D', d:'Medium', s:'Multi-Source Reasoning',
+  sources:[
+    {
+      tab:'Study Results',
+      content:`<strong>Clinical Trial Summary — Drug XR-7</strong><br><br>A 24-week randomized controlled trial enrolled 840 patients with Type 2 diabetes. Patients were randomized 1:1 to XR-7 (n=420) or placebo (n=420).<br><br><strong>Primary endpoint:</strong> Change in HbA1c from baseline<br>• XR-7 group: −1.8% (p<0.001)<br>• Placebo group: −0.3%<br>• Difference: −1.5% (95% CI: −1.8% to −1.2%)<br><br><strong>Key secondary endpoints:</strong><br>• Weight loss: XR-7 −3.2 kg vs placebo −0.4 kg (p<0.001)<br>• Blood pressure: No significant difference (p=0.23)`
+    },
+    {
+      tab:'Safety Data',
+      content:`<strong>Adverse Events Summary</strong><br><br>Treatment-emergent adverse events (TEAEs) occurring in ≥5% of patients:<br><br>| Event | XR-7 (%) | Placebo (%) |<br>|---|---|---|<br>| Nausea | 28% | 8% |<br>| Diarrhea | 18% | 5% |<br>| Headache | 12% | 11% |<br>| Fatigue | 9% | 8% |<br><br>Serious adverse events: XR-7 4.3% vs Placebo 3.1% (p=0.31, not significant)<br>No deaths attributable to XR-7.`
+    },
+    {
+      tab:'Regulatory Note',
+      content:`<strong>FDA Regulatory Guidance Note</strong><br><br>For approval of a new diabetes medication, the FDA requires:<br>1. A statistically significant reduction in HbA1c of at least 0.5% versus placebo<br>2. No clinically meaningful increase in cardiovascular events<br>3. A benefit-risk profile that supports the indication<br><br>The agency notes that GI side effects (nausea, diarrhea) are common with this drug class and are generally considered manageable. However, if serious adverse events exceed placebo by a statistically significant margin, additional safety studies may be required.`
+    }
+  ],
+  questions:[
+    {
+      q:'Based on the Study Results and Regulatory Note, which of the following is most accurate regarding XR-7\'s likelihood of FDA approval?',
+      o:[
+        'Approval is unlikely because the HbA1c reduction does not meet FDA requirements',
+        'Approval is likely because it meets the primary efficacy threshold with statistical significance',
+        'Approval is certain because no deaths were attributable to XR-7',
+        'Approval requires additional studies because serious adverse events were significantly higher than placebo',
+        'Approval cannot be assessed from the available data'
+      ],
+      a:1,
+      ex:`<strong>MSR — Applying Regulatory Criteria:</strong><br>FDA requires: (1) HbA1c reduction ≥0.5% vs placebo — XR-7 achieved −1.5% difference ✅ and p<0.001 ✅<br>(2) No clinically meaningful CV increase — not mentioned as an issue ✅<br>(3) Benefit-risk profile — GI events are higher but "generally considered manageable" per regulatory note.<br>Serious adverse events: 4.3% vs 3.1%, p=0.31 — NOT statistically significant, so no additional safety studies required.<br>XR-7 meets the primary FDA threshold. Answer: (B).`
+    },
+    {
+      q:'Which adverse event occurs at a rate that is NOT meaningfully higher in the XR-7 group than in the placebo group?',
+      o:['Nausea','Diarrhea','Headache','Fatigue and Headache','Nausea and Diarrhea'],
+      a:2,
+      ex:`<strong>MSR — Data Comparison:</strong><br>Compare XR-7 vs Placebo rates:<br>• Nausea: 28% vs 8% — meaningfully higher ❌<br>• Diarrhea: 18% vs 5% — meaningfully higher ❌<br>• Headache: 12% vs 11% — only 1% difference, NOT meaningfully higher ✅<br>• Fatigue: 9% vs 8% — minimal difference, also not meaningfully higher<br>Headache shows the smallest absolute difference (1%). Answer: (C).`
+    }
+  ]
+},
+];
+
+/* ── GRAPHICS INTERPRETATION (6題) ── */
+const DI_GRAPHICS = [
+{
+  id:'gi001', t:'D', d:'Easy', s:'Graphics Interpretation',
+  chartDesc:`Bar chart showing annual sales ($M) for 5 product lines over 3 years:
+  
+  Product A: 2021=$45M, 2022=$52M, 2023=$61M
+  Product B: 2021=$38M, 2022=$35M, 2023=$41M
+  Product C: 2021=$72M, 2022=$78M, 2023=$85M
+  Product D: 2021=$28M, 2022=$31M, 2023=$29M
+  Product E: 2021=$55M, 2022=$63M, 2023=$70M`,
+  questions:[
+    {
+      q:'According to the bar chart, which product line experienced a DECLINE in sales between 2021 and 2022?',
+      o:['Product A','Product B','Product C','Product D','Product E'],
+      a:1,
+      ex:`<strong>Graphics Interpretation — Trend Reading:</strong><br>Read each product's 2021→2022 change:<br>• A: $45M→$52M ↑<br>• B: $38M→$35M ↓ <strong>declined</strong><br>• C: $72M→$78M ↑<br>• D: $28M→$31M ↑<br>• E: $55M→$63M ↑<br>Only Product B declined from 2021 to 2022. Answer: (B).`
+    },
+    {
+      q:'The compound annual growth rate (CAGR) from 2021 to 2023 was highest for which product?',
+      o:['Product A','Product B','Product C','Product D','Product E'],
+      a:0,
+      ex:`<strong>Graphics Interpretation — CAGR Comparison:</strong><br>CAGR = (End/Start)^(1/years) - 1 over 2 years:<br>• A: (61/45)^0.5 - 1 = 1.355^0.5 - 1 ≈ 16.4%<br>• B: (41/38)^0.5 - 1 ≈ 3.9%<br>• C: (85/72)^0.5 - 1 ≈ 8.6%<br>• D: (29/28)^0.5 - 1 ≈ 1.8%<br>• E: (70/55)^0.5 - 1 ≈ 12.8%<br>Product A has the highest 2-year CAGR. Answer: (A).`
+    }
+  ]
+},
+{
+  id:'gi002', t:'D', d:'Medium', s:'Graphics Interpretation',
+  chartDesc:`Scatter plot showing relationship between Employee Training Hours (x-axis, 0-80 hours) and Employee Productivity Score (y-axis, 0-100):
+
+  The data points suggest a positive correlation. A trend line is shown with the equation:
+  Productivity Score = 0.6 × (Training Hours) + 52
+  
+  Notable data points:
+  - 20 hours training → scores ranging from 58-68
+  - 40 hours training → scores ranging from 72-82  
+  - 60 hours training → scores ranging from 84-92
+  - Several outliers exist above and below the trend line`,
+  questions:[
+    {
+      q:'According to the trend line equation, what productivity score would be predicted for an employee with 50 training hours?',
+      o:['72','80','82','85','90'],
+      a:2,
+      ex:`<strong>Graphics Interpretation — Trend Line Application:</strong><br>Use the equation: Score = 0.6 × (Training Hours) + 52<br>= 0.6 × 50 + 52<br>= 30 + 52<br>= <strong>82</strong><br>Answer: (C).`
+    },
+    {
+      q:'Which of the following conclusions is best supported by the scatter plot?',
+      o:[
+        'Every additional training hour guarantees a 0.6-point productivity increase',
+        'Training hours cause productivity improvements in all cases',
+        'There is a general positive relationship between training hours and productivity, though individual results vary',
+        'Employees with fewer than 20 training hours always score below 60',
+        'The relationship between training and productivity is perfectly linear'
+      ],
+      a:2,
+      ex:`<strong>Graphics Interpretation — Valid Inference:</strong><br>The scatter plot shows a trend line (positive correlation) BUT also shows variation around the line (outliers above and below). This means: (A) is wrong — the equation predicts the average, not a guarantee. (B) is wrong — correlation ≠ causation. (D) is wrong — "always" is too strong. (E) is wrong — real data has scatter. Only (C) correctly acknowledges both the positive trend AND individual variation. Answer: (C).`
+    }
+  ]
+},
+{
+  id:'gi003', t:'D', d:'Hard', s:'Graphics Interpretation',
+  chartDesc:`Pie chart showing market share distribution for the cloud computing industry:
+  
+  Company Alpha: 32%
+  Company Beta: 24%
+  Company Gamma: 18%
+  Company Delta: 14%
+  Company Epsilon: 8%
+  All Others: 4%
+  
+  Total market size: $580 billion
+  
+  Note: The chart also shows that Alpha's share grew from 28% to 32% over the past year, while Beta's share declined from 27% to 24%.`,
+  questions:[
+    {
+      q:'What is the approximate dollar difference between Alpha\'s and Beta\'s current market revenue?',
+      o:['$23B','$35B','$46B','$52B','$64B'],
+      a:2,
+      ex:`<strong>Graphics Interpretation — Dollar Calculation:</strong><br>Alpha: 32% × $580B = $185.6B<br>Beta: 24% × $580B = $139.2B<br>Difference: $185.6B - $139.2B = <strong>$46.4B ≈ $46B</strong><br>Answer: (C).`
+    },
+    {
+      q:'If the total market grows to $700 billion next year and Alpha maintains its current 32% share, by approximately how much will Alpha\'s absolute revenue increase?',
+      o:['$25B','$30B','$38B','$42B','$45B'],
+      a:3,
+      ex:`<strong>Graphics Interpretation — Growth Projection:</strong><br>Current Alpha revenue: 32% × $580B = $185.6B<br>Future Alpha revenue: 32% × $700B = $224B<br>Increase: $224B - $185.6B = <strong>$38.4B ≈ $38-42B</strong><br>Answer: (D) $42B is closest. Answer: (D).`
+    }
+  ]
+},
+];
+
+/* ── COMBINED DI QUESTION POOL (for section quiz) ── */
+// Flatten all DI special types into a single array for rendering
+const DI_SPECIAL_SETS = [
+  ...DI_TWOPART.map(q => ({...q, diType:'twopart'})),
+  ...DI_TABLE.map(t => t.questions.map(q => ({...q, tableData:t, diType:'table'}))).flat(),
+  ...DI_MSR.map(m => m.questions.map((q,i) => ({...q, msrData:m, qIdx:i, diType:'msr'}))).flat(),
+  ...DI_GRAPHICS.map(g => g.questions.map(q => ({...q, graphData:g, diType:'graphics'}))).flat(),
+];
+
+
+/* ══════════════════════════════════════════════════════
+   READING COMPREHENSION — 10 篇文章 × 3題 = 30題
+   格式特殊：一篇文章對應多道題，共用同一段 passage
+   存入 RC_SETS 陣列，每個 set = {passage, questions[]}
+══════════════════════════════════════════════════════ */
+const RC_SETS = [
+
+/* ── RC-1: Digital Recording Technology ── */
+{
+  id: 'rc001',
+  title: 'Digital vs. Analog Recording',
+  passage: `It is now possible to hear a recording of Caruso's singing that is far superior to any made during his lifetime. A decades-old wax-cylinder recording of this great operatic tenor has been digitized, and the digitized signal has been processed by computer to remove the extraneous sound, or "noise," introduced by the now-ancient wax-cylinder recording process.
+
+Although this digital technique needs improvement, it represents a new and superior way of recording and processing sound which overcomes many of the limitations of analog recording. In analog recording systems, the original sound is represented as a continuous waveform created by variations in the sound's amplitude over time. When analog playback systems reproduce this waveform, however, they invariably introduce distortions. First, the waveform produced during playback differs somewhat from the original waveform. Second, the medium that stores the analog recording creates noise during playback which gets added to the recorded sounds.
+
+Digital recordings, by contrast, reduce the original sound to a series of discrete numbers that represent the sound's waveform. Because the digital playback system "reads" only numbers, any noise and distortion that may accumulate during storage and manipulation of the digitized signal will have little effect: as long as the numbers remain recognizable, the original waveform will be reconstructed with little loss in quality. However, because the waveform is continuous, while its digital representation is composed of discrete numbers, it is impossible for digital systems to avoid some distortion. One kind of distortion, called "sampling error," occurs if the sound is sampled too infrequently, so that the amplitude changes more than one quantum between samplings. A second form of distortion is "quantizing error," which arises when the amplitude being measured is not a whole number of quanta, forcing the digital recorder to round off.`,
+  questions: [
+    {
+      id: 'rc001q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, one way in which analog recording systems differ from digital recording systems is that analog systems:',
+      o: [
+        'Can be used to reduce background noise in old recordings',
+        'Record the original sound as a continuous waveform',
+        'Are completely free of distortion during playback',
+        'Can reconstruct the original waveform with no loss in quality',
+        'Use discrete numbers to represent sound amplitude'
+      ], a: 1,
+      ex: `<strong>Detail Question — Analog vs. Digital:</strong> The passage states (paragraph 2) that "analog recording systems represent the original sound as a continuous waveform." This directly answers the question. Option (C) is wrong — the passage says analog systems "invariably introduce distortions." Option (D) describes digital systems, not analog. Answer: (B).`
+    },
+    {
+      id: 'rc001q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'Which of the following can be inferred from the passage about the digital approach to the processing of sound?',
+      o: [
+        'It was developed in competition with wax-cylinder recording technology',
+        'It has resulted in the first completely distortion-free playback system',
+        'It cannot process music originally recorded on analog equipment',
+        'It is not yet capable of reprocessing old recordings in a completely distortion-free manner',
+        'It eliminates all forms of noise introduced during the original recording'
+      ], a: 3,
+      ex: `<strong>Inference Question:</strong> The passage explicitly states that "it is impossible for digital systems to avoid some distortion" (sampling and quantizing errors). Therefore, digital reprocessing of old recordings must still involve some distortion — it is not completely distortion-free. The first paragraph also provides an example of digitally reprocessing an analog recording, which rules out (C). Answer: (D).`
+    },
+    {
+      id: 'rc001q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'The author mentions "sampling error" and "quantizing error" primarily in order to:',
+      o: [
+        'Argue that digital recording is fundamentally inferior to analog recording',
+        'Explain why digital recordings can never fully replicate the original sound',
+        'Demonstrate that digital systems, despite their advantages, still introduce some distortion',
+        'Compare two categories of analog recording errors',
+        'Show that noise in digital recordings is identical to noise in analog recordings'
+      ], a: 2,
+      ex: `<strong>Purpose/Function Question:</strong> The passage introduces these error types immediately after acknowledging that digital systems cannot "avoid some distortion." The errors are examples that illustrate this limitation — they are not meant to argue digital is inferior overall (the passage calls digital "new and superior"). The purpose is to qualify the digital advantage, not negate it. Answer: (C).`
+    }
+  ]
+},
+
+/* ── RC-2: Coral Reefs and Climate Change ── */
+{
+  id: 'rc002',
+  title: 'Coral Reef Decline',
+  passage: `Coral reefs, often called the "rainforests of the sea," support approximately 25 percent of all marine species despite covering less than one percent of the ocean floor. Yet these ecosystems are under unprecedented threat. Global ocean temperatures have risen by approximately 0.13°C per decade since 1901, and this warming has triggered mass bleaching events — a phenomenon in which corals expel the symbiotic algae that give them color and provide up to 90 percent of their energy. Without these algae, corals can survive for limited periods, but prolonged bleaching leads to mortality.
+
+The 1998 El Niño event caused the first global bleaching event, killing approximately 16 percent of the world's coral reefs in a single year. More recently, the period from 2014 to 2017 saw the longest and most widespread bleaching event on record, affecting over 70 percent of reef systems globally. The Great Barrier Reef, the world's largest coral system, lost more than half of its shallow-water corals during back-to-back bleaching years in 2016 and 2017.
+
+Scientists have identified a "safe limit" of 1.5°C above pre-industrial temperatures, above which recovery between bleaching events becomes impossible for most coral species. Current trajectories suggest that even under optimistic emissions reduction scenarios, approximately 70 to 90 percent of coral reefs will be severely degraded by 2050. Under higher-emission scenarios, functional coral reefs could be virtually eliminated by the same date.
+
+Despite this bleak outlook, researchers have identified several potential interventions. Assisted evolution programs aim to breed heat-resistant coral strains. Coral farming and transplantation projects seek to repopulate damaged reefs. Marine protected areas, while unable to address ocean warming directly, can reduce local stressors such as overfishing and pollution, improving reef resilience. However, scientists broadly agree that these measures can only complement — not replace — the fundamental need to reduce greenhouse gas emissions.`,
+  questions: [
+    {
+      id: 'rc002q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, coral bleaching occurs when:',
+      o: [
+        'Coral reefs are exposed to overfishing and pollution simultaneously',
+        'Ocean temperatures fall below the pre-industrial baseline',
+        'Corals expel the symbiotic algae that provide most of their energy',
+        'Carbon dioxide levels exceed the 1.5°C threshold identified by scientists',
+        'Marine protected areas fail to reduce local environmental stressors'
+      ], a: 2,
+      ex: `<strong>Detail Question — Definition:</strong> The passage defines bleaching in paragraph 1: "corals expel the symbiotic algae that give them color and provide up to 90 percent of their energy." This is the direct cause of bleaching. Option (D) confuses °C (temperature) with CO₂. Answer: (C).`
+    },
+    {
+      id: 'rc002q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The passage suggests that marine protected areas are most useful because they:',
+      o: [
+        'Can directly reverse the effects of ocean warming on coral reefs',
+        'Eliminate the need for assisted evolution programs',
+        'Provide a long-term solution to greenhouse gas emissions',
+        'Reduce local threats that weaken coral resilience even if they cannot address warming',
+        'Are the most cost-effective of all coral conservation strategies'
+      ], a: 3,
+      ex: `<strong>Inference Question — Specific Detail:</strong> The passage states MPAs "can reduce local stressors such as overfishing and pollution, improving reef resilience," but explicitly notes they are "unable to address ocean warming directly." This makes (D) the best answer — they improve resilience by managing local pressures, not by solving the root cause. Answer: (D).`
+    },
+    {
+      id: 'rc002q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'Which of the following best describes the overall structure of the passage?',
+      o: [
+        'A refutation of a common misconception about coral reef ecology, followed by corrected data',
+        'A description of a problem, evidence of its severity, a future outlook, and potential responses',
+        'A comparison between two competing scientific theories about coral bleaching',
+        'A historical account of coral reef formation followed by an analysis of modern threats',
+        'An argument that technological interventions are sufficient to save coral reefs'
+      ], a: 1,
+      ex: `<strong>Structure/Organization Question:</strong> Paragraph 1 describes the problem (bleaching), paragraph 2 provides evidence of severity (bleaching events), paragraph 3 gives the future outlook (projections), and paragraph 4 discusses potential interventions. This matches option (B). The passage does NOT argue interventions are sufficient — it explicitly says they cannot replace emissions reductions, ruling out (E). Answer: (B).`
+    }
+  ]
+},
+
+/* ── RC-3: Behavioral Economics ── */
+{
+  id: 'rc003',
+  title: 'Behavioral Economics and Decision-Making',
+  passage: `Traditional economic theory assumes that individuals make decisions rationally — that they evaluate all available information, weigh costs and benefits consistently, and choose options that maximize their utility. This model, known as Homo economicus, has been the dominant paradigm in economics for over a century. However, decades of experimental research by psychologists and economists have revealed systematic patterns of irrational behavior that the classical model cannot explain.
+
+One such pattern is loss aversion, first documented by Daniel Kahneman and Amos Tversky in 1979. Their research demonstrated that the psychological impact of a loss is approximately twice as powerful as an equivalent gain. A person who loses $100 experiences roughly twice the emotional distress of the pleasure they would feel from gaining $100. This asymmetry profoundly influences decision-making: people will often accept a certain smaller gain over a risky but potentially larger gain, and will take on greater risk to avoid a certain loss.
+
+A related phenomenon is the status quo bias — the tendency for individuals to prefer the current state of affairs over alternatives, even when change would be objectively beneficial. This is often attributed to loss aversion: departing from the status quo involves losses (giving up what one has), while the gains from change are perceived as less certain. Consequently, default options — the choices made automatically in the absence of active decision-making — have enormous influence on outcomes. Numerous studies have shown that default enrollment in pension savings plans dramatically increases participation rates compared to opt-in systems requiring active sign-up.
+
+Behavioral economics has important policy implications. "Nudge theory," developed by Richard Thaler and Cass Sunstein, proposes that choice architecture — the way options are presented — can steer individuals toward better decisions without restricting freedom of choice. By redesigning defaults, simplifying forms, or changing the order in which options are presented, policymakers can improve health, savings, and energy consumption outcomes at minimal cost. Critics, however, argue that nudges are paternalistic and that individuals should be free to make their own choices without being manipulated by the design of choice environments.`,
+  questions: [
+    {
+      id: 'rc003q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, loss aversion refers to the tendency to:',
+      o: [
+        'Evaluate gains and losses with equal emotional weight',
+        'Prefer uncertain gains over certain losses of the same magnitude',
+        'Experience the psychological impact of losses more strongly than equivalent gains',
+        'Avoid all situations involving financial risk regardless of potential rewards',
+        'Make decisions based solely on the probability of a favorable outcome'
+      ], a: 2,
+      ex: `<strong>Detail Question — Definition:</strong> The passage defines loss aversion as: "the psychological impact of a loss is approximately twice as powerful as an equivalent gain." Option (C) captures this precisely. Option (A) is the opposite of what the passage describes. Answer: (C).`
+    },
+    {
+      id: 'rc003q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The author mentions default enrollment in pension plans primarily to illustrate:',
+      o: [
+        'The failure of traditional economic theory to predict saving behavior',
+        'How status quo bias can be exploited to produce positive behavioral outcomes',
+        'Why individuals consistently make irrational financial decisions',
+        'The limitations of nudge theory in real-world policy applications',
+        'That loss aversion does not apply to long-term financial planning'
+      ], a: 1,
+      ex: `<strong>Purpose Question:</strong> The pension plan example appears in paragraph 3, which discusses status quo bias and default options. The example illustrates how defaults exploit the status quo bias — people tend to remain in whatever option is set by default — in a way that produces beneficial outcomes (higher savings rates). This matches (B). Answer: (B).`
+    },
+    {
+      id: 'rc003q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'The critics mentioned in the final paragraph would most likely agree with which of the following statements?',
+      o: [
+        'Behavioral economics provides no useful insights for policy design',
+        'Nudge theory has been proven ineffective in improving health and savings outcomes',
+        'Policymakers should use only financial incentives, not choice architecture, to influence behavior',
+        'Redesigning choice environments to influence behavior raises concerns about individual autonomy',
+        'Loss aversion is not a reliable predictor of human behavior in real-world settings'
+      ], a: 3,
+      ex: `<strong>Inference — Author's Perspective on Critics:</strong> The critics argue nudges are "paternalistic" and that individuals "should be free to make their own choices without being manipulated." This is a concern about autonomy and freedom of choice — matching (D). The critics do not deny nudges work (they call them "manipulating," implying they do), so (B) is wrong. Answer: (D).`
+    }
+  ]
+},
+
+/* ── RC-4: The Rise of Microfinance ── */
+{
+  id: 'rc004',
+  title: 'Microfinance: Promise and Limitations',
+  passage: `Microfinance — the provision of small loans, savings accounts, and other financial services to low-income individuals who lack access to conventional banking — emerged as a promising development tool in the 1970s and 1980s. Muhammad Yunus, whose Grameen Bank in Bangladesh became the most widely cited model, demonstrated that poor individuals, particularly women, could reliably repay small loans and use them to build sustainable livelihoods. By 2010, microfinance institutions worldwide served an estimated 200 million borrowers, and Yunus's work was recognized with the Nobel Peace Prize.
+
+However, the initial enthusiasm for microfinance has given way to more tempered assessments. Several randomized controlled trials conducted in the 2000s and 2010s found that access to microloans produced modest but not transformative improvements in household income. In one major study conducted across six countries, the researchers found that borrowers increased business investment and assets, but showed no significant improvements in income, consumption, or health over a three-year period. The authors concluded that microfinance "is not a panacea."
+
+Critics have also raised concerns about the behavior of commercial microfinance institutions (MFIs), which entered the sector in large numbers as the industry grew. Unlike nonprofit MFIs, commercial institutions face pressure to maximize returns, leading some to charge high interest rates — sometimes exceeding 100 percent annually — and to employ aggressive collection practices. In several countries, including India and Mexico, these practices contributed to household over-indebtedness and, in extreme cases, borrower suicides. The rapid growth of the industry outpaced regulatory oversight in many regions.
+
+Defenders of microfinance counter that critics focus disproportionately on the failures of commercial MFIs while ignoring the broader ecosystem of financial inclusion. They argue that access to savings accounts, insurance products, and payment systems — not just loans — can meaningfully improve the economic security of low-income households. Recent research suggests that the benefits of financial inclusion are real but heterogeneous: some households benefit substantially while others see little or no improvement, and the design and governance of the specific institution matters enormously.`,
+  questions: [
+    {
+      id: 'rc004q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, which of the following describes a finding of the randomized controlled trials mentioned in paragraph 2?',
+      o: [
+        'Microloans produced transformative increases in borrower income over three years',
+        'Access to microloans had no measurable effect on business investment',
+        'Borrowers increased business investment but showed no significant income improvements',
+        'Microfinance was found to be effective only in Asian countries, not across six countries',
+        'The trials confirmed that microfinance is a reliable solution to poverty reduction'
+      ], a: 2,
+      ex: `<strong>Detail Question:</strong> The passage states that studies found "borrowers increased business investment and assets, but showed no significant improvements in income, consumption, or health." Option (C) accurately reflects this — investment improved but income did not. The passage says the study was across six countries, ruling out (D). Answer: (C).`
+    },
+    {
+      id: 'rc004q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The primary purpose of paragraph 3 is to:',
+      o: [
+        'Present evidence that microfinance has been entirely ineffective as a development tool',
+        'Compare nonprofit and commercial MFIs to show that nonprofits are always superior',
+        'Describe a specific concern about commercial microfinance institutions and the risks of rapid industry growth',
+        'Argue that microfinance should be banned in developing countries due to its harmful effects',
+        'Explain the regulatory frameworks that governments have put in place to govern MFIs'
+      ], a: 2,
+      ex: `<strong>Paragraph Purpose Question:</strong> Paragraph 3 focuses on commercial MFIs — their high interest rates, aggressive collections, and contribution to over-indebtedness. It also mentions that rapid growth "outpaced regulatory oversight." This matches (C). The paragraph does not claim microfinance should be banned (D) or that it has been entirely ineffective (A). Answer: (C).`
+    },
+    {
+      id: 'rc004q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'The passage implies that which of the following would most likely improve microfinance outcomes?',
+      o: [
+        'Restricting access to loans to male borrowers rather than women',
+        'Requiring all microfinance institutions to operate as commercial entities to increase efficiency',
+        'Ensuring strong institutional design and governance rather than focusing solely on loan access',
+        'Eliminating randomized controlled trials as a method for evaluating microfinance programs',
+        'Expanding microfinance services exclusively to urban populations where oversight is easier'
+      ], a: 2,
+      ex: `<strong>Application/Inference Question:</strong> The final paragraph states that "the design and governance of the specific institution matters enormously." This directly implies (C) — good institutional design and governance, not just loan access, drives better outcomes. The passage also suggests broader financial products (savings, insurance) help, not restrictions on borrowers by gender or geography. Answer: (C).`
+    }
+  ]
+},
+
+/* ── RC-5: Artificial Intelligence in Medicine ── */
+{
+  id: 'rc005',
+  title: 'AI Diagnostics in Healthcare',
+  passage: `Artificial intelligence systems trained on large medical datasets have demonstrated remarkable accuracy in diagnosing a range of conditions from medical images. In studies comparing AI performance to that of board-certified radiologists, AI systems have matched or exceeded human performance in detecting diabetic retinopathy from retinal scans, skin cancer from dermatological images, and early-stage lung cancer from chest X-rays. A 2019 study published in Nature Medicine reported that an AI system detected breast cancer with greater accuracy than an international panel of six radiologists.
+
+These results have generated significant excitement about AI's potential to improve diagnostic accuracy, reduce costs, and expand access to specialized medical expertise in underserved regions. In low-income countries where specialist physicians are scarce, AI diagnostic tools could provide high-quality screening at a fraction of the cost, potentially saving millions of lives annually.
+
+However, experts caution that the performance of AI diagnostic systems in controlled research settings may not transfer to clinical practice. Most benchmark studies evaluate AI performance on carefully curated datasets that may not reflect the full diversity of patients encountered in real hospitals. AI systems trained predominantly on data from specific demographic groups — often wealthier, predominantly white populations — have shown reduced accuracy when applied to other groups, raising equity concerns. In one frequently cited study, a commercial AI system used to guide healthcare resource allocation was found to systematically disadvantage Black patients relative to white patients with equivalent health needs.
+
+Furthermore, the integration of AI into clinical workflows raises questions of accountability. When an AI system makes an incorrect diagnosis, determining responsibility — whether it lies with the algorithm developer, the hospital, or the supervising physician — remains legally and ethically unresolved. Critics also warn of automation bias: the tendency of human practitioners to over-rely on AI recommendations, potentially reducing the critical scrutiny that expert human judgment provides.`,
+  questions: [
+    {
+      id: 'rc005q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, which of the following is cited as a potential benefit of AI diagnostic tools in low-income countries?',
+      o: [
+        'The elimination of diagnostic errors by removing human physicians from the process',
+        'Providing high-quality screening at lower cost where specialist physicians are scarce',
+        'Generating revenue for AI companies that can be reinvested in medical research',
+        'Training local physicians to use advanced diagnostic techniques independently',
+        'Reducing the bias that currently exists in AI systems trained on unrepresentative data'
+      ], a: 1,
+      ex: `<strong>Detail Question:</strong> Paragraph 2 states that in low-income countries "where specialist physicians are scarce, AI diagnostic tools could provide high-quality screening at a fraction of the cost." This directly matches (B). The passage does not suggest eliminating human physicians (A). Answer: (B).`
+    },
+    {
+      id: 'rc005q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The study about the commercial AI system and Black patients is mentioned primarily to:',
+      o: [
+        'Prove that AI systems are fundamentally incapable of making accurate medical decisions',
+        'Illustrate the equity concerns that arise when AI training data is not demographically representative',
+        'Argue that all AI diagnostic systems should be immediately withdrawn from clinical use',
+        'Show that AI systems perform better than human physicians when given diverse patient data',
+        'Demonstrate that healthcare resource allocation is more complex than diagnostic tasks'
+      ], a: 1,
+      ex: `<strong>Evidence Purpose Question:</strong> The study appears in the paragraph discussing how AI systems "trained predominantly on data from specific demographic groups...have shown reduced accuracy when applied to other groups, raising equity concerns." The Black patient study is a specific example of this equity problem. It does not argue AI should be withdrawn (C) — the passage presents this as a concern to address. Answer: (B).`
+    },
+    {
+      id: 'rc005q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'The concept of "automation bias" as described in the passage suggests that:',
+      o: [
+        'AI systems inevitably develop biases against underrepresented patient groups',
+        'Physicians trained in using AI will become more accurate diagnosticians over time',
+        'Over-reliance on AI recommendations could reduce the quality of critical human oversight',
+        'Legal accountability for AI errors should rest entirely with the algorithm developer',
+        'AI systems should be programmed to reject human override in order to maintain accuracy'
+      ], a: 2,
+      ex: `<strong>Vocabulary-in-Context / Concept Application:</strong> The passage defines automation bias as "the tendency of human practitioners to over-rely on AI recommendations, potentially reducing the critical scrutiny that expert human judgment provides." This matches (C) — over-reliance on AI could reduce the quality of human oversight. Answer: (C).`
+    }
+  ]
+},
+
+/* ── RC-6: Urban Heat Islands ── */
+{
+  id: 'rc006',
+  title: 'The Urban Heat Island Effect',
+  passage: `The urban heat island (UHI) effect refers to the phenomenon whereby cities are significantly warmer than the surrounding rural areas. The primary cause is the replacement of natural land cover with impervious surfaces — concrete, asphalt, and buildings — that absorb and re-emit solar radiation as heat more efficiently than vegetation and soil. Additionally, human activities such as transportation, industrial production, and building heating and cooling generate substantial waste heat. Studies in major metropolitan areas have documented average temperature differences of 1 to 3 degrees Celsius between urban cores and rural surroundings, with differences exceeding 10 degrees Celsius possible on calm, clear nights.
+
+The health consequences of elevated urban temperatures are significant. Heat waves are the deadliest form of weather-related disaster in many developed countries, with the 2003 European heat wave causing an estimated 70,000 excess deaths. Urban residents, particularly the elderly, the economically disadvantaged, and those in buildings without air conditioning, face disproportionately high risk during extreme heat events. The UHI effect amplifies these risks by raising baseline temperatures, increasing the intensity and duration of heat events within cities.
+
+City planners and researchers have proposed several strategies to mitigate UHIs. Increasing urban tree canopy and installing green roofs — rooftops covered with vegetation — can reduce surface temperatures by providing shade and through the cooling process of evapotranspiration. Replacing dark-colored asphalt and roofing materials with reflective "cool" alternatives reduces heat absorption. Some cities have implemented urban water features and increased the permeable surface area to allow for evaporative cooling.
+
+Despite the availability of these interventions, implementation faces substantial challenges. Green infrastructure is expensive to install and maintain, and the benefits are unevenly distributed — wealthy neighborhoods with more trees are already cooler, while poorer neighborhoods with less green space suffer the greatest heat burden. Coordinating across multiple municipal agencies and private property owners adds further complexity. Researchers have noted that effective UHI mitigation requires not only technical solutions but also equitable planning frameworks that prioritize the most vulnerable communities.`,
+  questions: [
+    {
+      id: 'rc006q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, which of the following is a primary cause of the urban heat island effect?',
+      o: [
+        'The increased number of automobiles in city centers during peak commuting hours',
+        'Industrial pollution that traps heat in the lower atmosphere above cities',
+        'The replacement of natural land cover with impervious surfaces that absorb and re-emit heat',
+        'The reduced wind speed experienced in urban areas due to tall buildings',
+        'The concentration of human population in small geographic areas'
+      ], a: 2,
+      ex: `<strong>Detail Question — Cause:</strong> Paragraph 1 identifies "the replacement of natural land cover with impervious surfaces — concrete, asphalt, and buildings — that absorb and re-emit solar radiation as heat more efficiently than vegetation" as the primary cause. This matches (C). Answer: (C).`
+    },
+    {
+      id: 'rc006q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The passage implies that green infrastructure strategies for UHI mitigation are most problematic because:',
+      o: [
+        'They are technically ineffective at reducing surface temperatures in urban environments',
+        'They require removing existing buildings, which is politically unpopular',
+        'Their benefits tend to be concentrated in areas that are already cooler and more affluent',
+        'City governments lack the technical expertise to implement them effectively',
+        'They worsen air quality by introducing allergens from urban vegetation'
+      ], a: 2,
+      ex: `<strong>Inference Question:</strong> Paragraph 4 states that "wealthy neighborhoods with more trees are already cooler, while poorer neighborhoods with less green space suffer the greatest heat burden." This implies that green infrastructure benefits are inequitably distributed — wealthier areas get more benefit, poorer areas (which need it most) get less. This matches (C). Answer: (C).`
+    },
+    {
+      id: 'rc006q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'Which of the following best describes the relationship between paragraphs 3 and 4?',
+      o: [
+        'Paragraph 3 presents a problem and paragraph 4 provides its historical context',
+        'Paragraph 3 describes proposed solutions and paragraph 4 identifies obstacles to their implementation',
+        'Paragraph 3 argues for one policy approach and paragraph 4 argues against it',
+        'Paragraph 3 presents research findings and paragraph 4 critiques the methodology used',
+        'Paragraph 3 focuses on global interventions and paragraph 4 narrows the focus to specific cities'
+      ], a: 1,
+      ex: `<strong>Structural Relationship Question:</strong> Paragraph 3 lists mitigation strategies (green roofs, cool surfaces, water features). Paragraph 4 begins "Despite the availability of these interventions" and discusses cost, inequity, and coordination challenges. This is a classic solution → obstacle structure, matching (B). Answer: (B).`
+    }
+  ]
+},
+
+/* ── RC-7: The Gig Economy ── */
+{
+  id: 'rc007',
+  title: 'The Gig Economy and Labor Markets',
+  passage: `The rapid expansion of platform-based "gig" work — in which workers are engaged as independent contractors through digital platforms such as ride-hailing, food delivery, and freelancing services — represents one of the most significant transformations of labor markets in recent decades. Estimates suggest that approximately 15 to 25 percent of workers in advanced economies now participate in gig work to some degree, though definitions vary and consistent measurement is difficult.
+
+Proponents argue that gig work offers substantial benefits to workers, particularly flexibility. Unlike traditional employment, gig workers can set their own hours, work for multiple platforms simultaneously, and pursue other activities — caregiving, education, creative work — alongside their gig income. Surveys consistently show that many gig workers value this flexibility highly, with a substantial minority reporting that they would not accept a traditional job even if offered one.
+
+Critics counter that the apparent flexibility of gig work often masks economic precarity. Most gig workers are classified as independent contractors, which means they are not entitled to employee benefits such as health insurance, retirement contributions, paid leave, or unemployment insurance. Without the protections of employment law, gig workers are also typically ineligible for minimum wage guarantees and have limited legal recourse if a platform arbitrarily deactivates their account. Research suggests that when the costs of self-provision of benefits are factored in, effective hourly earnings for many gig workers fall below minimum wage.
+
+The legal and regulatory status of gig workers remains actively contested in courts and legislatures across the globe. California's Proposition 22, passed in 2020, exempted gig economy companies from a state law requiring them to classify drivers as employees, after the companies spent over $200 million on a ballot campaign. The European Union has proposed legislation that would create a presumption of employee status for platform workers, though implementation faces resistance from platform companies. The central policy question — whether gig workers should be classified as employees, independent contractors, or a novel intermediate category — remains unresolved.`,
+  questions: [
+    {
+      id: 'rc007q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, why are most gig workers ineligible for minimum wage guarantees?',
+      o: [
+        'Gig work falls outside the scope of federal and state minimum wage laws in all jurisdictions',
+        'Gig workers voluntarily waive their right to minimum wage when signing platform agreements',
+        'They are classified as independent contractors rather than employees and therefore lack employee protections',
+        'Platforms are headquartered in jurisdictions with no minimum wage requirements',
+        'The variable nature of gig earnings makes it impossible to calculate an hourly wage'
+      ], a: 2,
+      ex: `<strong>Detail Question — Causal Reasoning:</strong> Paragraph 3 states: "Most gig workers are classified as independent contractors, which means they are not entitled to employee benefits...Gig workers are also typically ineligible for minimum wage guarantees." The classification as independent contractors is the key reason. Answer: (C).`
+    },
+    {
+      id: 'rc007q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The author\'s treatment of California\'s Proposition 22 is primarily intended to:',
+      o: [
+        'Argue that gig economy companies acted unethically in spending $200 million on a ballot campaign',
+        'Illustrate the complex and contested nature of the legal status of gig workers',
+        'Show that the gig economy model is economically unsustainable without government protection',
+        'Demonstrate that workers overwhelmingly prefer to be classified as independent contractors',
+        'Present evidence that the European Union\'s approach to gig work regulation is superior'
+      ], a: 1,
+      ex: `<strong>Purpose Question:</strong> Paragraph 4 discusses the "actively contested" legal status of gig workers globally, using Proposition 22 and EU proposals as examples of ongoing battles. The purpose is to illustrate the contested and unresolved nature of the regulatory landscape. The author does not explicitly argue Proposition 22 was unethical (A) or that EU law is superior (E). Answer: (B).`
+    },
+    {
+      id: 'rc007q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'The passage suggests that the debate between proponents and critics of gig work is fundamentally about:',
+      o: [
+        'Whether digital platforms can be regulated without reducing their economic efficiency',
+        'How to measure the proportion of workers engaged in gig work across economies',
+        'Whether the flexibility gig work provides is an adequate trade-off for the loss of labor protections',
+        'Whether traditional employment will eventually disappear as a result of platform-based work',
+        'Which legal jurisdiction has adopted the most effective regulatory framework for gig workers'
+      ], a: 2,
+      ex: `<strong>Synthesis Question — Core Tension:</strong> Proponents emphasize flexibility; critics argue this "masks economic precarity" (loss of benefits, protections, guaranteed minimum wage). The fundamental debate is whether flexibility justifies the trade-off of labor protections. Option (C) captures this tension precisely. Answer: (C).`
+    }
+  ]
+},
+
+/* ── RC-8: Antibiotic Resistance ── */
+{
+  id: 'rc008',
+  title: 'The Antibiotic Resistance Crisis',
+  passage: `Antibiotic resistance — the ability of bacteria to withstand the effects of drugs designed to kill them — has been described by the World Health Organization as one of the biggest threats to global health, food security, and development. When bacteria develop resistance, standard treatments become ineffective, infections become difficult or impossible to cure, and the risk of disease spread, severe illness, and death increases substantially. The WHO estimates that antibiotic-resistant infections currently cause approximately 700,000 deaths annually, a figure that could rise to 10 million per year by 2050 if trends continue.
+
+The primary driver of resistance is the overuse and misuse of antibiotics in human medicine and agriculture. In many countries, antibiotics are available without prescription and are routinely prescribed for viral infections such as colds and flu, against which they have no effect. In agriculture, antibiotics are used not only to treat sick animals but, in many jurisdictions, as growth promoters in healthy livestock — a practice that accounts for a substantial share of global antibiotic use and creates direct pathways for resistance to spread from animals to humans through the food chain.
+
+The pipeline of new antibiotics in development is alarmingly thin. The discovery of new antibiotic classes has largely stalled since the 1980s, as the economic incentives for pharmaceutical companies to invest in antibiotic development are weak. Unlike medications for chronic conditions that are taken daily for years, antibiotics are taken for short courses; new antibiotics, when developed, are held in reserve to preserve their effectiveness, limiting revenue. As a result, most large pharmaceutical companies have exited antibiotic research.
+
+Addressing resistance will require action across multiple domains. Greater surveillance and stewardship programs can reduce unnecessary antibiotic prescribing. Agricultural reforms — restricting antibiotic use to treating sick animals — are underway in some jurisdictions. Novel incentive structures, including "pull" incentives such as prizes and market-entry rewards, have been proposed to encourage pharmaceutical investment in antibiotic development. International coordination is essential, as resistance bacteria do not respect national borders.`,
+  questions: [
+    {
+      id: 'rc008q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, why are antibiotics often ineffective when prescribed for colds or flu?',
+      o: [
+        'Viral resistance to antibiotics has increased dramatically over the past decade',
+        'Cold and flu viruses mutate too rapidly for antibiotics to target effectively',
+        'Colds and flu are caused by viruses, against which antibiotics have no effect',
+        'Antibiotics are only effective when combined with antiviral medications',
+        'The dosage of antibiotics prescribed for viral infections is typically insufficient'
+      ], a: 2,
+      ex: `<strong>Detail Question:</strong> Paragraph 2 states antibiotics "are routinely prescribed for viral infections such as colds and flu, against which they have no effect." The reason is that these are viral infections and antibiotics target bacteria, not viruses. Answer: (C).`
+    },
+    {
+      id: 'rc008q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The passage suggests that pharmaceutical companies have reduced investment in antibiotic research primarily because:',
+      o: [
+        'The scientific challenges of discovering new antibiotic classes are insurmountable',
+        'Government regulations make it too expensive to bring new antibiotics to market',
+        'The economic model for antibiotics — short courses held in reserve — limits revenue potential',
+        'Existing antibiotics remain effective enough that new ones are not urgently needed',
+        'Research into antibiotic resistance has proven scientifically unproductive since the 1980s'
+      ], a: 2,
+      ex: `<strong>Inference Question — Causal Reasoning:</strong> Paragraph 3 explains: antibiotics are taken for short courses, new ones are held in reserve — both factors limit revenue. "As a result, most large pharmaceutical companies have exited antibiotic research." The economic model, not scientific difficulty, is the primary cause. Answer: (C).`
+    },
+    {
+      id: 'rc008q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'Which of the following can be inferred from the passage about "pull" incentives?',
+      o: [
+        'They have been implemented in most major pharmaceutical markets and proven highly effective',
+        'They are designed to make antibiotic research more scientifically tractable',
+        'They aim to compensate for weak market revenue by rewarding successful antibiotic development',
+        'They focus primarily on restricting the agricultural use of antibiotics',
+        'They require individual countries to develop their own antibiotic research programs independently'
+      ], a: 2,
+      ex: `<strong>Inference from Context:</strong> "Pull" incentives are mentioned alongside prizes and market-entry rewards as ways to "encourage pharmaceutical investment in antibiotic development." Given that the problem is weak economic incentives (limited revenue), pull incentives logically aim to compensate for this by providing external rewards for successful development. Answer: (C).`
+    }
+  ]
+},
+
+/* ── RC-9: Corporate Governance ── */
+{
+  id: 'rc009',
+  title: 'Corporate Governance and Shareholder Primacy',
+  passage: `The theory of shareholder primacy — the view that a corporation's primary obligation is to maximize returns to its shareholders — has dominated corporate governance in the United States since the 1970s, when economists Milton Friedman and Michael Jensen articulated its modern form. Friedman's famous 1970 essay argued that corporate executives act as agents for shareholders; using corporate resources for social purposes amounts to an unauthorized tax on shareholders and an illegitimate assumption of public policy responsibility by private actors.
+
+The intellectual and practical influence of shareholder primacy has been profound. Stock-based executive compensation, share buybacks, and financial engineering strategies that boost short-term stock prices at the expense of long-term investment have all been justified under this framework. Between 1980 and 2015, the share of corporate profits distributed to shareholders through dividends and buybacks rose from approximately 30 percent to over 90 percent in large American corporations.
+
+Critics argue that an excessive focus on short-term shareholder returns has had damaging consequences. By prioritizing stock prices, corporations have systematically underinvested in employee training, research and development, and long-term capital. This short-termism, critics contend, has contributed to wage stagnation, increased income inequality, and the erosion of middle-class employment in manufacturing and other sectors. Political scientist Lynn Stout argued that Friedman's framing was legally incorrect: no statute requires corporations to maximize shareholder value, and fiduciary duties can be interpreted to include broader stakeholder interests.
+
+In response to these critiques, the Business Roundtable — an association of chief executives of major American companies — issued a statement in 2019 redefining the purpose of a corporation. The statement, signed by 181 CEOs, committed to serving not only shareholders but also customers, employees, suppliers, and communities. Skeptics questioned whether this represented substantive change or merely a public relations exercise, noting that executive compensation structures remained largely unchanged. Subsequent research found little difference in corporate behavior between signatories and non-signatories in the years following the statement.`,
+  questions: [
+    {
+      id: 'rc009q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, Milton Friedman\'s argument was primarily that:',
+      o: [
+        'Corporations have a legal obligation to maximize returns to shareholders under existing statute',
+        'Executives using corporate resources for social purposes overstep their role as agents for shareholders',
+        'Share buybacks and dividends are the most efficient way to allocate corporate profits',
+        'Short-termism in corporate management leads to long-term economic decline',
+        'Corporate governance should prioritize employee interests over those of shareholders'
+      ], a: 1,
+      ex: `<strong>Detail Question — Specific Argument:</strong> Paragraph 1 states Friedman argued that using corporate resources for social purposes "amounts to an unauthorized tax on shareholders and an illegitimate assumption of public policy responsibility." This means executives overstep their role as shareholder agents. Answer: (B).`
+    },
+    {
+      id: 'rc009q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'Lynn Stout\'s argument, as described in the passage, weakens shareholder primacy theory by:',
+      o: [
+        'Demonstrating empirically that companies prioritizing shareholders perform worse financially',
+        'Showing that shareholders themselves prefer long-term investment over short-term returns',
+        'Arguing that the legal premise of shareholder primacy is incorrect — no statute requires it',
+        'Providing evidence that executive compensation structures incentivize short-termism',
+        'Proposing that fiduciary duties should be eliminated from corporate law'
+      ], a: 2,
+      ex: `<strong>Detail — Specific Argument:</strong> The passage states Stout "argued that Friedman's framing was legally incorrect: no statute requires corporations to maximize shareholder value." This is a legal challenge to the foundational premise of shareholder primacy. Answer: (C).`
+    },
+    {
+      id: 'rc009q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'The passage\'s discussion of the Business Roundtable\'s 2019 statement most strongly suggests that:',
+      o: [
+        'Major corporations are genuinely committed to balancing stakeholder and shareholder interests',
+        'Public commitments by executives are an effective mechanism for changing corporate behavior',
+        'The shift away from shareholder primacy is complete and legally binding in the United States',
+        'Declarations of intent by executives may not translate into meaningful changes in corporate practice',
+        'The Business Roundtable has replaced shareholder primacy with a comprehensive stakeholder model'
+      ], a: 3,
+      ex: `<strong>Inference — Tone and Implication:</strong> The passage notes skeptics called it "a public relations exercise," executive compensation was "largely unchanged," and research found "little difference in corporate behavior." All of this implies the statement had limited practical effect — public commitments did not translate into behavioral change. Answer: (D).`
+    }
+  ]
+},
+
+/* ── RC-10: Scientific Consensus and Policy ── */
+{
+  id: 'rc010',
+  title: 'Scientific Consensus and Policy Decisions',
+  passage: `Democratic societies face a fundamental challenge in translating scientific knowledge into public policy. Science proceeds through the accumulation of evidence, peer review, and gradual consensus — a process that inherently involves uncertainty, revision, and debate among experts. Politics, by contrast, often demands clear, decisive answers to pressing questions. This tension creates opportunities for those who wish to create doubt about scientific findings for political or economic reasons.
+
+Historians of science Naomi Oreskes and Erik Conway documented, in their 2010 book Merchants of Doubt, how a small group of scientists with ties to industry exploited this tension to delay policy action on a range of issues, from the health effects of tobacco to climate change. By emphasizing uncertainties within the scientific literature — uncertainties that are normal features of ongoing research — these actors created the impression that there was no scientific consensus when in fact overwhelming consensus existed. The strategy was explicitly documented in tobacco industry communications: "Doubt is our product."
+
+The climate change debate offers a particularly acute example. Scientific consensus on anthropogenic climate change has been robust for decades: a 2013 analysis found that 97 percent of actively publishing climate scientists endorsed the consensus view. Yet public understanding of this consensus has consistently lagged behind reality. Studies have found that exposure to messaging about scientific uncertainty — including misleading claims by special interest groups — reduces public support for climate policies and increases polarization along political lines.
+
+Addressing this challenge requires distinguishing between legitimate scientific debate — genuine disagreement among experts about methods, models, and interpretation — and manufactured controversy designed to delay policy action. Science communicators and journalists face the difficult task of conveying the inherent uncertainty of scientific knowledge without suggesting equivalence between well-supported consensus views and fringe positions. Some researchers have proposed that media coverage adopt an "evidence-based" framing that reflects the weight of the evidence, rather than a "both sides" framing that implies false balance between majority and minority scientific views.`,
+  questions: [
+    {
+      id: 'rc010q1', t: 'V', d: 'Easy', s: 'Reading Comprehension',
+      q: 'According to the passage, the strategy documented in tobacco industry communications was to:',
+      o: [
+        'Fund independent scientists to produce research contradicting health claims',
+        'Use political lobbying to prevent health research from being published',
+        'Emphasize scientific uncertainties to create the impression that no consensus existed',
+        'Challenge the methodology of peer review to undermine scientific credibility',
+        'Commission advertising campaigns that directly denied the health risks of tobacco'
+      ], a: 2,
+      ex: `<strong>Detail Question — Specific Strategy:</strong> Paragraph 2 states the strategy was "emphasizing uncertainties within the scientific literature...to create the impression that there was no scientific consensus." The tobacco industry quote "Doubt is our product" confirms this. Answer: (C).`
+    },
+    {
+      id: 'rc010q2', t: 'V', d: 'Medium', s: 'Reading Comprehension',
+      q: 'The passage suggests that the "both sides" framing in media coverage is problematic because it:',
+      o: [
+        'Gives equal coverage to scientific experts and non-experts, reducing the quality of debate',
+        'Implies a false equivalence between majority scientific consensus and minority fringe views',
+        'Prevents science communicators from explaining the limitations of current research',
+        'Has been shown to increase public acceptance of fringe scientific positions over time',
+        'Requires journalists to take political positions on scientific controversies'
+      ], a: 1,
+      ex: `<strong>Inference — Specific Concept:</strong> The passage argues for "evidence-based framing that reflects the weight of the evidence, rather than a 'both sides' framing that implies false balance between majority and minority scientific views." The problem with "both sides" is that it implies false equivalence — making fringe views seem as valid as the consensus. Answer: (B).`
+    },
+    {
+      id: 'rc010q3', t: 'V', d: 'Hard', s: 'Reading Comprehension',
+      q: 'Which of the following, if true, would most strengthen the argument presented in paragraph 2?',
+      o: [
+        'Scientific consensus on tobacco\'s health effects emerged decades after the tobacco industry began its campaign of doubt',
+        'The scientists involved in doubt campaigns held legitimate academic positions and published in peer-reviewed journals',
+        'Internal tobacco industry documents explicitly described the goal of creating doubt to delay regulation',
+        'Public health advocates were aware of the tobacco industry\'s strategy at the time it was being implemented',
+        'The same strategy was later applied to delay action on issues beyond tobacco, such as climate change'
+      ], a: 2,
+      ex: `<strong>Strengthen Question:</strong> Paragraph 2 argues that industry actors deliberately exploited scientific uncertainty to delay policy. Option (C) directly strengthens this by providing documented evidence of explicit intent — internal documents showing the goal was to create doubt. The passage already mentions the tobacco quote ("Doubt is our product"), so (C) provides the most direct confirmation of deliberate strategy. Answer: (C).`
+    }
+  ]
+}
+
+]; // end RC_SETS
+
+
 const DB_NAME='GmatDB10K_v2',DB_VER=1;
 let db=null;
 
@@ -1738,7 +3135,34 @@ function setExamType(el){document.querySelectorAll('[data-et]').forEach(b=>b.cla
 function setExamTime(el){document.querySelectorAll('[data-et-time]').forEach(b=>b.classList.remove('on'));el.classList.add('on');examTimeLimit=+el.dataset.etTime;}
 function updateExamInfo(){const cfg=EXAM_CONFIGS[examType];document.getElementById('examInfoCard').innerHTML=cfg.desc.split('\n').map((line,i)=>i===0?`<div style="font-weight:700;color:var(--cream);margin-bottom:5px">${line}</div>`:`<div>${line}</div>`).join('');}
 
-function toggleType(el){const t=el.dataset.t;if(S.types.has(t)){if(S.types.size>1){S.types.delete(t);el.classList.remove('on');}}else{S.types.add(t);el.classList.add('on');}}
+let currentRCNum = 2;
+function setRCNum(el){
+  document.querySelectorAll('[data-rc]').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  currentRCNum = +el.dataset.rc;
+}
+function toggleType(el, special){
+  const t = el.dataset.t;
+  if(special === 'rc'){
+    const on = el.classList.toggle('on');
+    document.getElementById('rcLaunchBox').style.display = on ? '' : 'none';
+    document.getElementById('mainStartBtn').style.display = on ? 'none' : '';
+    // deselect CR/SC if RC selected
+    if(on){
+      document.querySelectorAll('.type-card[data-t="V"]').forEach(c=>c.classList.remove('on'));
+      S.types.delete('V');
+    }
+    return;
+  }
+  if(t==='V'){
+    // Hide RC if CR selected
+    document.getElementById('rcLaunchBox').style.display='none';
+    document.getElementById('mainStartBtn').style.display='';
+    document.querySelectorAll('.type-card[data-t="RC"]').forEach(c=>c.classList.remove('on'));
+  }
+  if(S.types.has(t)){if(S.types.size>1){S.types.delete(t);el.classList.remove('on');}}
+  else{S.types.add(t);el.classList.add('on');}
+}
 function toggleDiff(el){const d=el.dataset.d;if(S.diffs.has(d)){if(S.diffs.size>1){S.diffs.delete(d);el.classList.remove('on');}}else{S.diffs.add(d);el.classList.add('on');}}
 function setNum(el){document.querySelectorAll('[data-n]').forEach(b=>b.classList.remove('on'));el.classList.add('on');S.num=+el.dataset.n;}
 
@@ -1877,6 +3301,435 @@ function stopTimer(){clearInterval(S.tick);}
 function fmt(s){return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
 async function goHome(){stopTimer();document.getElementById('timerEl').style.display='none';showScreen('homeScreen');await refreshHeader();}
+
+
+/* ══════════════════════════════════════════════════════
+   DATA INSIGHTS SPECIAL ENGINE
+   Handles: Two-Part, Table Analysis, MSR, Graphics
+══════════════════════════════════════════════════════ */
+const DIS = {
+  pool: [], cur: 0, sel: null,
+  submitted: false, answers: [],
+  elapsed: 0, tick: null
+};
+
+function startDISpecial(num) {
+  DIS.pool = sh([...DI_SPECIAL_SETS]).slice(0, Math.min(num || 10, DI_SPECIAL_SETS.length));
+  DIS.cur = 0; DIS.sel = null; DIS.submitted = false;
+  DIS.answers = []; DIS.elapsed = 0;
+  showScreen('diSpecScreen');
+  startTimer();
+  renderDIS();
+}
+
+function renderDIS() {
+  const q = DIS.pool[DIS.cur];
+  DIS.sel = null; DIS.submitted = false;
+
+  // Progress
+  const pct = (DIS.cur / DIS.pool.length) * 100;
+  document.getElementById('disProgBar').style.width = pct + '%';
+  document.getElementById('disNum').textContent = `${DIS.cur + 1} / ${DIS.pool.length}`;
+
+  // Badge
+  const typeLabel = {twopart:'Two-Part Analysis',table:'Table Analysis',msr:'Multi-Source Reasoning',graphics:'Graphics Interpretation'};
+  const typeColor = {twopart:'var(--green)',table:'var(--yellow)',msr:'var(--blue)',graphics:'var(--purple)'};
+  document.getElementById('disBadges').innerHTML =
+    `<span class="badge badge-D">Data Insights</span>
+     <span class="badge" style="border-color:${typeColor[q.diType]};color:${typeColor[q.diType]}">${typeLabel[q.diType]}</span>
+     <span class="badge badge-${q.d}">${q.d}</span>`;
+
+  // Hide all panels
+  ['disTwoPart','disTable','disMSR','disGraphics'].forEach(id =>
+    document.getElementById(id).style.display = 'none');
+
+  if (q.diType === 'twopart') renderTwoPart(q);
+  else if (q.diType === 'table') renderTableAnalysis(q);
+  else if (q.diType === 'msr') renderMSR(q);
+  else if (q.diType === 'graphics') renderGraphics(q);
+
+  // Options
+  document.getElementById('disOpts').innerHTML = q.o.map((opt, i) =>
+    `<div class="opt" onclick="disPick(this,${i})">
+       <span class="opt-lbl">${L(i)}</span><span>${opt}</span>
+     </div>`).join('');
+
+  document.getElementById('disExpBox').classList.remove('show');
+  document.getElementById('disBtnSub').disabled = true;
+  document.getElementById('disBtnSub').style.display = '';
+  document.getElementById('disBtnNext').style.display = 'none';
+}
+
+function renderTwoPart(q) {
+  document.getElementById('disTwoPart').style.display = '';
+  document.getElementById('disTpPrompt').innerHTML = q.prompt;
+  const tbl = document.getElementById('disTpTable');
+  tbl.innerHTML = `
+    <thead><tr style="background:var(--raised)">
+      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--cream)">Option</th>
+      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--green)">${q.col1}</th>
+      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--yellow)">${q.col2}</th>
+    </tr></thead>
+    <tbody>${q.rows.map((r,i) => `<tr style="border-bottom:1px solid var(--rim)">
+      <td style="padding:7px 10px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.72rem">${r.label}</td>
+      <td style="padding:7px 10px;color:var(--body)">${r.v1}</td>
+      <td style="padding:7px 10px;color:var(--body)">${r.v2}</td>
+    </tr>`).join('')}</tbody>`;
+}
+
+function renderTableAnalysis(q) {
+  document.getElementById('disTable').style.display = '';
+  document.getElementById('disTablePrompt').innerHTML = q.tableData.prompt;
+  document.getElementById('disTableQ').innerHTML = q.q;
+  const tbl = document.getElementById('disTableData');
+  const headers = q.tableData.tableHeaders;
+  const rows = q.tableData.tableRows;
+  tbl.innerHTML = `<thead><tr>${headers.map(h =>
+    `<th style="padding:6px 9px;background:var(--raised);color:var(--cream);border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65px;font-size:.65rem;white-space:nowrap">${h}</th>`
+  ).join('')}</tr></thead><tbody>${rows.map(row =>
+    `<tr>${row.map((cell,i) =>
+      `<td style="padding:6px 9px;border-bottom:1px solid var(--rim);color:${i===0?'var(--cream)':'var(--body)'};font-family:${i===0?'\'DM Mono\',monospace':'inherit'};font-size:${i===0?'.72rem':'inherit'}">${cell}</td>`
+    ).join('')}</tr>`
+  ).join('')}</tbody>`;
+}
+
+function renderMSR(q) {
+  document.getElementById('disMSR').style.display = '';
+  const sources = q.msrData.sources;
+  let activeTab = 0;
+
+  function showTab(i) {
+    activeTab = i;
+    document.querySelectorAll('.msr-tab').forEach((t,ti) =>
+      t.classList.toggle('active', ti === i));
+    document.getElementById('disMsrContent').innerHTML = sources[i].content;
+  }
+
+  document.getElementById('disMsrTabs').innerHTML = sources.map((s,i) =>
+    `<button class="msr-tab ${i===0?'active':''}" onclick="(${showTab.toString()})(${i})">${s.tab}</button>`
+  ).join('');
+  document.getElementById('disMsrContent').innerHTML = sources[0].content;
+  document.getElementById('disMsrQ').innerHTML = q.q;
+}
+
+function renderGraphics(q) {
+  document.getElementById('disGraphics').style.display = '';
+  document.getElementById('disGfxChart').textContent = q.graphData.chartDesc;
+  document.getElementById('disGfxQ').innerHTML = q.q;
+}
+
+function disPick(el, i) {
+  if (DIS.submitted) return;
+  document.querySelectorAll('#disOpts .opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  DIS.sel = i;
+  document.getElementById('disBtnSub').disabled = false;
+}
+
+async function disSubmit() {
+  if (DIS.sel === null) return;
+  DIS.submitted = true;
+  const q = DIS.pool[DIS.cur];
+  const ok = DIS.sel === q.a;
+  DIS.answers.push({ q, chosen: DIS.sel, ok });
+
+  await txPut('history', {
+    type: 'D', difficulty: q.d, subtype: q.s,
+    correct: ok, chosen: DIS.sel, answer: q.a, timestamp: Date.now()
+  });
+  if (!ok) await txPut('wronglog', { qid: q.id, ...q, wrongAt: Date.now() });
+  await refreshHeader();
+
+  document.querySelectorAll('#disOpts .opt').forEach((el, i) => {
+    el.classList.add('locked');
+    if (i === q.a) el.classList.add('correct');
+    else if (i === DIS.sel && !ok) el.classList.add('wrong');
+  });
+
+  disRevealExp(ok);
+  document.getElementById('disBtnSub').style.display = 'none';
+  document.getElementById('disBtnNext').style.display = '';
+}
+
+function disRevealExp(ok) {
+  const q = DIS.pool[DIS.cur];
+  const b = document.getElementById('disResBanner');
+  if (ok === true) { b.className='result-banner ok'; b.innerHTML='✅ Correct!'; }
+  else if (ok === false) { b.className='result-banner no'; b.innerHTML=`❌ Incorrect. Correct answer: <strong>${L(q.a)}</strong>`; }
+  else b.style.display='none';
+  document.getElementById('disExpText').innerHTML = q.ex;
+  document.getElementById('disExpBox').classList.add('show');
+}
+
+async function disNext() {
+  DIS.cur++;
+  if (DIS.cur < DIS.pool.length) {
+    renderDIS();
+  } else {
+    stopTimer();
+    document.getElementById('timerEl').style.display = 'none';
+    showScreen('resScreen');
+    const ok = DIS.answers.filter(a => a.ok).length;
+    const tot = DIS.answers.length;
+    const pct = Math.round(ok/tot*100);
+    document.getElementById('scorePct').textContent = pct + '%';
+    const ring = document.getElementById('scoreRing');
+    const pEl = document.getElementById('scorePct');
+    if(pct>=80){ring.style.borderColor='var(--green)';pEl.style.color='var(--green)';document.getElementById('scoreMsg').textContent='Excellent! 🎉';document.getElementById('scoreSub').textContent='Strong Data Insights performance!';}
+    else if(pct>=60){ring.style.borderColor='var(--yellow)';pEl.style.color='var(--yellow)';document.getElementById('scoreMsg').textContent='Good Progress! 💪';document.getElementById('scoreSub').textContent='Keep practicing all 5 DI question types!';}
+    else{ring.style.borderColor='var(--red)';pEl.style.color='var(--red)';document.getElementById('scoreMsg').textContent='Keep Going! 📚';document.getElementById('scoreSub').textContent='Focus on reading charts and tables carefully.';}
+    document.getElementById('rC').textContent=ok;
+    document.getElementById('rW').textContent=tot-ok;
+    document.getElementById('rT').textContent=fmt(DIS.elapsed);
+    document.getElementById('reviewEl').innerHTML = DIS.answers.map((a,i) =>
+      `<div class="review-item ${a.ok?'ri-ok':'ri-no'}">
+         <div class="ri-meta">Q${i+1} · ${a.q.s} · ${a.q.d}</div>
+         <div class="ri-text">${(a.q.q||a.q.prompt||'').replace(/<[^>]+>/g,'').slice(0,90)}…</div>
+         <div class="ri-bottom">
+           ${a.ok?'<span style="color:var(--green);font-size:.76rem">✅ Correct</span>':'<span style="color:var(--red);font-size:.76rem">❌ Incorrect</span>'}
+           <span style="font-family:\'DM Mono\',monospace;font-size:.66rem;color:var(--muted)">You:${L(a.chosen)} Ans:${L(a.q.a)}</span>
+         </div>
+       </div>`).join('');
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   READING COMPREHENSION ENGINE
+══════════════════════════════════════════════════════ */
+const RC = {
+  sets: [],        // shuffled RC_SETS for this session
+  curSet: 0,       // current passage index
+  curQ: 0,         // current question within passage
+  sel: null,
+  submitted: false,
+  answers: [],     // {ok, chosen, answer}
+  elapsed: 0,
+  tick: null
+};
+
+function initRC() {
+  RC.sets = sh([...RC_SETS]);
+  RC.curSet = 0;
+  RC.curQ = 0;
+  RC.sel = null;
+  RC.submitted = false;
+  RC.answers = [];
+  RC.elapsed = 0;
+}
+
+function startRC(numPassages) {
+  initRC();
+  RC.sets = RC.sets.slice(0, Math.min(numPassages || 3, RC_SETS.length));
+  showScreen('rcScreen');
+  startTimer();
+  renderRC();
+}
+
+function renderRC() {
+  const set = RC.sets[RC.curSet];
+  const q = set.questions[RC.curQ];
+  RC.sel = null;
+  RC.submitted = false;
+
+  // Progress bar
+  const totalQ = RC.sets.reduce((s, r) => s + r.questions.length, 0);
+  const doneQ  = RC.sets.slice(0, RC.curSet).reduce((s, r) => s + r.questions.length, 0) + RC.curQ;
+  document.getElementById('rcProgBar').style.width = `${(doneQ / totalQ) * 100}%`;
+
+  // Badges
+  document.getElementById('rcBadges').innerHTML =
+    `<span class="badge badge-V">Verbal</span>
+     <span class="badge" style="border-color:var(--purple);color:var(--purple)">Reading Comprehension</span>
+     <span class="badge badge-${q.d}">${q.d}</span>`;
+  document.getElementById('rcSetNum').textContent = `Passage ${RC.curSet + 1}/${RC.sets.length} · Q${RC.curQ + 1}/${set.questions.length}`;
+
+  // Passage
+  document.getElementById('rcPassageTitle').textContent = set.title;
+  document.getElementById('rcPassageText').innerHTML = set.passage
+    .split(/\n{2,}/)
+    .filter(p => p.trim())
+    .map(p => `<p>${p.trim()}</p>`)
+    .join('');
+
+  // Question progress dots
+  document.getElementById('rcProgress').innerHTML = set.questions
+    .map((_, i) => `<div class="rc-dot ${i < RC.curQ ? 'done' : i === RC.curQ ? 'current' : ''}"></div>`)
+    .join('');
+
+  document.getElementById('rcQNum').textContent = `QUESTION ${RC.curQ + 1} OF ${set.questions.length}`;
+  document.getElementById('rcQBody').innerHTML = q.q;
+
+  // Options
+  document.getElementById('rcOpts').innerHTML = q.o.map((opt, i) =>
+    `<div class="opt" onclick="rcPick(this,${i})">
+       <span class="opt-lbl">${L(i)}</span><span>${opt}</span>
+     </div>`
+  ).join('');
+
+  document.getElementById('rcExpBox').classList.remove('show');
+  document.getElementById('rcBtnExp').style.display = '';
+  document.getElementById('rcBtnSub').style.display = '';
+  document.getElementById('rcBtnSub').disabled = true;
+  document.getElementById('rcBtnNext').style.display = 'none';
+  document.getElementById('rcResBanner').style.display = '';
+}
+
+function rcPick(el, i) {
+  if (RC.submitted) return;
+  document.querySelectorAll('#rcOpts .opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  RC.sel = i;
+  document.getElementById('rcBtnSub').disabled = false;
+}
+
+async function rcSubmit() {
+  if (RC.sel === null) return;
+  RC.submitted = true;
+  const q = RC.sets[RC.curSet].questions[RC.curQ];
+  const ok = RC.sel === q.a;
+  RC.answers.push({ q, chosen: RC.sel, ok });
+
+  await txPut('history', {
+    type: 'V', difficulty: q.d, subtype: 'Reading Comprehension',
+    correct: ok, chosen: RC.sel, answer: q.a, timestamp: Date.now()
+  });
+  if (!ok) await txPut('wronglog', { qid: q.id, ...q, wrongAt: Date.now() });
+  await refreshHeader();
+
+  document.querySelectorAll('#rcOpts .opt').forEach((el, i) => {
+    el.classList.add('locked');
+    if (i === q.a) el.classList.add('correct');
+    else if (i === RC.sel && !ok) el.classList.add('wrong');
+  });
+
+  rcRevealExp(ok);
+  document.getElementById('rcBtnSub').style.display = 'none';
+  document.getElementById('rcBtnNext').style.display = '';
+}
+
+function rcRevealExp(ok) {
+  const box = document.getElementById('rcExpBox');
+  const b   = document.getElementById('rcResBanner');
+  const q   = RC.sets[RC.curSet].questions[RC.curQ];
+  if (ok === true)  { b.className = 'result-banner ok'; b.innerHTML = '✅ Correct!'; }
+  else if (ok === false) { b.className = 'result-banner no'; b.innerHTML = `❌ Incorrect. Correct answer: <strong>${L(q.a)}</strong>`; }
+  else b.style.display = 'none';
+  document.getElementById('rcExpText').innerHTML = q.ex;
+  box.classList.add('show');
+}
+
+async function rcNext() {
+  const set = RC.sets[RC.curSet];
+  if (RC.curQ < set.questions.length - 1) {
+    RC.curQ++;
+    renderRC();
+  } else if (RC.curSet < RC.sets.length - 1) {
+    RC.curSet++;
+    RC.curQ = 0;
+    renderRC();
+  } else {
+    // All done → show results
+    stopTimer();
+    document.getElementById('timerEl').style.display = 'none';
+    showScreen('resScreen');
+    const ok  = RC.answers.filter(a => a.ok).length;
+    const tot = RC.answers.length;
+    const pct = Math.round(ok / tot * 100);
+    document.getElementById('scorePct').textContent = pct + '%';
+    const ring = document.getElementById('scoreRing');
+    const pEl  = document.getElementById('scorePct');
+    if (pct >= 80) { ring.style.borderColor='var(--green)'; pEl.style.color='var(--green)'; document.getElementById('scoreMsg').textContent='Excellent! 🎉'; document.getElementById('scoreSub').textContent='Outstanding Reading Comprehension!'; }
+    else if (pct >= 60) { ring.style.borderColor='var(--yellow)'; pEl.style.color='var(--yellow)'; document.getElementById('scoreMsg').textContent='Good Progress! 💪'; document.getElementById('scoreSub').textContent='Keep refining your reading skills!'; }
+    else { ring.style.borderColor='var(--red)'; pEl.style.color='var(--red)'; document.getElementById('scoreMsg').textContent='Keep Going! 📚'; document.getElementById('scoreSub').textContent='Focus on identifying passage structure.'; }
+    document.getElementById('rC').textContent = ok;
+    document.getElementById('rW').textContent = tot - ok;
+    document.getElementById('rT').textContent = fmt(RC.elapsed);
+    document.getElementById('reviewEl').innerHTML = RC.answers.map((a,i) =>
+      `<div class="review-item ${a.ok?'ri-ok':'ri-no'}">
+         <div class="ri-meta">Q${i+1} · Reading Comprehension · ${a.q.d}</div>
+         <div class="ri-text">${(a.q.q||'').slice(0,90)}…</div>
+         <div class="ri-bottom">
+           ${a.ok?'<span style="color:var(--green);font-size:.76rem">✅ Correct</span>':'<span style="color:var(--red);font-size:.76rem">❌ Incorrect</span>'}
+           <span style="font-family:'DM Mono',monospace;font-size:.66rem;color:var(--muted)">You: ${L(a.chosen)} · Ans: ${L(a.q.a)}</span>
+         </div>
+       </div>`
+    ).join('');
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   SECTION BLOCK UI
+══════════════════════════════════════════════════════ */
+let currentDISNum = 5;
+function setDISNum(el){
+  document.querySelectorAll('[data-dis]').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  currentDISNum = +el.dataset.dis;
+}
+const sectionState = {
+  Q: { diffs: new Set(['Easy','Medium','Hard']), num: 10 },
+  V: { diffs: new Set(['Easy','Medium','Hard']), num: 10 },
+  D: { diffs: new Set(['Easy','Medium','Hard']), num: 10 },
+  vType: 'CR'  // 'CR' or 'RC'
+};
+
+function toggleBlock(id) {
+  const body = document.getElementById('body' + id);
+  const block = body ? body.closest('.section-block') : null;
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  // Close all
+  ['Q','V','D','EXAM'].forEach(s => {
+    const b = document.getElementById('body' + s);
+    const bl = b ? b.closest('.section-block') : null;
+    if (b) b.style.display = 'none';
+    if (bl) bl.classList.remove('open');
+  });
+  if (!isOpen) {
+    body.style.display = '';
+    if (block) block.classList.add('open');
+    if (id === 'EXAM') updateExamInfo();
+  }
+}
+
+function toggleSectionDiff(el, section) {
+  const attr = 'data-' + section.toLowerCase() + 'd';
+  const d = el.getAttribute(attr);
+  const diffs = sectionState[section].diffs;
+  if (diffs.has(d)) { if (diffs.size > 1) { diffs.delete(d); el.classList.remove('on'); } }
+  else { diffs.add(d); el.classList.add('on'); }
+}
+
+function setSectionNum(el, section) {
+  const attr = 'data-' + section.toLowerCase() + 'n';
+  document.querySelectorAll('[' + attr + ']').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  sectionState[section].num = +el.getAttribute(attr);
+}
+
+function toggleVType(el) {
+  document.querySelectorAll('[data-vt]').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  const vt = el.dataset.vt;
+  sectionState.vType = vt;
+  document.getElementById('vCROptions').style.display = vt === 'CR' ? '' : 'none';
+  document.getElementById('vRCOptions').style.display = vt === 'RC' ? '' : 'none';
+}
+
+async function startSectionQuiz(section) {
+  const st = sectionState[section];
+  const all = await txGetAll('questions');
+  let pool = all.filter(q => q.type === section && st.diffs.has(q.difficulty));
+  if (!pool.length) { alert('No questions match. Try adding more difficulty levels.'); return; }
+  pool = pool.sort(() => Math.random() - .5);
+  S.quiz = pool.slice(0, Math.min(st.num, pool.length));
+  S.cur = 0; S.answers = []; S.sel = null; S.elapsed = 0; S.submitted = false; S.mode = 'practice';
+  showScreen('qScreen');
+  startTimer();
+  renderQ();
+}
 
 async function init(){
   try{
