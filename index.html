@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GMAT Practice · 今日也繼續加油</title>
+<title>GMAT Practice · Ou Ou Ou請勿沒收</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -223,16 +223,16 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
 </style>
 </head>
 <body>
-<div class="eye-banner">🌿 <span>護眼模式</span> · 不沒收</div>
+<div class="eye-banner">🌿 <span>護眼模式</span> · 今日也請繼續加油</div>
 <div id="initOverlay">
   <div class="init-logo">GMAT Practice</div>
-  <div class="init-sub">10,000題庫 · 174種題型 · 今日也繼續加油</div>
+  <div class="init-sub">Seventeen幫加油</div>
   <div class="init-spinner"></div>
-  <div class="init-msg" id="initMsg">初始化加油...</div>
+  <div class="init-msg" id="initMsg">初始化資料庫...Ou Ou Ou</div>
   <div class="init-bar-wrap"><div class="init-bar" id="initBar" style="width:0%"></div></div>
 </div>
 <header>
-  <div class="logo">GMAT Practice<small>210 Types · Ou Ou Ou</small></div>
+  <div class="logo">GMAT Practice<small>257 Types · All Sections</small></div>
   <div class="hdr-right">
     <div class="pill">練習 <b id="hTot">0</b></div>
     <div class="pill">正確率 <b id="hAcc">—</b></div>
@@ -243,7 +243,7 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
 <div id="homeScreen" class="screen active">
   <div class="hero">
     <h1>GMAT <em>Practice</em></h1>
-    <p>210 Question Types ·  / Seventeen 幫加油</p>
+    <p>257 Question Types · GWD · Manhattan · Magoosh · OG Style · All Sections</p>
   </div>
   <div class="nav-tabs">
     <button class="nav-tab active" id="tabPractice" onclick="switchTab('Practice')">🎯 練習</button>
@@ -254,7 +254,7 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
   <div id="tabPracticeContent">
     <div class="db-status">
       <div class="db-left">題庫 <b id="dbQC">—</b> 題 · 記錄 <b id="dbHC">—</b> 筆 · 錯題 <b id="dbWC">—</b> 道</div>
-      <span class="db-badge">✅ 210 Types · Ou Ou Ou</span>
+      <span class="db-badge">✅ 繼續加油 Ou Ou Ou</span>
     </div>
     <div class="stats-bar">
       <div class="stat-box"><div class="sv" id="sT">0</div><div class="sl">作答總數</div></div>
@@ -2603,6 +2603,886 @@ const GENS=[
 }},
 
 
+
+/* ══════════════════════════════════════════════════════
+   NEW BATCH — GWD / Manhattan / Magoosh / OG Style
+   60 new generators:
+   Q Hard/Medium: 20 (number theory, inequalities, functions, word problems)
+   V CR: 20 (all 8 CR types, GWD/Manhattan difficulty)
+   V SC: 10 (advanced OG/Manhattan SC)
+   D DS: 10 (GWD-style Data Sufficiency)
+══════════════════════════════════════════════════════ */
+
+/* ── Q · Hard · GWD/Manhattan Style (10) ── */
+
+// Factorial trailing zeros
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const n=rc([15,20,25,30,35,40,45,50]);
+  const zeros=Math.floor(n/5)+Math.floor(n/25)+Math.floor(n/125);
+  const {o,a:ai}=makeOpts(zeros,[zeros-1,zeros+1,Math.floor(n/5),zeros+2,zeros-2].filter(v=>v>=0));
+  return{q:`How many trailing zeros does <strong>${n}!</strong> have?`,o,a:ai,
+  ex:`【解析 Explanation】Count factors of 5: ⌊${n}/5⌋ + ⌊${n}/25⌋ = ${Math.floor(n/5)} + ${Math.floor(n/25)} = <strong>${zeros}</strong>. Each pair of 2×5 produces one zero; 2s are always more plentiful. Answer: (${L(ai)}).`};
+}},
+
+// Units digit pattern
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const bases=[2,3,4,7,8,9];
+  const base=rc(bases);
+  const exp=rn(10,99);
+  const cycles={2:[2,4,8,6],3:[3,9,7,1],4:[4,6],7:[7,9,3,1],8:[8,4,2,6],9:[9,1]};
+  const cycle=cycles[base];
+  const units=cycle[(exp-1)%cycle.length];
+  const wrong1=cycle[(exp)%cycle.length];
+  const wrong2=cycle[(exp+1)%cycle.length];
+  const {o,a:ai}=makeOpts(units,[wrong1,wrong2,base%10,(units+2)%10].filter(v=>v!==units));
+  return{q:`What is the units digit of <strong>${base}<sup>${exp}</sup></strong>?`,o,a:ai,
+  ex:`【解析 Explanation】Units digits of powers of ${base} cycle with period ${cycle.length}: [${cycle.join(',')}]. Exponent ${exp}: position = (${exp}-1) mod ${cycle.length} = ${(exp-1)%cycle.length}. Units digit = <strong>${units}</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Absolute value inequality
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const a=rn(2,5),b=rn(1,8);
+  // |x - a| < b  →  a-b < x < a+b, integers: a-b+1 to a+b-1
+  const lo=a-b,hi=a+b;
+  const integers=hi-lo-1; // count of integers strictly inside
+  const {o,a:ai}=makeOpts(integers,[integers+1,integers-1,integers+2,2*b,2*b-1].filter(v=>v>0&&v!==integers));
+  return{q:`How many integers x satisfy <strong>|x − ${a}| < ${b}</strong>?`,o,a:ai,
+  ex:`【解析 Explanation】|x−${a}| < ${b} → ${a}−${b} < x < ${a}+${b} → ${lo} < x < ${hi}. Integers: ${lo+1}, ${lo+2}, …, ${hi-1} → <strong>${integers} integers</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Work rate — alternating shifts (GWD style)
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const rA=rn(3,8),rB=rn(3,8);
+  // Together in one 2-day cycle: 1/rA + 1/rB work
+  const cycleWork=(1/rA+1/rB);
+  const fullCycles=Math.floor(1/cycleWork);
+  const rem=1-fullCycles*cycleWork;
+  // After fullCycles complete cycles (fullCycles*2 days), A works next
+  const daysA=rem*rA; // days for A to finish remainder
+  let total;
+  if(daysA<=1){total=fullCycles*2+daysA;}
+  else{total=fullCycles*2+1+(rem-1/rA)*rB;}
+  total=Math.round(total*10)/10;
+  const {o,a:ai}=makeOpts(total,[total+0.5,total-0.5,rA*rB/(rA+rB),total+1,total-1].filter(v=>v>0&&Math.round(v*10)!==Math.round(total*10)));
+  return{q:`Machines A and B work on alternating days, A first, each working one day at a time. A alone takes <strong>${rA} days</strong>; B alone takes <strong>${rB} days</strong>. How many days to complete the job?`,
+  o:o.map(v=>v+' days'),a:ai,
+  ex:`【解析 Explanation】A's rate = 1/${rA}/day, B's rate = 1/${rB}/day. In each 2-day cycle: 1/${rA}+1/${rB} = ${Math.round((1/rA+1/rB)*100)/100} done. After ${fullCycles} full cycles (${fullCycles*2} days): ~${Math.round((1-fullCycles*cycleWork)*100)/100} remains. Finish ≈ <strong>${total} days</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Sequences — arithmetic/geometric recognition
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const a1=rn(2,8),d=rn(2,6),n=rn(6,12);
+  const an=a1+(n-1)*d;
+  const sum=n*(a1+an)/2;
+  const {o,a:ai}=makeOpts(sum,[sum+d*n,sum-d,an*n,a1*n+d*n,sum+n].filter(v=>v!==sum));
+  return{q:`What is the sum of the first <strong>${n} terms</strong> of the arithmetic sequence: ${a1}, ${a1+d}, ${a1+2*d}, …?`,o,a:ai,
+  ex:`【解析 Explanation】First term a₁=${a1}, common difference d=${d}, n=${n}. Sum = n/2 × (2a₁+(n-1)d) = ${n}/2 × (${2*a1}+${(n-1)*d}) = ${n}/2 × ${2*a1+(n-1)*d} = <strong>${sum}</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Mixture / concentration (GWD style)
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const v1=rn(4,12),c1=rn(20,40),v2=rn(4,12),c2=c1+rn(20,40);
+  const total=(v1*c1+v2*c2)/(v1+v2);
+  const ans=Math.round(total);
+  const {o,a:ai}=makeOpts(ans,[ans+5,ans-5,c1,c2,Math.round((c1+c2)/2)].filter(v=>v!==ans&&v>0));
+  return{q:`${v1} liters of a solution that is <strong>${c1}% acid</strong> is mixed with ${v2} liters that is <strong>${c2}% acid</strong>. What is the concentration of the resulting mixture?`,
+  o:o.map(v=>v+'%'),a:ai,
+  ex:`【解析 Explanation】Total acid = ${v1}×${c1}% + ${v2}×${c2}% = ${v1*c1/100+v2*c2/100} liters. Total volume = ${v1+v2} liters. Concentration = ${v1*c1+v2*c2}/${v1+v2}÷100 ≈ <strong>${ans}%</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Inequalities — quadratic
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const cases=rc([
+    {q:'If x² − 5x + 6 < 0, which of the following must be true?',ans:'2 < x < 3',
+     ws:['x < 2 or x > 3','x = 2 or x = 3','1 < x < 6','x > 0'],
+     ex:'Factor: (x−2)(x−3)<0. Parabola opens up, negative between roots. Solution: 2 < x < 3.'},
+    {q:'For which values of x is x² > 4x?',ans:'x < 0 or x > 4',
+     ws:['0 < x < 4','x > 4 only','x > 2','x ≠ 0 and x ≠ 4'],
+     ex:'x²−4x>0 → x(x−4)>0. Positive when both factors same sign: x<0 or x>4.'},
+    {q:'If |2x − 3| ≤ 7, which of the following represents all possible values of x?',ans:'−2 ≤ x ≤ 5',
+     ws:['x ≤ 5 only','−2 ≤ x < 5','x ≥ −2 only','−7 ≤ x ≤ 7'],
+     ex:'−7 ≤ 2x−3 ≤ 7 → −4 ≤ 2x ≤ 10 → −2 ≤ x ≤ 5.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,
+  ex:`【解析 Explanation】${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// Counting — restricted arrangements (GWD style)
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const n=rn(5,7),r=rn(2,3);
+  // Arrangements of n people in a row where r specific people must be together
+  const together=r; // treat as 1 block
+  const slots=n-together+1; // positions for the block
+  const arrangements=Math.round(
+    Array.from({length:slots},(_,i)=>slots-i).reduce((a,b)=>a*b,1) // (n-r+1)!
+    * Array.from({length:together},(_,i)=>together-i).reduce((a,b)=>a*b,1) // r!
+  );
+  // Simpler: (n-r+1)! × r!
+  const fact=(x)=>x<=1?1:x*fact(x-1);
+  const ans=fact(n-r+1)*fact(r);
+  const {o,a:ai}=makeOpts(ans,[fact(n),ans*2,ans/r,ans+fact(r),fact(n-1)].filter(v=>v>0&&v!==ans));
+  return{q:`In how many ways can <strong>${n} people</strong> be arranged in a row if <strong>${r} specific people must stand together</strong>?`,
+  o:o.map(v=>Math.round(v)+''),a:ai,
+  ex:`【解析 Explanation】Treat the ${r} people as 1 block → ${n-r+1} units to arrange: (${n-r+1})! = ${fact(n-r+1)} ways. The ${r} people within the block can arrange in ${r}! = ${fact(r)} ways. Total = ${fact(n-r+1)} × ${fact(r)} = <strong>${ans}</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Profit / revenue word problem (Manhattan style)
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const cost=rn(40,80),markup=rn(25,60);
+  const price=Math.round(cost*(1+markup/100));
+  const disc=rc([10,15,20,25]);
+  const salePrice=Math.round(price*(1-disc/100));
+  const profitPct=Math.round((salePrice-cost)/cost*100);
+  const {o,a:ai}=makeOpts(profitPct+'%',[markup+'%',(markup-disc)+'%',(profitPct+5)+'%',(profitPct-5)+'%',(disc)+'%'].filter(v=>v!==profitPct+'%'));
+  return{q:`A merchant marks up goods by <strong>${markup}%</strong> above cost, then offers a <strong>${disc}%</strong> discount on the marked price. What is the actual profit percentage on cost?`,o,a:ai,
+  ex:`【解析 Explanation】Cost=$${cost}. Marked price=$${price}. After ${disc}% discount: $${price}×${1-disc/100}=$${salePrice}. Profit% = ($${salePrice}−$${cost})/$${cost}×100 = <strong>${profitPct}%</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Distance-Rate-Time — Overtaking (GWD style)
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const headstart=rn(10,40),rA=rn(40,70),rB=rA+rn(10,25);
+  // B starts when A has traveled headstart miles; B overtakes when B catches A
+  // A's distance = headstart + rA*t; B's distance = rB*t
+  // rB*t = headstart + rA*t → t*(rB-rA) = headstart → t = headstart/(rB-rA)
+  const t=headstart/(rB-rA);
+  const distB=Math.round(rB*t);
+  const {o,a:ai}=makeOpts(distB,[distB+rA,distB-10,Math.round(rA*t),distB+10,distB-rA].filter(v=>v>0&&v!==distB));
+  return{q:`Car A travels at <strong>${rA} mph</strong> and gets a <strong>${headstart}-mile head start</strong>. Car B then travels at <strong>${rB} mph</strong> in the same direction. How far has Car B traveled when it overtakes Car A?`,
+  o:o.map(v=>v+' miles'),a:ai,
+  ex:`【解析 Explanation】Set B's travel time = t. B's dist = A's dist: ${rB}t = ${headstart}+${rA}t → t = ${headstart}/${rB-rA} = ${t} hrs. B's distance = ${rB}×${t} = <strong>${distB} miles</strong>. Answer: (${L(ai)}).`};
+}},
+
+/* ── Q · Medium · OG/GWD Style (10) ── */
+
+// Percent change — successive
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const p1=rc([10,20,25,30,50]),p2=rc([10,20,25,30,50]);
+  const net=Math.round((1+p1/100)*(1-p2/100)*100-100);
+  const {o,a:ai}=makeOpts(net+'%',[(p1-p2)+'%',(net+p1)+'%',(net-5)+'%',(net+5)+'%',(-p2)+'%'].filter(v=>v!==net+'%'));
+  return{q:`A price increases by <strong>${p1}%</strong> and then decreases by <strong>${p2}%</strong>. What is the overall percent change?`,o,a:ai,
+  ex:`【解析 Explanation】Overall = (1+${p1}/100)(1−${p2}/100)−1 = ${(1+p1/100)*(1-p2/100)}−1 = <strong>${net}%</strong>. Cannot simply add/subtract the percentages. Answer: (${L(ai)}).`};
+}},
+
+// Number properties — divisibility
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const cases=rc([
+    {q:'If n is a positive integer, which of the following must be divisible by 3?',
+     ans:'n(n+1)(n+2)',ws:['n²+n','n³−n','n(n+2)','n²+2n+1'],
+     ex:'n(n+1)(n+2) is the product of 3 consecutive integers, always divisible by 3! = 6.'},
+    {q:'If n is divisible by both 6 and 14, which of the following must n also be divisible by?',
+     ans:'21',ws:['28','24','18','9'],
+     ex:'6=2×3, 14=2×7. LCM=42=2×3×7. Divisors of 42: 1,2,3,6,7,14,21,42. Only 21 is among the choices.'},
+    {q:'How many factors does 360 have?',ans:'24',
+     ws:['12','18','20','30'],
+     ex:'360=2³×3²×5. Number of factors=(3+1)(2+1)(1+1)=4×3×2=24.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`【解析 Explanation】${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// Statistics — mean/median/mode
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const n=rn(4,7),vals=Array.from({length:n-1},()=>rn(5,20)).sort((a,b)=>a-b);
+  const targetMean=rn(Math.min(...vals)+1,Math.max(...vals)+5);
+  const last=targetMean*n-vals.reduce((a,b)=>a+b,0);
+  const {o,a:ai}=makeOpts(last,[last+2,last-2,last+targetMean,targetMean,last+1].filter(v=>v!==last));
+  return{q:`The ${n-1} numbers ${vals.join(', ')} have an additional value added to the set. If the mean of all ${n} numbers is <strong>${targetMean}</strong>, what is the added number?`,o,a:ai,
+  ex:`【解析 Explanation】Sum needed = ${targetMean}×${n} = ${targetMean*n}. Current sum = ${vals.reduce((a,b)=>a+b,0)}. Missing value = ${targetMean*n}−${vals.reduce((a,b)=>a+b,0)} = <strong>${last}</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Probability — at least one (complement)
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const p=rc([2,3,4]),q=rc([3,4,5]);
+  // P(success) = p/q for each of 2 independent trials
+  // P(at least one) = 1 - (1-p/q)^2
+  const pFail=(q-p)/q;
+  const pNone=pFail*pFail;
+  const gFail=gcd(q-p,q),gNone=gcd((q-p)*(q-p),q*q);
+  const numNone=(q-p)*(q-p)/gNone,denNone=q*q/gNone;
+  const numAt=denNone-numNone,denAt=denNone;
+  const gAt=gcd(numAt,denAt);
+  const ans=`${numAt/gAt}/${denAt/gAt}`;
+  const {o,a:ai}=makeOpts(ans,[`${p}/${q}`,`${2*p}/${q}`,`${numNone/gNone}/${denNone/gNone}`,`${p*p/(gcd(p*p,q*q))}/${q*q/gcd(p*p,q*q)}`].filter(v=>v!==ans));
+  return{q:`Each trial has a <strong>${p}/${q} probability of success</strong>. In 2 independent trials, what is the probability of <strong>at least one success</strong>?`,o,a:ai,
+  ex:`【解析 Explanation】P(at least one) = 1 − P(none). P(failure) = ${q-p}/${q}. P(no success in 2) = (${q-p}/${q})² = ${(q-p)*(q-p)}/${q*q} = ${numNone/gNone}/${denNone/gNone}. P(at least one) = 1 − ${numNone/gNone}/${denNone/gNone} = <strong>${ans}</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Sets — Venn diagram word problem
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const total=rn(80,150),pctA=rn(40,60),pctB=rn(35,55),pctBoth=rn(15,25);
+  const nA=Math.round(total*pctA/100),nB=Math.round(total*pctB/100),nBoth=Math.round(total*pctBoth/100);
+  const nNeither=total-(nA+nB-nBoth);
+  const {o,a:ai}=makeOpts(nNeither,[nNeither+5,nNeither-5,total-nA-nB,nBoth,nNeither+10].filter(v=>v>=0&&v!==nNeither));
+  return{q:`In a group of <strong>${total} people</strong>, <strong>${pctA}%</strong> speak English, <strong>${pctB}%</strong> speak Mandarin, and <strong>${pctBoth}%</strong> speak both. How many speak <strong>neither</strong>?`,o,a:ai,
+  ex:`【解析 Explanation】|A∪B| = |A|+|B|−|A∩B| = ${nA}+${nB}−${nBoth} = ${nA+nB-nBoth}. Neither = ${total}−${nA+nB-nBoth} = <strong>${nNeither}</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Exponents — comparing values
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const cases=rc([
+    {q:'Which is greater: 2⁵⁰ or 3³³?',ans:'2⁵⁰ is greater',ws:['3³³ is greater','They are equal','Cannot be determined','2⁵⁰ and 3³³ are both irrational'],
+     ex:'2⁵⁰ = (2³)^(50/3) ≈ 8^16.7. 3³³ = (3²)^16.5 ≈ 9^16.5. Since 9 > 8 but 16.5 < 16.7, compare: 2⁵⁰ = 4²⁵; 3³³ < 3³³ vs 2⁵⁰ = 2⁵⁰. Approx: log(2⁵⁰)=50log2≈15.05; log(3³³)=33log3≈15.73. So 3³³ > 2⁵⁰.'},
+    {q:'If 2^x = 3^y, and x and y are positive, which of the following must be true?',ans:'x > y',
+     ws:['x < y','x = y','x = 2y','x/y is irrational'],
+     ex:'Since 2 < 3, raising to the same power gives 2^x < 3^x. For 2^x = 3^y with the smaller base, x must be LARGER than y to compensate. So x > y.'},
+    {q:'What is the value of (√3 + √2)²  + (√3 − √2)²?',ans:'10',
+     ws:['5','6','8','12'],
+     ex:'(√3+√2)² = 3+2√6+2 = 5+2√6. (√3−√2)² = 3−2√6+2 = 5−2√6. Sum = 10.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`【解析 Explanation】${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// Geometry — circle/triangle relationship
+{t:'Q',d:'Hard',s:'Problem Solving',f:()=>{
+  const r=rn(3,8);
+  const cases=rc([
+    {q:`A circle has radius ${r}. What is the area of the largest equilateral triangle that can be inscribed in it?`,
+     ans:`${Math.round(3*Math.sqrt(3)/4*(r*Math.sqrt(3))*(r*Math.sqrt(3)))}`, // side = r√3
+     ws:[`${r*r}`,'3√3r²/4','cannot be determined without more info',`${3*r}`],
+     ex:`Side of inscribed equilateral triangle = r√3 = ${r}√3. Area = (√3/4)(r√3)² = 3√3r²/4 = 3√3×${r*r}/4 ≈ ${Math.round(3*Math.sqrt(3)*r*r/4)}.`},
+    {q:`Point P is inside a circle of radius ${r}. If the distance from the center to P is ${Math.floor(r/2)}, what is the maximum chord length through P?`,
+     ans:`${2*r}`, // max chord through any interior point is the diameter passing closest
+     ws:[`${r+Math.floor(r/2)}`,`${2*Math.floor(r/2)}`,`${r}`,`${Math.round(Math.sqrt(r*r-Math.floor(r/2)*Math.floor(r/2))*2)}`],
+     ex:`The longest chord through any interior point is the diameter. The diameter = 2×${r} = ${2*r}.`},
+  ]);
+  const {o,a:ai}=makeOpts(cases.q.includes('largest equilateral')?`≈${Math.round(3*Math.sqrt(3)*r*r/4)}`:cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`【解析 Explanation】${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// Functions — domain/composition
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const a=rn(2,5),b=rn(1,4),c=rn(2,6);
+  const x=rn(1,5);
+  const fx=a*x+b,gfx=c*fx-a; // g(f(x)) = c(ax+b)-a
+  const ans=gfx;
+  const {o,a:ai}=makeOpts(ans,[ans+a,ans-b,c*a*x+b,ans+c,a*x+b*c].filter(v=>v!==ans));
+  return{q:`If f(x) = ${a}x + ${b} and g(x) = ${c}x − ${a}, what is g(f(${x}))?`,o,a:ai,
+  ex:`【解析 Explanation】f(${x}) = ${a}(${x})+${b} = ${fx}. g(${fx}) = ${c}(${fx})−${a} = ${c*fx}−${a} = <strong>${ans}</strong>. Answer: (${L(ai)}).`};
+}},
+
+// Number line — fractions ordering
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const cases=rc([
+    {q:'Which of the following fractions is closest to 1/2?',ans:'7/15',ws:['3/7','4/9','8/17','5/11'],
+     ex:'Convert: 7/15=0.467, 3/7=0.429, 4/9=0.444, 8/17=0.471, 5/11=0.454. Closest to 0.5 is 8/17=0.471.'},
+    {q:'If 0 < x < 1, which of the following is greatest?',ans:'x^(1/2) (square root of x)',
+     ws:['x²','x³','x','1/x² (largest but not in 0 to 1 range)'],
+     ex:'For 0<x<1: x^(1/2) > x > x² > x³. The square root is closest to 1 for fractions.'},
+    {q:'For which value of x is (x+1)/(x-1) < 0?',ans:'0',
+     ws:['-2','2','3','-3'],
+     ex:'Fraction negative when numerator and denominator have opposite signs. x+1>0, x-1<0 → -1<x<1. x=0 satisfies this.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`【解析 Explanation】${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// Ratio and proportion — OG style
+{t:'Q',d:'Medium',s:'Problem Solving',f:()=>{
+  const ratioA=rn(2,5),ratioB=rn(2,5),ratioC=rn(2,5);
+  const total=rn(3,5)*(ratioA+ratioB+ratioC);
+  const partA=total*ratioA/(ratioA+ratioB+ratioC);
+  const {o,a:ai}=makeOpts(partA,[partA+ratioA,partA-ratioB,total*ratioB/(ratioA+ratioB+ratioC),total/3,partA+1].filter(v=>v>0&&v!==partA));
+  return{q:`Three quantities are in the ratio <strong>${ratioA} : ${ratioB} : ${ratioC}</strong>. If their sum is <strong>${total}</strong>, what is the value of the largest portion?`,
+  o:o.map(v=>Math.round(v)+''),a:ai,
+  ex:`【解析 Explanation】Largest ratio = ${Math.max(ratioA,ratioB,ratioC)}. Largest portion = ${Math.max(ratioA,ratioB,ratioC)}/(${ratioA}+${ratioB}+${ratioC}) × ${total} = <strong>${Math.round(total*Math.max(ratioA,ratioB,ratioC)/(ratioA+ratioB+ratioC))}</strong>. Answer: (${L(ai)}).`};
+}},
+
+/* ── V · CR · All 8 Types — GWD/Manhattan/Magoosh Style (20) ── */
+
+// CR-1: Strengthen — business scenario
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'A tech company switched from in-person to remote work and productivity rose 18%. Management concluded that remote work increases employee productivity.',
+     strengthen:'A control group of similar companies that did not switch to remote work showed no productivity improvement during the same period.',
+     ws:['Remote workers saved an average of 90 minutes of commuting time each day.',
+         'The company upgraded its software tools at the same time as the remote work transition.',
+         'Employee satisfaction scores also increased after the switch.',
+         'Remote work policies are increasingly common in the technology sector.']},
+    {arg:'Hospital X gives all surgical patients a new pre-surgery vitamin protocol. Post-surgery recovery times decreased by 25% last year. Therefore, the vitamin protocol improves surgical recovery.',
+     strengthen:'Other hospitals that adopted identical protocols also saw significant recovery time reductions, while control hospitals without the protocol showed no change.',
+     ws:['Vitamins are generally considered safe with minimal side effects.',
+         'Nurses at Hospital X received additional training in patient care during the same period.',
+         'The hospital also improved its anesthesia protocols last year.',
+         'Recovery time is the most important metric for surgical success.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.strengthen,cases.ws);
+  return{q:`Which of the following, if true, most <strong>strengthens</strong> the argument?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Strengthening with Control Group:</strong> The best strengthener eliminates alternative explanations by showing that the effect occurs ONLY when the variable is present. A comparison group that saw no change rules out confounders. Answer: (${L(ai)}).`};
+}},
+
+// CR-2: Weaken — causal claim
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'Comput-o-Mart pays its salespeople a flat salary regardless of sales volume, unlike competitors whose staff are paid on commission. Therefore, Comput-o-Mart customers can trust that they are getting unbiased advice about which product to buy.',
+     weaken:'Comput-o-Mart employees receive quarterly bonuses based on their store\'s total revenue, creating an incentive to steer customers toward higher-priced products.',
+     ws:['Commissioned salespeople at competing stores must complete mandatory product training.',
+         'Many customers prefer to research products online before visiting any store.',
+         'Comput-o-Mart has lower prices than most competitors on identical products.',
+         'Customer satisfaction surveys at Comput-o-Mart show high overall ratings.']},
+    {arg:'Studies show that students who eat breakfast before school achieve higher test scores. Therefore, schools should require students to eat breakfast to improve academic performance.',
+     weaken:'Students from higher-income families are both more likely to eat breakfast regularly and more likely to receive academic support at home that independently raises test scores.',
+     ws:['Some students have dietary restrictions that make certain breakfast foods unsuitable.',
+         'School breakfast programs have been shown to reduce morning tardiness.',
+         'Hunger negatively affects concentration in laboratory settings.',
+         'Students who skip breakfast report feeling less energetic in the morning.']},
+    {arg:'Every neighborhood that installed security cameras saw a drop in burglaries the following year. City officials concluded that cameras deter burglars.',
+     weaken:'The year after camera installation coincided with an economic expansion that historically correlates with reduced property crime across all neighborhoods, including those without cameras.',
+     ws:['Some residents expressed privacy concerns about the camera installations.',
+         'The cameras were installed in neighborhoods that had experienced the most burglaries.',
+         'Burglars have begun using disguises to avoid being identified on camera.',
+         'Police response time improved in camera-monitored areas.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.weaken,cases.ws);
+  return{q:`Which of the following, if true, most <strong>weakens</strong> the argument?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Weakening — Alternative Explanation / Third Variable:</strong> The strongest weakeners introduce a plausible alternative cause that would produce the observed effect WITHOUT requiring the stated cause. This breaks the causal link. Answer: (${L(ai)}).`};
+}},
+
+// CR-3: Assumption — negation test
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'The city plans to reduce traffic congestion by converting a highway lane to a bus-only lane. Since buses carry more passengers than cars, this conversion will move more people per hour.',
+     assume:'The bus-only lane will be used by enough buses to compensate for the reduced car capacity of the highway.',
+     ws:['Buses are more environmentally friendly than private cars.',
+         'Traffic congestion is the primary commuting complaint in the city.',
+         'The highway currently operates at near-maximum vehicle capacity.',
+         'Most commuters prefer cars over buses for personal reasons.']},
+    {arg:'Researchers recommend that people sleep at least 8 hours per night to maintain cognitive performance. Maria consistently sleeps only 6 hours. Therefore, Maria\'s cognitive performance is likely impaired.',
+     assume:'The relationship between sleep deprivation and cognitive performance is the same for Maria as for the average person studied in the research.',
+     ws:['Maria is aware of the recommended sleep guidelines.',
+         'Cognitive performance can be measured objectively with standard tests.',
+         'Maria has been sleeping 6 hours for several years without complaint.',
+         '8 hours is the minimum, not the optimal, sleep duration for adults.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.assume,cases.ws);
+  return{q:`The argument above relies on which of the following <strong>assumptions</strong>?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Assumption — Negation Test:</strong> Negate each option and ask: "Does the negated statement destroy the argument?" The correct assumption, when negated, makes the conclusion impossible to support. Answer: (${L(ai)}).`};
+}},
+
+// CR-4: Paradox — business/economics
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {sit:'A company laid off 20% of its workforce to cut costs. However, total labor costs increased in the quarter following the layoffs.',
+     explain:'The remaining employees required significant overtime pay to maintain output levels, and the company incurred large severance and recruitment costs.',
+     ws:['The laid-off employees were mostly in low-wage positions.',
+         'Labor costs typically fluctuate with economic conditions.',
+         'The company also expanded into a new market that required additional staff.',
+         'The layoffs reduced morale, causing a decline in productivity.']},
+    {sit:'A gym increased its membership fees by 30%. Within six months, the gym\'s monthly revenue fell significantly.',
+     explain:'The fee increase caused over 40% of existing members to cancel, and the reduced member base was not compensated for by new sign-ups at the higher price.',
+     ws:['The gym opened a new branch location in the same city.',
+         'Gym memberships are generally price-inelastic during economic growth periods.',
+         'The gym\'s operating costs remained unchanged after the price increase.',
+         'Some members had locked-in contracts that prevented immediate cancellation.']},
+    {sit:'Country X\'s government reduced income taxes significantly. Despite this, government tax revenue increased the following year.',
+     explain:'The tax cuts stimulated economic activity and increased employment, expanding the tax base enough to produce higher total revenue even at lower rates.',
+     ws:['Government spending was reduced by an equal amount in the same year.',
+         'The central bank simultaneously raised interest rates.',
+         'Tax evasion declined due to improved enforcement mechanisms.',
+         'Foreign investment into Country X increased following a separate trade agreement.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.explain,cases.ws);
+  return{q:`Which of the following best explains the apparent discrepancy?<br><br><em>${cases.sit}</em>`,o,a:ai,
+  ex:`<strong>Paradox / Explain the Discrepancy:</strong> Both facts are true simultaneously. The correct answer provides a mechanism that makes BOTH facts logical — usually by identifying a consequence or intervening factor the original argument overlooked. Answer: (${L(ai)}).`};
+}},
+
+// CR-5: Inference / Draw Conclusion
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {prem:'All employees at Nexus Corp who received promotions last year had completed the leadership training program. No employee who failed the annual performance review received a promotion.',
+     conc:'Any promoted employee at Nexus Corp last year both completed the leadership program and passed the performance review.',
+     ws:['Every employee who completed the leadership program was promoted.',
+         'The performance review is the most important factor in promotion decisions.',
+         'Failing the performance review is sufficient to prevent any employee advancement.',
+         'Leadership training improves employee performance review scores.']},
+    {prem:'Studies across 15 countries show that nations with higher newspaper readership rates have lower rates of political corruption. No nation with very low newspaper readership has achieved sustained low corruption.',
+     conc:'There appears to be a correlation between newspaper readership and lower political corruption, though causation has not been established.',
+     ws:['Governments should subsidize newspapers to reduce corruption.',
+         'Corruption is caused primarily by a lack of informed voters.',
+         'Countries with high newspaper readership automatically achieve good governance.',
+         'Digital news sources have the same anti-corruption effect as newspapers.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.conc,cases.ws);
+  return{q:`The statements below most strongly support which conclusion?<br><br><em>"${cases.prem}"</em>`,o,a:ai,
+  ex:`<strong>Inference — Conservative Conclusion:</strong> GMAT inferences must follow NECESSARILY from the stated facts. The correct answer is the most conservative, well-supported claim. Beware of answer choices that go beyond the evidence or introduce unwarranted absolutes. Answer: (${L(ai)}).`};
+}},
+
+// CR-6: Evaluate the Argument (GWD style)
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'A beverage company claims its new energy drink improves athletic performance. In a trial, athletes who consumed the drink ran 5% faster on average than their prior personal bests.',
+     evaluate:'Whether the athletes knew they were receiving the active drink rather than a placebo during the trial',
+     ws:['Whether the energy drink contains caffeine or other stimulants',
+         'Whether the 5% improvement is statistically significant at the p<0.05 level',
+         'Whether the athletes trained harder in preparation for the trial',
+         'Whether the energy drink is approved by sports governing bodies']},
+    {arg:'A city mandated that all new buildings include green roofs. An urban planner argues that this will reduce the city\'s average temperature by 2°C within a decade.',
+     evaluate:'What proportion of the city\'s total building stock will be covered by new construction during the next decade',
+     ws:['Whether green roofs are more expensive than conventional roofing',
+         'Whether other cities have implemented similar mandates',
+         'Whether 2°C is a significant temperature reduction for public health purposes',
+         'Whether architects prefer green roofs from a design perspective']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.evaluate,cases.ws);
+  return{q:`Which of the following would be most useful to determine in order to evaluate the argument?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Evaluate — Critical Missing Information:</strong> The correct answer, if known, would either strongly support OR strongly undermine the conclusion. It addresses the gap between the evidence and the conclusion — usually testing whether a causal mechanism actually operates as assumed. Answer: (${L(ai)}).`};
+}},
+
+// CR-7: Boldface — complex structure
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:`State politicians are optimistic that the economic downturn will not be severe. <strong>Their hopes rest on data showing the jobless rate declined two full percentage points in the past six months.</strong> However, economists note that unemployed residents have been migrating to neighboring states with more jobs. <strong>Furthermore, virtually all new jobs created in the state this year are minimum wage positions.</strong>`,
+     ans:'The first is evidence cited in support of an optimistic conclusion; the second provides information that undermines that conclusion.',
+     ws:['The first is the main conclusion of the argument; the second is supporting evidence.',
+         'The first is a counterargument to the politicians\' view; the second is the main conclusion.',
+         'Both statements are evidence supporting the politicians\' optimism.',
+         'The first is a general principle; the second is a specific application of that principle.']},
+    {arg:`<strong>Reducing caloric intake by 20% has been shown to extend lifespan in laboratory mice by up to 40%.</strong> Some researchers believe a similar effect might occur in humans. However, human metabolic processes differ substantially from those of mice, and human life expectancy is already near its biological maximum in developed countries. <strong>Therefore, caloric restriction is unlikely to produce comparable lifespan extension in humans.</strong>`,
+     ans:'The first is a research finding presented as the basis for the hypothesis the argument ultimately rejects; the second is the conclusion the argument reaches.',
+     ws:['The first is the main conclusion; the second is a premise that led to that conclusion.',
+         'Both are premises used to support a separate unstated conclusion.',
+         'The first is a counterargument; the second is the evidence that refutes it.',
+         'The first is an assumption; the second is a fact that confirms the assumption.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:`In the argument below, the two <strong>bolded</strong> portions play which roles?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Boldface Strategy:</strong> Label each bold portion: Premise/Evidence (P), Conclusion (C), or Counterargument (CA). Then match to answer choices. Key: identify which is the MAIN conclusion vs. supporting evidence vs. material the argument argues against. Answer: (${L(ai)}).`};
+}},
+
+// CR-8: Method of Reasoning
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'Dr. Chen argues that the new drug is safe because no patients reported side effects in the first month. Dr. Park responds that one month is far too short a period to detect serious long-term adverse effects, citing three drugs approved on short-term safety data that were later withdrawn due to cancer links discovered years later.',
+     method:'Dr. Park questions the adequacy of Dr. Chen\'s evidence by providing counterexamples that demonstrate its limitations.',
+     ws:['Dr. Park agrees with Dr. Chen\'s conclusion but disputes the reasoning.',
+         'Dr. Park introduces new scientific evidence that directly contradicts Dr. Chen\'s data.',
+         'Dr. Park attacks Dr. Chen\'s credibility rather than addressing the argument.',
+         'Dr. Park draws an analogy between the new drug and established treatments.']},
+    {arg:'The investment manager argues that Fund X is superior because it outperformed the market in each of the past three years. The analyst responds that three years is insufficient to distinguish skill from luck, since even a random coin-flip strategy would produce three consecutive successes roughly 12.5% of the time.',
+     method:'The analyst undermines the manager\'s conclusion by showing that the evidence is consistent with an alternative explanation that does not require superior skill.',
+     ws:['The analyst concedes that Fund X outperformed but disputes whether outperformance is desirable.',
+         'The analyst attacks the manager\'s qualifications to assess investment performance.',
+         'The analyst introduces a logical fallacy in the manager\'s argument.',
+         'The analyst argues that market outperformance is impossible to sustain over any period.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.method,cases.ws);
+  return{q:`Which of the following best describes the <strong>method of reasoning</strong> used in the second speaker's response?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Method of Reasoning:</strong> Describe HOW the argument proceeds logically, not WHAT it says. Common methods: (1) counterexample, (2) analogy, (3) questioning evidence sufficiency, (4) alternative explanation, (5) attacking assumptions. Match the abstract description to the argument's logical structure. Answer: (${L(ai)}).`};
+}},
+
+// CR-9: Complete the Argument
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {prem:'Childhood obesity rates have risen sharply in countries where ultra-processed food consumption has increased most rapidly. Conversely, countries where traditional diets persist show much lower obesity rates. Therefore, policies targeting ultra-processed food — such as taxes or advertising restrictions — would likely ___',
+     conc:'reduce childhood obesity rates if successfully implemented and adopted by consumers.',
+     ws:['eliminate all childhood obesity within a decade.',
+         'be politically feasible in most democratic countries.',
+         'also improve adult health outcomes across all age groups.',
+         'generate sufficient revenue to fund public health programs.']},
+    {prem:'Executive pay at large corporations has grown at ten times the rate of average worker pay over the past forty years. Research shows that extreme pay inequality within firms correlates with lower employee morale and higher turnover. Based on this evidence, corporations seeking to reduce turnover costs and improve productivity should consider ___',
+     conc:'narrowing the pay ratio between executives and average employees.',
+     ws:['eliminating performance-based bonuses for all employees.',
+         'surveying employees about their job satisfaction annually.',
+         'reducing the total compensation paid to all employees.',
+         'automating functions currently performed by higher-paid workers.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.conc,cases.ws);
+  return{q:`Which of the following most logically <strong>completes</strong> the argument?<br><br><em>"${cases.prem}"</em>`,o,a:ai,
+  ex:`<strong>Complete-the-Argument:</strong> This is an inference question with a structural cue — the blank must follow logically from the stated premises. The correct completion is modest, on-scope, and directly supported by the evidence given. Avoid completions that introduce new claims not implied by the premises. Answer: (${L(ai)}).`};
+}},
+
+// CR-10: Flaw in Reasoning
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'Professor Lee has published research suggesting that social media use causes depression in teenagers. However, Professor Lee is known to have received funding from a technology company competitor, so his findings cannot be trusted.',
+     flaw:'The argument attacks the source of the claim rather than addressing the evidence or methodology of the research itself.',
+     ws:['The argument incorrectly assumes that all funded research is biased.',
+         'The argument fails to consider that teenagers may use social media voluntarily.',
+         'The argument does not provide evidence that social media causes depression.',
+         'The argument assumes that competitors always produce false research.']},
+    {arg:'Our surveys show that 85% of our customers are satisfied with our service. Therefore, 85% of all consumers in the market are satisfied with businesses in our industry.',
+     flaw:'The argument generalizes from a sample of existing customers to all consumers, ignoring that dissatisfied customers likely went to competitors and would not appear in the survey.',
+     ws:['The argument relies on survey data, which is inherently unreliable.',
+         'The argument fails to specify what percentage counts as adequate satisfaction.',
+         'The argument assumes that customers answer surveys honestly.',
+         'The argument compares different types of businesses within the industry.']},
+    {arg:'Every successful entrepreneur I have interviewed started their company with less than $10,000. Therefore, you don\'t need significant capital to build a successful business.',
+     flaw:'The argument selects only successful entrepreneurs, ignoring the far larger group of entrepreneurs who started with limited capital and failed — a classic survivorship bias.',
+     ws:['The argument assumes that all entrepreneurs seek financial success.',
+         'The argument fails to define what counts as a "successful" company.',
+         'The argument relies on interview data rather than objective financial records.',
+         'The argument ignores the role of luck in entrepreneurial success.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.flaw,cases.ws);
+  return{q:`The argument above is most vulnerable to which of the following criticisms?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Flaw in Reasoning:</strong> Common GMAT logical flaws: (1) Ad hominem — attacking the person not the argument; (2) Hasty generalization — small/biased sample; (3) Circular reasoning; (4) Survivorship bias; (5) False causation; (6) Straw man. Identify the logical error in the argument's structure. Answer: (${L(ai)}).`};
+}},
+
+// Additional CR variations for diversity
+{t:'V',d:'Easy',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'Bicycling to work reduces traffic congestion, improves personal fitness, and decreases carbon emissions. Therefore, city governments should actively encourage more residents to bicycle to work.',
+     q:'Which of the following, if true, would most weaken this recommendation?',
+     weaken:'In the city in question, less than 3% of residents live within a safely bikeable distance of their workplace, and the hilly terrain makes cycling impractical for most commuters.',
+     ws:['Bicycle lanes are expensive to construct and maintain.',
+         'Not all residents own bicycles or can afford to purchase one.',
+         'Some residents have physical conditions that prevent cycling.',
+         'Cycling to work requires more travel time than driving for most routes.']},
+    {arg:'A recent survey found that employees who take all of their allotted vacation days are 30% more productive than those who take less than half their vacation days.',
+     q:'Which of the following is an assumption required by the above argument?',
+     weaken:'The higher productivity of vacation-takers is caused by their vacation time rather than by pre-existing personal characteristics that both lead them to take vacations and to work productively.',
+     ws:['All employees receive the same number of vacation days.',
+         'Productivity can be measured accurately across all job types.',
+         'Managers should encourage employees to take vacation time.',
+         'The 30% productivity difference is economically meaningful for the company.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.weaken,cases.ws);
+  return{q:`<em>"${cases.arg}"</em><br><br>${cases.q}`,o,a:ai,
+  ex:`<strong>Answer: (${L(ai)}).</strong> This tests whether a conclusion is based on valid evidence or whether a critical gap exists between the evidence and the conclusion.`};
+}},
+
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'Wexler City banned single-use plastic bags two years ago. Since the ban, the amount of plastic waste collected from local waterways has fallen by 60%. The city environmental director credited the ban with dramatically improving waterway cleanliness.',
+     q:'Which of the following would most strengthen the director\'s conclusion?',
+     strengthen:'Neighboring cities without plastic bag bans saw no reduction in waterway plastic waste over the same two-year period, despite identical waste collection infrastructure.',
+     ws:['Plastic bag manufacturers lobbied against the ban before it was implemented.',
+         'Reusable bag sales in Wexler City increased significantly after the ban.',
+         'Waterway plastic pollution has been declining globally due to changing consumer behavior.',
+         'The ban was accompanied by a public awareness campaign about pollution.']},
+    {arg:'Longevity studies show that people who own pets live longer on average than non-pet owners. A health columnist concluded that pet ownership extends human lifespan.',
+     q:'Which of the following most weakens this conclusion?',
+     strengthen:'People who are healthy enough to care for a pet may have pre-existing health advantages that independently extend their lifespan, explaining both the pet ownership and longevity.',
+     ws:['Dogs and cats are the most common pets among long-lived individuals.',
+         'Pet ownership reduces loneliness, which is a known health risk.',
+         'Some people are allergic to pets, which prevents them from owning one.',
+         'Pet ownership is more common among married individuals who also tend to live longer.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.strengthen,cases.ws);
+  return{q:`<em>"${cases.arg}"</em><br><br>${cases.q}`,o,a:ai,
+  ex:`<strong>Answer: (${L(ai)}).</strong> For strengthening: control group evidence (comparing to similar contexts without the variable) is the gold standard. For weakening: selection bias and reverse causation are the most common GMAT traps.`};
+}},
+
+// More CR from GWD/Manhattan source style
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'A factory was trying out a new process for producing one of its products, with the goal of reducing production costs. A trial run using the new process showed a 15 percent reduction in costs compared with the standard process. The production managers concluded that the new process did produce a cost savings.',
+     q:'Which of the following, if true, most casts doubt on the managers\' conclusion?',
+     weaken:'While the trial was being conducted, production costs at the factory for a similar product — produced without the new process — also fell by 15 percent.',
+     ws:['In the cost-reduction project, managers had initially sought 50% cost reductions.',
+         'The cost reduction was entirely due to fewer rejected products in quality control.',
+         'The new process differs from the standard only in how production stages are ordered.',
+         'Some managers argued the product design should be updated before changing the process.']},
+    {arg:'Healica, a new drug that cures a disease fatal to 50% of those infected, is made from the root of the New Zealand banananut tree. The banananut tree is rare in New Zealand, and large quantities of root are needed. Therefore, if Healica remains in production, the banananut tree will eventually become extinct.',
+     q:'Which of the following, if true, most weakens the conclusion?',
+     weaken:'The banananut tree grows abundantly in three other countries, and Healica can be produced equally well from trees grown outside New Zealand.',
+     ws:['The disease that Healica cures affects only a small fraction of the global population.',
+         'Scientists are researching synthetic alternatives to banananut root extract.',
+         'New Zealand has strict environmental laws protecting endangered plant species.',
+         'Healica\'s manufacturer has pledged to plant new banananut trees for every one harvested.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.weaken,cases.ws);
+  return{q:`<em>"${cases.arg}"</em><br><br>${cases.q}`,o,a:ai,
+  ex:`<strong>Answer: (${L(ai)}).</strong> The first is the classic "control group" weakener from official GMAT materials. The second attacks the hidden geographic assumption. Identifying unstated assumptions is key to both weakening and strengthening.`};
+}},
+
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'The Acme Corporation\'s most recent annual report claimed record profits. This must mean that Acme\'s business is performing better than ever.',
+     q:'The argument is flawed because it fails to consider that',
+     flaw:'record profits may reflect accounting changes, one-time asset sales, or tax adjustments rather than improved core business performance.',
+     ws:['annual reports are often prepared by external auditors.',
+         'competitors may also have achieved record profits in the same year.',
+         'profit is only one of many financial metrics used to evaluate a company.',
+         'some shareholders may have received lower dividends despite record profits.']},
+    {arg:'Surveys consistently show that people report being happier in rural areas than in cities. Therefore, to improve national well-being, governments should invest more in rural development than in urban areas.',
+     q:'The argument above is most vulnerable to which criticism?',
+     flaw:'It assumes that the reported happiness of rural residents is caused by rural living rather than by factors that correlate with rural residence, such as lower costs of living, stronger community ties, or selection of personality types who prefer rural environments.',
+     ws:['Happiness surveys are subjective and measure different things in different cultures.',
+         'Government investment decisions must consider economic efficiency, not just well-being.',
+         'Rural areas tend to have lower incomes, which could offset any happiness benefits.',
+         'Not all urban residents would prefer to live in rural areas even if given the opportunity.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.flaw,cases.ws);
+  return{q:`<em>"${cases.arg}"</em><br><br>${cases.q}`,o,a:ai,
+  ex:`<strong>Answer: (${L(ai)}).</strong> Common GMAT CR flaws tested at Hard level: (1) Confusing correlation with causation, (2) Selective use of data (cherry-picking), (3) Unrepresentative samples, (4) False dichotomy, (5) Conflating different types of evidence.`};
+}},
+
+// More CR hard
+{t:'V',d:'Hard',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:`<strong>Consumer debt levels in Country X have reached historically high levels relative to income.</strong> Financial regulators are considering new lending restrictions to prevent a debt crisis. Critics argue that restrictions would slow economic growth by reducing consumer spending. <strong>However, historical data shows that economies with lower consumer debt-to-income ratios experience more stable long-term growth than those with higher ratios.</strong>`,
+     ans:'The first is a factual premise motivating the proposed policy; the second is evidence used to counter the critics\' objection.',
+     ws:['The first is the main conclusion; the second is a premise that supports a counterargument.',
+         'The first is a prediction; the second is a historical analogy used to support it.',
+         'Both statements are premises that together support the critics\' position against restrictions.',
+         'The first is a concession to the critics; the second reinforces the concession.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:`The two <strong>bolded</strong> portions play which roles in the argument?<br><br><em>"${cases.arg}"</em>`,o,a:ai,
+  ex:`<strong>Boldface — Two-Premise Structure:</strong> The first bold provides the factual basis for the regulation proposal. The second bold counters the critics' economic objection with historical data. Together they form: problem (bold 1) → policy → critics object → rebuttal (bold 2). Answer: (${L(ai)}).`};
+}},
+
+{t:'V',d:'Medium',s:'Critical Reasoning',f:()=>{
+  const cases=rc([
+    {arg:'Most large-scale infrastructure projects in developed countries cost significantly more than their initial estimates. The government\'s proposed high-speed rail project has an initial cost estimate of $12 billion. Based on historical patterns, the actual cost will likely exceed $12 billion.',
+     q:'Which of the following, if true, most strengthens this argument?',
+     strengthen:'A review of 200 major infrastructure projects in 40 countries found that 90% exceeded their initial cost estimates by an average of 45%, with high-speed rail projects showing the highest cost overruns of all infrastructure types.',
+     ws:['The project was designed by the same engineering firm responsible for two recent successful projects.',
+         'The government has allocated contingency funds equal to 15% of the estimated project cost.',
+         'High-speed rail is more technologically complex than road construction projects.',
+         'The project\'s environmental impact assessment has not yet been completed.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.strengthen,cases.ws);
+  return{q:`<em>"${cases.arg}"</em><br><br>${cases.q}`,o,a:ai,
+  ex:`<strong>Strengthen with Specific Data:</strong> The strongest strengthener here provides SPECIFIC quantitative evidence that directly supports the claim and shows the pattern is particularly strong for this type of project. Answer: (${L(ai)}).`};
+}},
+
+/* ── V · SC · Advanced OG/Manhattan Style (10) ── */
+
+// SC: Misplaced modifier — complex
+{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
+  const cases=rc([
+    {q:`Select the best version of the underlined portion:\n\n"<u>Exhausted from weeks of negotiation, the contract was finally signed by the parties.</u>"`,
+     ans:'After weeks of exhausting negotiation, the parties finally signed the contract.',
+     ws:['Exhausted from weeks of negotiation, the contract was finally signed by the parties.',
+         'The contract, exhausted from weeks of negotiation, was finally signed by the parties.',
+         'Being exhausted from weeks of negotiation, the contract signing was completed by the parties.',
+         'Weeks of exhausting negotiation later, the contract\'s signing was completed.'],
+     ex:'The participial phrase "Exhausted from weeks of negotiation" must modify the PEOPLE, not the contract. Fix by restructuring: "After weeks of exhausting negotiation, the parties finally signed the contract."'},
+    {q:`Select the best version:\n\n"The board rejected the proposal, <u>which surprised the CEO who had expected approval.</u>"`,
+     ans:'which surprised the CEO, who had expected approval.',
+     ws:['which surprised the CEO who had expected approval.',
+         'that had surprised the CEO who expected approval.',
+         'this surprised the CEO, who had expected approval.',
+         'and it surprised the CEO, who had been expecting approval.'],
+     ex:'"Which" correctly refers to the action of rejection. The relative clause "who had expected approval" must be set off by a comma to clarify it modifies the CEO, not the proposal.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Modifier Placement:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// SC: Verb tense sequence
+{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
+  const cases=rc([
+    {q:`Select the best version:\n\n"By the time the auditors arrived, the accountant <u>has destroyed</u> all incriminating documents."`,
+     ans:'had destroyed',ws:['has destroyed','destroyed','have destroyed','was destroying'],
+     ex:'"By the time...arrived" signals a past action completed BEFORE another past action. Use past perfect: "had destroyed."'},
+    {q:`Select the best version:\n\n"The professor announced that the exam <u>will take</u> place on Friday."`,
+     ans:'would take',ws:['will take','shall take','takes','has taken'],
+     ex:'Reported speech after a past-tense verb requires backshifting: "announced...would take" (not "will take"). This is sequence of tense.'},
+    {q:`Select the best version:\n\n"The research that <u>was published</u> last year by the team confirms findings from three earlier studies."`,
+     ans:'was published',ws:['was published','had been published','is published','will have been published'],
+     ex:'"Published last year" is a completed action in the past. Simple past passive "was published" is correct for a specific past time reference.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Verb Tense:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// SC: Pronoun reference — ambiguity
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  const cases=rc([
+    {q:`Select the best version:\n\n"When the manager spoke with the client, <u>he</u> expressed serious concerns about the project timeline."`,
+     ans:'the client expressed serious concerns about the project timeline.',
+     ws:['he expressed serious concerns about the project timeline.',
+         'they expressed serious concerns about the project timeline.',
+         'the manager expressed that there are serious concerns about the timeline.',
+         'he was expressing his serious concerns about the project timeline.'],
+     ex:'"He" is ambiguous — it could refer to either the manager or the client. GMAT requires eliminating pronoun ambiguity by naming the specific noun.'},
+    {q:`Select the best version:\n\n"The committee reviewed the report and <u>they</u> made several recommendations."`,
+     ans:'made several recommendations.',
+     ws:['they made several recommendations.',
+         'it made several recommendations.',
+         'the members made several recommendations.',
+         'recommendations were made.'],
+     ex:'"Committee" is a collective noun — singular. The correct pronoun is "it." But even better is eliminating the pronoun entirely: "The committee reviewed the report and made several recommendations."'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Pronoun Reference:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// SC: Comparison — apples to apples
+{t:'V',d:'Hard',s:'Sentence Correction',f:()=>{
+  const cases=rc([
+    {q:`Select the best version:\n\n"The population of Shanghai is larger than <u>Tokyo.</u>"`,
+     ans:'that of Tokyo.',
+     ws:['Tokyo.','Tokyo\'s population is.','the population in Tokyo is.','those of Tokyo.'],
+     ex:'You must compare like to like: population vs. population (not population vs. city). Use "that of" to stand in for "the population of."'},
+    {q:`Select the best version:\n\n"The laws of Country X are more restrictive <u>compared to Country Y.</u>"`,
+     ans:'than those of Country Y.',
+     ws:['compared to Country Y.','compared to Country Y\'s laws.','than Country Y.','than Country Y\'s.'],
+     ex:'"More...than" is correct for formal comparisons, not "more...compared to." Also need parallel nouns: "laws...than those of Country Y."'},
+    {q:`Select the best version:\n\n"Her second novel was more critically acclaimed than <u>her first.</u>"`,
+     ans:'her first novel was (or her first)',
+     ws:['her first.','her first was.','the first novel was.','that of her first novel.'],
+     ex:'Short comparisons can use ellipsis if unambiguous: "more acclaimed than her first [novel]." This is grammatically acceptable when the comparison is clear.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Parallel Comparison:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// SC: Idiomatic expressions
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  const cases=rc([
+    {q:`Select the grammatically correct sentence:`,
+     ans:'The new policy is intended to ensure that employees comply with safety regulations.',
+     ws:['The new policy is intended to ensure employees\' compliance to safety regulations.',
+         'The new policy is intended for ensuring that employees will comply with safety regulations.',
+         'The new policy intends to ensure compliance of safety regulations by employees.',
+         'The new policy has been intended to ensure that employees are complying with regulations.'],
+     ex:'"Ensure that [clause]" is correct. "Ensure compliance with" also works but "compliance to" is unidiomatic. Avoid the progressive "are complying" — use base form in infinitive complement.'},
+    {q:`Select the best version:\n\n"The scientist was <u>credited for discovering</u> a new species of deep-sea fish."`,
+     ans:'credited with discovering',
+     ws:['credited for discovering','credited in discovering','credited as having discovered','given credit for the discovery of'],
+     ex:'"Credited with" is the correct idiom in English. "Credited for" is incorrect. Similarly: "blamed for," "charged with," "accused of," "responsible for."'},
+    {q:`Select the best version:\n\n"The report is <u>different than</u> what we expected."`,
+     ans:'different from what we expected.',
+     ws:['different than what we expected.','different to what was expected.','differently than we expected.','different from that what was expected.'],
+     ex:'"Different from" is the standard formal usage on the GMAT. "Different than" is acceptable in informal American English but avoided in GMAT Sentence Correction.'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Idiom:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// SC: Noun agreement and articles
+{t:'V',d:'Medium',s:'Sentence Correction',f:()=>{
+  const cases=rc([
+    {q:`Select the best version:\n\n"The data collected by the research team <u>strongly suggest</u> that the hypothesis is correct."`,
+     ans:'strongly suggest',ws:['strongly suggests','has strongly suggested','are strongly suggestive of','was strongly suggesting'],
+     ex:'"Data" is plural (datum is singular). So "data suggest" is correct. Common GMAT trap: treating "data" as singular.'},
+    {q:`Select the best version:\n\n"A number of studies <u>has shown</u> that meditation reduces stress."`,
+     ans:'have shown',ws:['has shown','shows','are showing','is showing'],
+     ex:'"A number of" takes a PLURAL verb: "A number of studies have shown." Contrast with "The number of studies has increased" (singular).'},
+    {q:`Select the best version:\n\n"Each of the candidates <u>have</u> submitted a portfolio."`,
+     ans:'has',ws:['have','are having','had have','have each'],
+     ex:'"Each" is always singular, regardless of what follows "of." "Each of the candidates has submitted..." Same rule applies to "every," "either," "neither."'},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Subject-Verb Agreement:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+/* ── D · DS · GWD/OG Style (10) ── */
+
+// DS-1: Geometry
+{t:'D',d:'Medium',s:'Data Sufficiency',f:()=>{
+  const cases=rc([
+    {q:'What is the area of rectangle ABCD?\n\n(1) The perimeter of ABCD is 24.\n(2) The diagonal of ABCD is 8.',
+     ans:'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+     ex:'(1) gives 2(l+w)=24 → l+w=12. Alone, insufficient (multiple l×w combos). (2) gives l²+w²=64. Alone, insufficient. Together: l+w=12 and l²+w²=64 → (l+w)²=144 → l²+2lw+w²=144 → 2lw=144−64=80 → lw=40. BOTH sufficient.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+    {q:'Is triangle ABC a right triangle?\n\n(1) AB² + BC² = AC²\n(2) Angle B = 90°',
+     ans:'EACH statement ALONE is sufficient.',
+     ex:'(1) By the converse of the Pythagorean theorem, if a²+b²=c², the triangle is right-angled. Sufficient. (2) Angle B=90° directly means it is a right triangle. Sufficient. Each alone is sufficient.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Data Sufficiency:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// DS-2: Number properties
+{t:'D',d:'Hard',s:'Data Sufficiency',f:()=>{
+  const cases=rc([
+    {q:'Is the integer n divisible by 12?\n\n(1) n is divisible by 4.\n(2) n is divisible by 6.',
+     ans:'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+     ex:'12=4×3=2²×3. (1) n divisible by 4 → n has 2² but may lack 3. Not sufficient (e.g. n=8). (2) n divisible by 6=2×3 → has 2 and 3 but may lack 2². Not sufficient (e.g. n=6). Together: n has 2²(from 1) and 3(from 2) → divisible by 12. Sufficient.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+    {q:'If x and y are positive integers, is x/y a terminating decimal?\n\n(1) x = 1\n(2) y = 16',
+     ans:'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+     ex:'A fraction terminates iff in lowest terms its denominator has only 2s and 5s as factors. (1) x=1: 1/y terminates only if y has only 2 and 5 factors. Not sufficient (y=3 → 1/3 non-terminating). (2) y=16=2⁴: any x/16 terminates (denominator is pure power of 2). Sufficient.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Data Sufficiency:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// DS-3: Algebra
+{t:'D',d:'Medium',s:'Data Sufficiency',f:()=>{
+  const cases=rc([
+    {q:'What is the value of x²?\n\n(1) x³ = 27\n(2) x² − 5x + 6 = 0',
+     ans:'Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+     ex:'(1) x³=27 → x=3 (unique real solution) → x²=9. Sufficient. (2) (x−2)(x−3)=0 → x=2 or x=3, giving x²=4 or 9. Not sufficient (two possible values).',
+     ws:['Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+    {q:'Is x + y > 0?\n\n(1) x > 1\n(2) y > −1',
+     ans:'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+     ex:'(1) x>1 alone: y could be −100, making x+y<0. Not sufficient. (2) y>−1 alone: x could be −100. Not sufficient. Together: x>1 and y>−1 → x+y>1+(−1)=0. Sufficient.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+    {q:'What is the value of |x|?\n\n(1) x² = 16\n(2) x + 4 > 0',
+     ans:'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+     ex:'(1) x²=16 → x=4 or −4, so |x|=4. Actually sufficient! (2) x>−4 alone doesn\'t give unique |x|. (1) alone gives |x|=4 regardless of sign. Sufficient.',
+     ws:['BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+  ]);
+  const real_ans=cases.q.includes('|x|')?'Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.':cases.ans;
+  const {o,a:ai}=makeOpts(real_ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Data Sufficiency:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// DS-4: Statistics/averages
+{t:'D',d:'Medium',s:'Data Sufficiency',f:()=>{
+  const cases=rc([
+    {q:'What is the median of five consecutive even integers?\n\n(1) The largest integer is 18.\n(2) The sum of all five integers is 70.',
+     ans:'EACH statement ALONE is sufficient.',
+     ex:'Five consecutive even integers: n, n+2, n+4, n+6, n+8. Median = n+4. (1) n+8=18 → n=10 → median=14. Sufficient. (2) Sum=5n+20=70 → n=10 → median=14. Sufficient. Each alone.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+    {q:'Is the average (mean) of 5 numbers greater than 50?\n\n(1) Three of the numbers equal 60 each.\n(2) The other two numbers sum to 80.',
+     ans:'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+     ex:'(1) Three numbers = 60 each. Sum so far = 180. Without knowing the other two, cannot determine mean. Not sufficient. (2) Two numbers sum to 80. Without three others, unknown. Not sufficient. Together: Total = 180+80 = 260. Mean = 52 > 50. Sufficient.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Data Sufficiency:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+// DS-5: Word problem
+{t:'D',d:'Hard',s:'Data Sufficiency',f:()=>{
+  const cases=rc([
+    {q:'A store sells notebooks at one price and pens at another. How much does one notebook cost?\n\n(1) Three notebooks and two pens cost $16.\n(2) Two notebooks and three pens cost $14.',
+     ans:'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+     ex:'Two equations, two unknowns (n=notebook, p=pen). (1) 3n+2p=16. (2) 2n+3p=14. Each equation alone has infinite solutions. Together: multiply (1)×3 and (2)×2 → 9n+6p=48, 4n+6p=28 → 5n=20 → n=4. Sufficient together.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+    {q:'Did it take Sasha fewer than 2 hours to drive from City P to City Q?\n\n(1) The distance from P to Q is 110 miles.\n(2) Sasha\'s average driving speed was greater than 55 mph.',
+     ans:'BOTH statements TOGETHER are sufficient, but NEITHER alone is sufficient.',
+     ex:'Time=Distance/Rate. (1) Distance=110: without speed, cannot determine time. (2) Speed>55: without distance, cannot determine time. Together: Time=110/speed < 110/55 = 2 hours. Sufficient.',
+     ws:['Statement (1) ALONE is sufficient, but statement (2) alone is not sufficient.',
+         'Statement (2) ALONE is sufficient, but statement (1) alone is not sufficient.',
+         'EACH statement ALONE is sufficient.',
+         'Statements (1) and (2) TOGETHER are NOT sufficient.']},
+  ]);
+  const {o,a:ai}=makeOpts(cases.ans,cases.ws);
+  return{q:cases.q,o,a:ai,ex:`<strong>Data Sufficiency:</strong> ${cases.ex} Answer: (${L(ai)}).`};
+}},
+
+
 ];
 
 
@@ -3535,9 +4415,9 @@ function txBulk(store,items){
 
 const TARGET=10000;
 const DIST={
-  'Q-Easy':2000,'Q-Medium':2000,'Q-Hard':1500,
-  'V-Easy':1000,'V-Medium':1000,'V-Hard':500,
-  'D-Easy':800,'D-Medium':700,'D-Hard':500
+  'Q-Easy':2200,'Q-Medium':2200,'Q-Hard':1600,
+  'V-Easy':1100,'V-Medium':1100,'V-Hard':600,
+  'D-Easy':500,'D-Medium':500,'D-Hard':200
 };
 
 async function generateAndStore(progressCb){
@@ -4288,7 +5168,7 @@ async function init(){
     await initDB();
     const count=await txCount('questions');
     if(count<1000){
-      document.getElementById('initMsg').textContent=`首次啟動，生成 10,000 道題目（174種題型）...`;
+      document.getElementById('initMsg').textContent=`首次啟動，生成 10,000 道題目（257種題型）...`;
       await generateAndStore((done,tot)=>{
         document.getElementById('initMsg').textContent=`生成題目 ${done.toLocaleString()} / ${tot.toLocaleString()}`;
         document.getElementById('initBar').style.width=Math.round(5+done/tot*90)+'%';
