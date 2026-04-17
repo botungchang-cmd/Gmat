@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GMAT Practice · GOGOGO</title>
+<title>GMAT Practice ·</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -235,10 +235,10 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
 </style>
 </head>
 <body>
-<div class="eye-banner">🌿 <span>下周太晚需要幫忙載再跟我說</span> · 加油</div>
+<div class="eye-banner">🌿 <span>護眼模式</span> · 如果妳的狀態跟我是一樣的那真的辛苦了，下周如果太晚需要幫忙再跟我說</div>
 <div id="initOverlay">
   <div class="init-logo">GMAT Practice</div>
-  <div class="init-sub">題庫多多版</div>
+  <div class="init-sub">加油</div>
   <div class="init-spinner"></div>
   <div class="init-msg" id="initMsg">初始化資料庫...</div>
   <div class="init-bar-wrap"><div class="init-bar" id="initBar" style="width:0%"></div></div>
@@ -255,7 +255,7 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
 <div id="homeScreen" class="screen active">
   <div class="hero">
     <h1>GMAT <em>Practice</em></h1>
-    <p>364 Generator Types · 10,000+ Unique Questions · All Sections</p>
+    <p>＠＠好辛苦</p>
   </div>
   <div class="nav-tabs">
     <button class="nav-tab active" id="tabPractice" onclick="switchTab('Practice')">🎯 練習</button>
@@ -21941,6 +21941,15 @@ const TPA_QUESTIONS = [
   ans1:'asks Agency B for a campaign',ans2:'does not find positive focus group responses for A\'s campaign',
   ex:'【解析】邏輯：若A的活動獲得正面回應→不會要求B設計活動（contrapositive：若要求B→A沒有獲得正面回應）。因此：IF要求B（Col1），THEN A沒有正面回應（Col2）。'
 },
+{
+  id:'ir008',src:'OG-Custom',diff:'Medium',
+  q:'A company\'s revenue model depends on two pricing tiers. Tier 1 customers pay $200/month; Tier 2 customers pay $500/month.<br><br>The company requires:<br>• Total customers: <strong>150</strong><br>• Total monthly revenue: exactly <strong>$45,000</strong><br><br>Select the number of Tier 1 customers AND the number of Tier 2 customers.',
+  col1:'Tier 1 Customers ($200/month)',col2:'Tier 2 Customers ($500/month)',
+  col1_options:['50','75','100','125','130'],
+  col2_options:['50','75','100','125','130'],
+  ans1:'100',ans2:'50',
+  ex:'【解析】設 Tier 1 = x，Tier 2 = y。方程式：(1) x + y = 150；(2) 200x + 500y = 45000。由(1)得 x = 150 - y，代入(2)：200(150-y) + 500y = 45000 → 30000 + 300y = 45000 → y = 50，x = 100。✅ Tier 1 = 100 人，Tier 2 = 50 人。驗證：100×$200 + 50×$500 = $20,000 + $25,000 = $45,000 ✓'
+}
 ];
 
 const TPA = {
@@ -21973,15 +21982,17 @@ function renderTPA() {
   document.getElementById('tpaCol1Header').textContent = q.col1;
   document.getElementById('tpaCol2Header').textContent = q.col2;
 
-  const makeOpts = (colId, selKey) =>
-    q.options.map((o, i) =>
+  const makeOpts = (colId, opts) =>
+    opts.map((o, i) =>
       `<div class="tpa-opt" id="${colId}-${i}" onclick="tpaPick('${colId}',${i},'${o.replace(/'/g,"\\'")}')">
         <span style="font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);margin-right:8px">${String.fromCharCode(65+i)}</span>${o}
       </div>`
     ).join('');
 
-  document.getElementById('tpaCol1').innerHTML = makeOpts('c1', 'sel1');
-  document.getElementById('tpaCol2').innerHTML = makeOpts('c2', 'sel2');
+  const col1opts = q.col1_options || q.options;
+  const col2opts = q.col2_options || q.options;
+  document.getElementById('tpaCol1').innerHTML = makeOpts('c1', col1opts);
+  document.getElementById('tpaCol2').innerHTML = makeOpts('c2', col2opts);
 
   document.getElementById('tpaExpBox').classList.remove('show');
   document.getElementById('tpaBtnExp').style.display = '';
