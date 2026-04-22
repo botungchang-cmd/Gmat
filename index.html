@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GMAT Practice · 護眼版 10000題庫</title>
+<title>GMAT Practice</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -236,16 +236,16 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 <body>
-<div class="eye-banner">🌿 <span>護眼模式</span> · 暖色調低藍光 · 174種題型 · 舒適閱讀</div>
+<div class="eye-banner">🌿 <span>加油</span> · 加油</div>
 <div id="initOverlay">
   <div class="init-logo">GMAT Practice</div>
-  <div class="init-sub">10,000題庫 · 174種題型 · IndexedDB</div>
+  <div class="init-sub">Go</div>
   <div class="init-spinner"></div>
   <div class="init-msg" id="initMsg">初始化資料庫...</div>
   <div class="init-bar-wrap"><div class="init-bar" id="initBar" style="width:0%"></div></div>
 </div>
 <header>
-  <div class="logo">GMAT Practice<small>364 Types · All Sections</small></div>
+  <div class="logo">GMAT Practice<small>加油</small></div>
   <div class="hdr-right">
     <div class="pill">練習 <b id="hTot">0</b></div>
     <div class="pill">正確率 <b id="hAcc">—</b></div>
@@ -503,7 +503,7 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
   </div>
 </div>
 <!-- TWO-PART ANALYSIS SCREEN -->
-<div id="tpaScreen" class="screen" style="display:none">
+<div id="tpaScreen" class="screen">
   <div class="q-top"><div class="q-badges" id="tpaBadges"></div><span style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted)" id="tpaCnt"></span></div>
   <div class="progress-wrap"><div class="progress-bar" id="tpaProgBar"></div></div>
   <div class="q-card">
@@ -21269,7 +21269,7 @@ async function goHome(){stopTimer();document.getElementById('timerEl').style.dis
    Handles: Two-Part, Table Analysis, MSR, Graphics
 ══════════════════════════════════════════════════════ */
 const DIS = {
-  pool: [], cur: 0, sel: null,
+  pool: [], cur: 0, sel: null, tpSel1: null, tpSel2: null,
   submitted: false, answers: [],
   elapsed: 0, tick: null
 };
@@ -21310,7 +21310,8 @@ function renderDIS() {
   else if (q.diType === 'graphics') renderGraphics(q);
 
   // Options
-  document.getElementById('disOpts').innerHTML = q.o.map((opt, i) =>
+  document.getElementById('disOpts').style.display = '';
+  document.getElementById('disOpts').innerHTML = (q.o||[]).map((opt, i) =>
     `<div class="opt" onclick="disPick(this,${i})">
        <span class="opt-lbl">${L(i)}</span><span>${opt}</span>
      </div>`).join('');
@@ -21324,18 +21325,44 @@ function renderDIS() {
 function renderTwoPart(q) {
   document.getElementById('disTwoPart').style.display = '';
   document.getElementById('disTpPrompt').innerHTML = q.prompt;
+  DIS.tpSel1 = null; DIS.tpSel2 = null;
   const tbl = document.getElementById('disTpTable');
   tbl.innerHTML = `
     <thead><tr style="background:var(--raised)">
-      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--cream)">Option</th>
-      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--green)">${q.col1}</th>
-      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--yellow)">${q.col2}</th>
+      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted)">Option</th>
+      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--green);text-align:center">${q.col1}<br><span style="font-size:.6rem;opacity:.7">← 點選</span></th>
+      <th style="padding:8px 10px;border-bottom:2px solid var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--yellow);text-align:center">${q.col2}<br><span style="font-size:.6rem;opacity:.7">← 點選</span></th>
     </tr></thead>
-    <tbody>${q.rows.map((r,i) => `<tr style="border-bottom:1px solid var(--rim)">
+    <tbody>${q.rows.map((r,i) => `<tr style="border-bottom:1px solid var(--rim)" id="tprow-${i}">
       <td style="padding:7px 10px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.72rem">${r.label}</td>
-      <td style="padding:7px 10px;color:var(--body)">${r.v1}</td>
-      <td style="padding:7px 10px;color:var(--body)">${r.v2}</td>
+      <td id="tpc1-${i}" onclick="tpCellPick(1,${i},${r.v1})" style="padding:7px 10px;color:var(--body);cursor:pointer;text-align:center;border-radius:6px;transition:all .2s" onmouseover="if(!DIS.tpSel1||DIS.tpSel1!=${i})this.style.background='#6ab18720'" onmouseout="if(!DIS.tpSel1||DIS.tpSel1!=${i})this.style.background=''">${r.v1}</td>
+      <td id="tpc2-${i}" onclick="tpCellPick(2,${i},${r.v2})" style="padding:7px 10px;color:var(--body);cursor:pointer;text-align:center;border-radius:6px;transition:all .2s" onmouseover="if(!DIS.tpSel2||DIS.tpSel2!=${i})this.style.background='#c4a85a20'" onmouseout="if(!DIS.tpSel2||DIS.tpSel2!=${i})this.style.background=''">${r.v2}</td>
     </tr>`).join('')}</tbody>`;
+  // Hide the traditional A-E options for twopart (we use cell clicking instead)
+  document.getElementById('disOpts').style.display = 'none';
+}
+
+function tpCellPick(col, rowIdx, val) {
+  if (DIS.submitted) return;
+  const q = DIS.pool[DIS.cur];
+  const rows = q.rows || [];
+  // Clear previous selection in this column
+  rows.forEach((r, i) => {
+    const cell = document.getElementById('tpc' + col + '-' + i);
+    if (cell) { cell.style.background = ''; cell.style.fontWeight = ''; cell.style.color = 'var(--body)'; }
+  });
+  // Highlight selected cell
+  const el = document.getElementById('tpc' + col + '-' + rowIdx);
+  if (el) {
+    el.style.background = col === 1 ? '#6ab18740' : '#c4a85a40';
+    el.style.fontWeight = '700';
+    el.style.color = col === 1 ? 'var(--green)' : 'var(--yellow)';
+  }
+  if (col === 1) DIS.tpSel1 = rowIdx;
+  else DIS.tpSel2 = rowIdx;
+  // Enable submit when both selected
+  const btn = document.getElementById('disBtnSub');
+  if (btn) btn.disabled = !(DIS.tpSel1 !== null && DIS.tpSel2 !== null);
 }
 
 function renderTableAnalysis(q) {
@@ -21388,12 +21415,40 @@ function disPick(el, i) {
 }
 
 async function disSubmit() {
+  const q = DIS.pool[DIS.cur];
+  // Two-Part table: use tpSel1/tpSel2
+  if (q.diType === 'twopart') {
+    if (DIS.tpSel1 === null || DIS.tpSel2 === null) return;
+    DIS.submitted = true;
+    const ok1 = DIS.tpSel1 === q.a1;
+    const ok2 = DIS.tpSel2 === q.a2;
+    const ok = ok1 && ok2;
+    DIS.answers.push({ q, chosen: [DIS.tpSel1, DIS.tpSel2], ok });
+    // Mark cells
+    (q.rows || []).forEach((r, i) => {
+      const c1 = document.getElementById('tpc1-' + i);
+      const c2 = document.getElementById('tpc2-' + i);
+      if (c1) { c1.style.cursor = 'default';
+        if (i === q.a1) { c1.style.background = '#6ab18750'; c1.style.fontWeight = '700'; }
+        else if (i === DIS.tpSel1) { c1.style.background = '#c47a6a40'; }
+      }
+      if (c2) { c2.style.cursor = 'default';
+        if (i === q.a2) { c2.style.background = '#c4a85a50'; c2.style.fontWeight = '700'; }
+        else if (i === DIS.tpSel2) { c2.style.background = '#c47a6a40'; }
+      }
+    });
+    DIS.submitted = true;
+    disRevealExp(ok);
+    document.getElementById('disBtnSub').style.display = 'none';
+    document.getElementById('disBtnNext').style.display = '';
+    return;
+  }
   if (DIS.sel === null) return;
   DIS.submitted = true;
-  const q = DIS.pool[DIS.cur];
   const ok = DIS.sel === q.a;
   DIS.answers.push({ q, chosen: DIS.sel, ok });
   // UI first
+  document.getElementById('disOpts').style.display = '';
   document.querySelectorAll('#disOpts .opt').forEach((el, i) => {
     el.classList.add('locked');
     if (i === q.a) el.classList.add('correct');
