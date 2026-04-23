@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GMAT Practice</title>
+<title>GMAT Practice · 加油</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -236,16 +236,16 @@ main{max-width:780px;margin:0 auto;padding:18px 14px}
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 <body>
-<div class="eye-banner">🌿 <span>加油</span> · 加油</div>
+<div class="eye-banner">加油🌿 加油<span>加油</span> · 加油</div>
 <div id="initOverlay">
   <div class="init-logo">GMAT Practice</div>
-  <div class="init-sub">Go</div>
+  <div class="init-sub">加油 加油</div>
   <div class="init-spinner"></div>
   <div class="init-msg" id="initMsg">初始化資料庫...</div>
   <div class="init-bar-wrap"><div class="init-bar" id="initBar" style="width:0%"></div></div>
 </div>
 <header>
-  <div class="logo">GMAT Practice<small>加油</small></div>
+  <div class="logo">GMAT Practice<small>800 up </small></div>
   <div class="hdr-right">
     <div class="pill">練習 <b id="hTot">0</b></div>
     <div class="pill">正確率 <b id="hAcc">—</b></div>
@@ -21562,7 +21562,7 @@ function renderRC() {
   document.getElementById('rcBadges').innerHTML =
     `<span class="badge badge-V">Verbal</span>
      <span class="badge" style="border-color:var(--purple);color:var(--purple)">Reading Comprehension</span>
-     <span class="badge badge-${q.d}">${q.d}</span>`;
+`;
   document.getElementById('rcSetNum').textContent = `Passage ${RC.curSet + 1}/${RC.sets.length} · Q${RC.curQ + 1}/${set.questions.length}`;
 
   // Passage
@@ -21582,7 +21582,7 @@ function renderRC() {
   document.getElementById('rcQBody').innerHTML = q.q;
 
   // Options
-  document.getElementById('rcOpts').innerHTML = q.o.map((opt, i) =>
+  document.getElementById('rcOpts').innerHTML = (q.opts||q.o||[]).map((opt, i) =>
     `<div class="opt" onclick="rcPick(this,${i})">
        <span class="opt-lbl">${L(i)}</span><span>${opt}</span>
      </div>`
@@ -21608,14 +21608,15 @@ async function rcSubmit() {
   if (RC.sel === null) return;
   RC.submitted = true;
   const q = RC.sets[RC.curSet].questions[RC.curQ];
-  const ok = RC.sel === q.a;
+  const ansIdx = typeof q.ans === 'string' ? q.ans.charCodeAt(0)-65 : q.a;
+  const ok = RC.sel === ansIdx;
   RC.answers.push({ q, chosen: RC.sel, ok });
 
     setTimeout(()=>{
     if(!db) return;
     try{
-      txPut('history',{type:'V',difficulty:q.d,subtype:'Reading Comprehension',
-        correct:ok,chosen:RC.sel,answer:q.a,timestamp:Date.now()}).catch(()=>{});
+      txPut('history',{type:'V',difficulty:q.d||'Medium',subtype:'Reading Comprehension',
+        correct:ok,chosen:RC.sel,answer:ansIdx,timestamp:Date.now()}).catch(()=>{});
       if(!ok) txPut('wronglog',{qid:q.id||uid(),type:'V',
         difficulty:q.d||'Medium',subtype:'Reading Comprehension',
         question:(q.q||'').slice(0,500),answer:q.a,wrongAt:Date.now()}).catch(()=>{});
@@ -21625,7 +21626,7 @@ async function rcSubmit() {
 
   document.querySelectorAll('#rcOpts .opt').forEach((el, i) => {
     el.classList.add('locked');
-    if (i === q.a) el.classList.add('correct');
+    if (i === ansIdx) el.classList.add('correct');
     else if (i === RC.sel && !ok) el.classList.add('wrong');
   });
 
